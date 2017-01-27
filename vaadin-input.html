@@ -21,28 +21,49 @@ This program is available under Apache License Version 2.0, available at https:/
 
 <dom-module id="vaadin-input">
   <template>
-    <style>
-      :host {
-        display: inline-block;
-      }
+      <style>
+        :host {
+          display: inline-flex;
+          position: relative;
+        }
 
-      input {
-        outline: none;
-        border: solid 1px #d8d8d8;
-      }
+        input {
+          padding: 4px;
+          border: 1px solid #d4d4d4;
+          font-family: sans-serif;
+          @apply(--vaadin-input);
+        }
 
-      input:focus {
-        border-bottom: solid 1px deepskyblue;
-      }
+        input:focus {
+          border-color: transparent;
+          @apply(--vaadin-input-focus);
+        }
 
-      input:invalid {
-        background: #fbefef;
-      }
+        label {
+          padding: 4px;
+          font-family: sans-serif;
+          @apply(--vaadin-input-label);
+        }
 
-      input:focus:invalid {
-        border-bottom: solid 1px red;
-      }
-    </style>
+        input:invalid {
+          background: #fbefef;
+        }
+
+        input::-webkit-input-placeholder {
+          @apply(--vaadin-input-placeholder);
+        }
+
+        input:focus::-webkit-input-placeholder {
+          @apply(--vaadin-input-placeholder-focus);
+        }
+      </style>
+
+    <dom-if if="[[_showLabel(label, floating, value)]]">
+      <template>
+        <label id="label">[[label]]</label>
+      </template>
+    </dom-if>
+
     <input id="input"
       autocomplete$="[[autocomplete]]"
       autocorrect$="[[autocorrect]]"
@@ -92,6 +113,16 @@ This program is available under Apache License Version 2.0, available at https:/
              */
             disabled: {
               type: Boolean
+            },
+
+            floating: {
+              type: Boolean,
+              reflectToAttribute: true,
+              value: false
+            },
+
+            label: {
+              type: String
             },
 
             /**
@@ -188,8 +219,18 @@ This program is available under Apache License Version 2.0, available at https:/
               type: Boolean,
               reflectToAttribute: true,
               notify: true
+            },
+
+            labelVisible: {
+              type: Boolean,
+              reflectToAttribute: true,
+              computed: '_showLabel(label, floating, value)'
             }
-          }
+          },
+
+          observers: [
+            '_labelChanged(label, floating)'
+          ]
 
         };
       }
@@ -197,6 +238,24 @@ This program is available under Apache License Version 2.0, available at https:/
       ready() {
         super.ready();
         this.invalid = this._isInvalid();
+      }
+
+      _labelChanged(label, floating) {
+        if (floating) {
+          this.$.input.placeholder = label || '';
+        } else {
+          this.$.input.placeholder = this.placeholder || '';
+        }
+      }
+
+      _placeholderChanged(placeholder, floating) {
+        if (!this.label || !floating) {
+          this.$.input.placeholder = placeholder || '';
+        }
+      }
+
+      _showLabel(label, floating, value) {
+        return !!(label && (!floating || value));
       }
 
       _valueChanged(value) {

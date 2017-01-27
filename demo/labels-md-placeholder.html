@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>vaadin-input Basic Examples</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../iron-form/iron-form.html">
+  <link rel="import" href="common.html">
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+
+    <demo-navigation></demo-navigation>
+
+    <h3>MD Label</h3>
+    <demo-snippet>
+      <template>
+        <custom-style>
+          <style>
+          vaadin-input#md {
+            height: 40px;
+
+            --vaadin-input: {
+              height: 20px;
+              align-self: flex-end;
+              border: none;
+              border-bottom: solid 1px #d8d8d8;
+              font-size: 12px;
+              padding: 0 0 2px;
+
+              transition: all 0.3s ease;
+              background: linear-gradient(to bottom, rgba(255,255,255,0) 96%, deepskyblue 50%);
+              background-position: -200px 0;
+              background-size: 200px 100%;
+              background-repeat: no-repeat;
+            };
+
+            --vaadin-input-focus: {
+              outline: none;
+              border-bottom: solid 1px deepskyblue;
+              background-position: 0 0;
+            }
+
+            --vaadin-input-label: {
+              position: absolute;
+              font-size: 10px;
+              padding: 2px 0;
+              color: lightskyblue;
+            };
+
+            --vaadin-input-placeholder: {
+              transition: all 0.3s ease-in-out;
+            };
+
+            --vaadin-input-placeholder-focus: {
+              color: lightskyblue;
+              font-size: 10px;
+              transform: translateY(-20px);
+              visibility: visible !important;
+            };
+          }
+
+          </style>
+        </custom-style>
+
+        <vaadin-input id="md" floating label="Type your Name"></vaadin-input>
+      </template>
+    </demo-snippet>
+
+  </div>
+</body>
+</html>
