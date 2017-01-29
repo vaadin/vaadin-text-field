@@ -31,6 +31,7 @@ This program is available under Apache License Version 2.0, available at https:/
           padding: 4px;
           border: 1px solid #d4d4d4;
           font-family: sans-serif;
+          order: 2;
           @apply(--vaadin-input);
         }
 
@@ -56,13 +57,15 @@ This program is available under Apache License Version 2.0, available at https:/
         input:focus::-webkit-input-placeholder {
           @apply(--vaadin-input-placeholder-focus);
         }
-      </style>
 
-    <dom-if if="[[_showLabel(label, floating, value)]]">
-      <template>
-        <label id="label">[[label]]</label>
-      </template>
-    </dom-if>
+        input:placeholder-shown + label {
+          @apply(--vaadin-input-label-placeholder-shown);
+        }
+
+        input:focus + label {
+          @apply(--vaadin-input-label-focus);
+        }
+      </style>
 
     <input id="input"
       autocomplete$="[[autocomplete]]"
@@ -81,6 +84,12 @@ This program is available under Apache License Version 2.0, available at https:/
       value="{{value::input}}"
       title="[[title]]"
     />
+
+    <dom-if if="[[_showLabel(label, floating, value)]]">
+      <template>
+        <label id="label">[[label]]</label>
+      </template>
+    </dom-if>
   </template>
 
   <script>
@@ -255,7 +264,7 @@ This program is available under Apache License Version 2.0, available at https:/
       }
 
       _showLabel(label, floating, value) {
-        return !!(label && (!floating || value));
+        return !!(label && floating || label && (!floating || value));
       }
 
       _valueChanged(value) {
