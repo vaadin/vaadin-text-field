@@ -85,7 +85,7 @@ This program is available under Apache License Version 2.0, available at https:/
       title="[[title]]"
     />
 
-    <dom-if if="[[_showLabel(label, floating, value)]]">
+    <dom-if if="[[label]]">
       <template>
         <label id="label">[[label]]</label>
       </template>
@@ -122,12 +122,6 @@ This program is available under Apache License Version 2.0, available at https:/
              */
             disabled: {
               type: Boolean
-            },
-
-            floating: {
-              type: Boolean,
-              reflectToAttribute: true,
-              value: false
             },
 
             label: {
@@ -228,18 +222,8 @@ This program is available under Apache License Version 2.0, available at https:/
               type: Boolean,
               reflectToAttribute: true,
               notify: true
-            },
-
-            labelVisible: {
-              type: Boolean,
-              reflectToAttribute: true,
-              computed: '_showLabel(label, floating, value)'
             }
-          },
-
-          observers: [
-            '_labelChanged(label, floating)'
-          ]
+          }
 
         };
       }
@@ -247,24 +231,6 @@ This program is available under Apache License Version 2.0, available at https:/
       ready() {
         super.ready();
         this.invalid = this._isInvalid();
-      }
-
-      _labelChanged(label, floating) {
-        if (floating) {
-          this.$.input.placeholder = label || '';
-        } else {
-          this.$.input.placeholder = this.placeholder || '';
-        }
-      }
-
-      _placeholderChanged(placeholder, floating) {
-        if (!this.label || !floating) {
-          this.$.input.placeholder = placeholder || '';
-        }
-      }
-
-      _showLabel(label, floating, value) {
-        return !!(label && floating || label && (!floating || value));
       }
 
       _valueChanged(value) {

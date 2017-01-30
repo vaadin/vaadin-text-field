@@ -89,12 +89,46 @@ The user can customize the label via the `--vaadin-input-label` mixin
 
 <vaadin-input id="md" floating label="First Name"></vaadin-input>
 
-```
-
 ###### Caveats
  - `::placeholder` is not standard yet, and we have to use prefix for all browsers
  - Animation is done of focus not when the user types
  - Polymer 2.0-preview seems to have problems when setting multiple prefixed selectors to the same block.
+ - In FF seems that it's not possible to move the placeholder out from the input (translate does not work).
+
+
+```
+
+3- The `input.floating` property could be removed if the user in the theme hide/shows the label based on the `placeholder-shown` pseudo selector. Also he has to set both `label` and `placeholder` attributes declaratively. This is basically the same approach that is described at the end (Maintain label always attached).
+
+```
+<custom-style>
+  <style>
+  vaadin-input#md {
+    height: 40px;
+
+    --vaadin-input: {
+      height: 20px;
+      align-self: flex-end;
+    };
+
+    --vaadin-input-label: {
+      position: absolute;
+      padding: 2px 0;
+      color: lightskyblue;
+    };
+
+    --vaadin-input-label-placeholder-shown: {
+      display: none;
+    }
+  }
+ </style>
+</custom-style>
+<vaadin-input id="md" label="First Name" placeholder="First Name"></vaadin-input>
+```
+
+###### Caveats
+ - `::placeholder-shown` is not supported by Edge.
+
 
 #### Emulate placeholder with label
 
@@ -102,7 +136,7 @@ Another option is that we don't configure `placeholder`
 
 ###### Caveats
  - Placeholder is not native
- - We need to handle events in the label.
+ - We need to handle events in the label
 
 
 #### Maintain label always attached
@@ -110,12 +144,6 @@ Another option is that we don't configure `placeholder`
 When label is floating, it is always attached to the dom, then, the user can show/hide/move it depending on the input value or in the `input:placeholder-shown` selector
 
 This is the more flexible approach, and can be implemented for all browsers
-
-###### Caveats
- - User has to play with z-index if the initial position of the label covers the input
- - `:placeholder-shown` pseudo is not supported by Edge, we can use a computed attribute though
- - In order to use `input:placeholder-shown + label` it's necessary that label after input in dom. Possible fix set `order: 2` to `input`
-
 
  ```
  <custom-style>
@@ -143,4 +171,10 @@ This is the more flexible approach, and can be implemented for all browsers
  </style>
  </custom-style>
 
- <vaadin-input id="md" floating label="First Name"></vaadin-input>
+ <vaadin-input id="md" label="First Name" placeholder="First Name"></vaadin-input>
+```
+
+###### Caveats
+ - User has to play with z-index if the initial position of the label covers the input
+ - `:placeholder-shown` pseudo is not supported by Edge, we can use a computed attribute though
+ - In order to use `input:placeholder-shown + label` it's necessary that label after input in dom. Possible fix set `order: 2` to `input`
