@@ -189,6 +189,17 @@ This program is available under Apache License Version 2.0, available at https:/
               type: Boolean,
               reflectToAttribute: true,
               notify: true
+            },
+
+            /**
+             * If true, the element currently has focus.
+             */
+            focused: {
+              type: Boolean,
+              value: false,
+              notify: true,
+              readOnly: true,
+              reflectToAttribute: true
             }
           }
 
@@ -201,8 +212,29 @@ This program is available under Apache License Version 2.0, available at https:/
 
         // Make FF take the focus (#9)
         if (this.autofocus) {
-          this.$.input.focus();
+          this.focus();
         }
+
+        // Figure out whether the element is wrapped in a ´<label>` to take the focus on click.
+        for (var e = this; (e = e.parentElement);) {
+          if (e.localName == 'label') {
+            e.addEventListener('click', this.focus.bind(this));
+            break;
+          }
+        }
+
+        this.$.input.addEventListener('focus', this.focus.bind(this));
+        this.$.input.addEventListener('blur', this.blur.bind(this));
+      }
+
+      focus() {
+        this._setFocused(true);
+        this.$.input.focus();
+      }
+
+      blur() {
+        this._setFocused(false);
+        this.$.input.blur();
       }
 
       _valueChanged(value) {
