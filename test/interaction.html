@@ -13,9 +13,7 @@
 <body>
   <test-fixture id="default">
     <template>
-      <div>
-        <vaadin-input id="vaadinInput"></vaadin-input>
-      </div>
+      <vaadin-input id="vaadinInput"></vaadin-input>
     </template>
   </test-fixture>
 
@@ -25,22 +23,20 @@
     if (!/firefox/i.test(navigator.userAgent)) {
 
       describe('focus', function() {
-        var label, vaadinInput;
+        var vaadinInput;
 
-        beforeEach(function(done) {
-          label = fixture('default');
-
-          // wait for the web component to be ready
-          window.setTimeout(function() {
-            vaadinInput = label.querySelector('#vaadinInput');
-            done();
-          }, 1);
+        beforeEach(function() {
+          vaadinInput = fixture('default');
         });
 
         it('should focus the internal input on focus', function() {
           vaadinInput.focus();
           expect(vaadinInput.focused).to.be.true;
-          expect(vaadinInput.root.querySelector('input:focus')).to.be.ok;
+
+          // Avoid test flakiness
+          window.requestAnimationFrame(function() {
+            expect(vaadinInput.root.querySelector('input:focus')).to.be.ok;
+          });
         });
 
         it('should have methods focus and blur', function() {
