@@ -25,12 +25,16 @@
         vaadinInput = fixture('default');
       });
 
-      it('should focus the internal input on focus', function() {
+      it('should focus the internal input on focus', function(done) {
         var spy = window.sinon.spy(vaadinInput.$.input, 'focus');
 
         vaadinInput.focus();
         expect(vaadinInput.focused).to.be.true;
-        expect(spy.called).to.be.true;
+
+        window.requestAnimationFrame(() => {
+          expect(spy.called).to.be.true;
+          done();
+        });
       });
 
       it('should blur the internal input on blur', function() {
