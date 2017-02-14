@@ -1,0 +1,97 @@
+<!doctype html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>vaadin-input tests</title>
+
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" href="../vaadin-input.html">
+  <link rel="import" href="../../iron-form/iron-form.html">
+
+</head>
+
+<body>
+  <test-fixture id="default">
+    <template>
+      <vaadin-input id="customElement"></vaadin-input>
+    </template>
+  </test-fixture>
+
+  <script>
+
+    describe('control-state behavior', function() {
+      var customElement, focusElement;
+
+      beforeEach(function() {
+        customElement = fixture('default');
+        focusElement = customElement._getFocusElement();
+      });
+
+      describe('tabindex', function() {
+        if (!window.ShadyDOM) {
+          it('in shadow dom setting native tabIndex should update the element attribute', function() {
+            customElement.tabIndex = 1;
+            expect(customElement.getAttribute('tabindex')).to.be.equal('1');
+          });
+        }
+
+        it('setting disabled to true should remove tabindex', function() {
+          customElement.tabIndex = 1;
+          customElement.disabled = true;
+          expect(customElement.getAttribute('tabindex')).to.not.be.ok;
+        });
+
+        it('setting disabled to false should restore old tabindex', function() {
+          customElement.tabindex = 1;
+          customElement.disabled = true;
+          customElement.disabled = false;
+          expect(customElement.getAttribute('tabindex')).to.be.equal('1');
+        });
+
+        if (window.ShadyDOM) {
+          it('in shady dom setting native tabIndex should not update the element attribute', function() {
+            customElement.tabIndex = 1;
+            expect(customElement.getAttribute('tabindex')).to.not.be.ok;
+          });
+
+          it('in shady dom tabindex should be set to internal input', function() {
+            customElement.tabIndex = 1;
+            expect(focusElement.getAttribute('tabindex')).to.be.equal('1');
+          });
+        }
+      });
+
+      describe('focus', function() {
+        it('should focus the internal input on focus', function(done) {
+          // Avoid FF window focus issues by stubing native focus behavior
+          window.sinon.stub(focusElement, 'focus', e => {
+            focusElement.dispatchEvent(new CustomEvent('focus', {bubbles: true}));
+          });
+
+          Polymer.RenderStatus.afterNextRender(customElement, () => {
+            customElement._focus();
+            expect(customElement.focused).to.be.true;
+            done();
+          });
+        });
+
+        it('should blur the internal input on blur', function(done) {
+          window.sinon.stub(focusElement, 'focus', e => {
+            focusElement.dispatchEvent(new CustomEvent('focus', {bubbles: true}));
+          });
+          window.sinon.stub(customElement.$.input, 'blur', e => {
+            focusElement.dispatchEvent(new CustomEvent('blur', {bubbles: true}));
+          });
+
+          Polymer.RenderStatus.afterNextRender(customElement, () => {
+            customElement._focus();
+            customElement._blur();
+            expect(customElement.focused).to.be.false;
+            done();
+          });
+        });
+      });
+
+    });
+  </script>
+</body>
