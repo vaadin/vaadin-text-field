@@ -22,4 +22,4 @@ before_script:
 
 script:
   - ([ "$TRAVIS_EVENT_TYPE" = "pull_request" ] || gemini test test/visual)
-  - xvfb-run -s '-screen 0 1024x768x24' wct
+  - xvfb-run -s '-screen 0 1024x768x24' wct -l chrome

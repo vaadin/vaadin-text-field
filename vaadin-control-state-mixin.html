@@ -50,7 +50,6 @@
       }
 
       this.addEventListener('focus', this._focus.bind(this));
-      this.addEventListener('blur', this._blur.bind(this));
 
       Polymer.RenderStatus.afterNextRender(this, () => {
         this._getFocusElement().addEventListener('focus', this._onElemFocus.bind(this));
@@ -77,7 +76,7 @@
       this.invalid = this._isInvalid();
     }
 
-    _blur() {
+    blur() {
       this._getFocusElement().blur();
     }
 
@@ -89,26 +88,35 @@
     }
 
     _disabledChanged(disabled) {
+      this._getFocusElement().disabled = disabled;
       if (disabled) {
-        this._oldTabindex = this.tabindex;
-        this.removeAttribute('tabindex');
-      } else if (this._oldTabindex !== undefined) {
-        this.tabIndex = this._oldTabindex;
-        this._oldTabindex = undefined;
+        this.blur();
+        this._setTabindex(undefined);
+      } else {
+        this.tabIndex = this._getFocusElement().tabIndex;
       }
     }
 
     _tabindexChanged(tabindex) {
-      if (this.disabled && tabindex > 0) {
-        this._oldTabindex = tabindex;
-      }
-      if (window.ShadyDOM && !this._tabindexChanging) {
-        // In shady remove host attribute and set to internal input
-        this._tabindexChanging = true;
-        this.removeAttribute('tabindex');
+      if (!this._tabindexLocked) {
         this._getFocusElement().tabIndex = tabindex;
-        this._tabindexChanging = undefined;
+        if (this.disabled) {
+          this._setTabindex(undefined);
+        }
+        if (window.ShadyDOM) {
+          this._setTabindex(-1);
+        }
       }
+    }
+
+    _setTabindex(tabindex) {
+      this._tabindexLocked = true;
+      if (tabindex === undefined) {
+        this.removeAttribute('tabindex');
+      } else {
+        this.setAttribute('tabindex', tabindex);
+      }
+      delete this._tabindexLocked;
     }
 
     _focusedChanged() {
