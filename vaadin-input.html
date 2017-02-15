@@ -66,11 +66,14 @@ Custom property | Description | Default
       required$="[[required]]"
       value="{{value::input}}"
       title="[[title]]"
+      on-blur="validate"
     />
   </template>
 
   <script>
-    class VaadinInput extends window.VaadinControlStateMixin(window.VaadinFormElementMixin(Polymer.Element)) {
+    window.Vaadin = window.Vaadin || {};
+
+    Vaadin.InputElement = class extends Vaadin.ControlStateMixin(Vaadin.FormElementMixin(Polymer.Element)) {
       static get is() {
         return 'vaadin-input';
       }
@@ -199,19 +202,15 @@ Custom property | Description | Default
         };
       }
 
-      _getFocusElement() {
+      getFocusElement() {
         return this.$.input;
       }
 
       _valueChanged(value) {
         if (this.invalid) {
-          this.invalid = this._isInvalid();
+          this.validate();
         }
         this._setHasValue(value != null && value !== '');
-      }
-
-      _isInvalid() {
-        return !this.validate();
       }
 
       /**
@@ -221,10 +220,11 @@ Custom property | Description | Default
        * @return {boolean} True if the value is valid.
        */
       validate() {
-        return this.$.input.checkValidity();
+        this.invalid = this.$.input.checkValidity();
+        return this.invalid;
       }
-    }
+    };
 
-    customElements.define(VaadinInput.is, VaadinInput);
+    customElements.define(Vaadin.InputElement.is, Vaadin.InputElement);
   </script>
 </dom-module>
