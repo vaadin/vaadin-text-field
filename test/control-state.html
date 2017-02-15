@@ -19,6 +19,7 @@
 
   <script>
 
+    // All timeouts in these tests are needed because of FF
     function runAsync(test, done, timeout) {
       setTimeout(() => {
         test();
@@ -31,30 +32,61 @@
 
       beforeEach(function(done) {
         customElement = fixture('default');
-
         // Need the shadow dom be rendered before getting the internal element reference
-        runAsync(() => focusElement = customElement._getFocusElement(), done);
+        runAsync(() => focusElement = customElement.focusElement, done);
       });
 
       describe('tabindex', function() {
-        if (!window.ShadyDOM) {
-          it('in shadow dom setting tabIndex should update the attribute', function() {
-            customElement.tabIndex = 1;
-            expect(customElement.getAttribute('tabindex')).to.be.equal('1');
-          });
+        if (window.ShadyDOM) {
+          describe('in shady dom', function() {
 
-          it('in shadow dom enabling the element should restore old tabindex', function() {
-            customElement.tabIndex = 1;
-            customElement.disabled = true;
-            customElement.disabled = false;
-            expect(customElement.getAttribute('tabindex')).to.be.equal('1');
+            it('we need tabindex set to -1 by default', function() {
+              expect(customElement.getAttribute('tabindex')).to.be.equal('-1');
+            });
+
+            it('setting tabIndex keep tabindex in -1', function(done) {
+              customElement.tabIndex = 1;
+              runAsync(() => expect(customElement.getAttribute('tabindex')).to.be.equal('-1'), done);
+            });
+
+            it('setting tabIndex should forward the value to the internal element', function(done) {
+              customElement.tabIndex = 1;
+              runAsync(() => expect(focusElement.getAttribute('tabindex')).to.be.equal('1'), done);
+            });
+
+            it('enabling the element should set tabindex in -1', function(done) {
+              customElement.disabled = true;
+              customElement.tabIndex = 1;
+              setTimeout(() => {
+                customElement.disabled = false;
+                runAsync(() => expect(customElement.getAttribute('tabindex')).to.be.equal('-1'), done);
+              }, 1);
+            });
+          });
+        } else {
+          describe('in shadow dom', function() {
+            it('we always need a tabindex by default', function() {
+              expect(customElement.getAttribute('tabindex')).to.be.equal('0');
+            });
+
+            it('setting tabIndex should update the attribute', function() {
+              customElement.tabIndex = 1;
+              expect(customElement.getAttribute('tabindex')).to.be.equal('1');
+            });
+
+            it('enabling the element should restore old tabindex', function() {
+              customElement.tabIndex = 1;
+              customElement.disabled = true;
+              customElement.disabled = false;
+              expect(customElement.getAttribute('tabindex')).to.be.equal('1');
+            });
           });
         }
 
-        it('setting disabled to true should remove tabindex', function() {
+        it('setting disabled to true should remove tabindex', function(done) {
           customElement.tabIndex = 1;
           customElement.disabled = true;
-          expect(customElement.getAttribute('tabindex')).to.not.be.ok;
+          runAsync(() => expect(customElement.getAttribute('tabindex')).to.not.be.ok, done);
         });
 
         it('in disabled mode when tabindex is set, internal element should be updated', function(done) {
@@ -62,54 +94,28 @@
           customElement.disabled = true;
           customElement.tabIndex = 4;
           // FF updates to attributes happen asynchronously
-          runAsync(() =>expect(focusElement.getAttribute('tabindex')).to.be.equal('4'), done);
+          runAsync(() => expect(focusElement.getAttribute('tabindex')).to.be.equal('4'), done);
         });
-
-        if (window.ShadyDOM) {
-          it('in shady dom setting tabIndex should always set the attribute to -1', function(done) {
-            customElement.tabIndex = 1;
-            runAsync(() => expect(customElement.getAttribute('tabindex')).to.be.equal('-1'), done);
-          });
-
-          it('in shady dom setting tabIndex should forward it to the internal element', function(done) {
-            customElement.tabIndex = 1;
-            runAsync(() => expect(focusElement.getAttribute('tabindex')).to.be.equal('1'), done);
-          });
-
-          it('in shady dom setting disabled to false should restore tabIndex to -1', function(done) {
-            customElement.disabled = true;
-            customElement.tabIndex = 1;
-            customElement.disabled = false;
-            runAsync(() => expect(customElement.getAttribute('tabindex')).to.be.equal('-1'), done);
-          });
-
-          it('in shady dom tabindex should be set to the internal element', function(done) {
-            customElement.tabIndex = 1;
-            runAsync(() => expect(focusElement.getAttribute('tabindex')).to.be.equal('1'), done);
-          });
-        }
       });
 
       describe('focus', function() {
-        it('should focus the internal input on focus', function() {
+        beforeEach(function() {
           // Avoid FF window focus issues by stubing native focus behavior
-          window.sinon.stub(focusElement, 'focus', e => {
+          sinon.stub(focusElement, 'focus', e => {
             focusElement.dispatchEvent(new CustomEvent('focus', {bubbles: true}));
           });
+          sinon.stub(customElement.$.input, 'blur', e => {
+            focusElement.dispatchEvent(new CustomEvent('blur', {bubbles: true}));
+          });
+        });
 
-          customElement._focus();
+        it('should focus the internal input on focus', function() {
+          customElement.focus();
           expect(customElement.focused).to.be.true;
         });
 
         it('should blur the internal input on blur', function() {
-          window.sinon.stub(focusElement, 'focus', e => {
-            focusElement.dispatchEvent(new CustomEvent('focus', {bubbles: true}));
-          });
-          window.sinon.stub(customElement.$.input, 'blur', e => {
-            focusElement.dispatchEvent(new CustomEvent('blur', {bubbles: true}));
-          });
-
-          customElement._focus();
+          customElement.focus();
           customElement.blur();
           expect(customElement.focused).to.be.false;
         });

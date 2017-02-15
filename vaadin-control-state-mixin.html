@@ -1,8 +1,9 @@
 <script>
+  window.Vaadin = window.Vaadin || {};
 
   // Polymer.IronControlState is not a proper 2.0 class, also, its tabindex
   // implementation fails in the shadow dom, so we have this for vaadin elements.
-  window.VaadinControlStateMixin = subclass => class extends subclass {
+  Vaadin.ControlStateMixin = subclass => class VaadinControlStateMixin extends subclass {
     static get config() {
       return {
         properties: {
@@ -11,10 +12,9 @@
            */
           focused: {
             type: Boolean,
-            value: false,
             notify: true,
             readOnly: true,
-            observer: '_focusedChanged',
+            observer: 'focusedChanged',
             reflectToAttribute: true
           },
 
@@ -49,61 +49,53 @@
         this.focus();
       }
 
+      // In shadow dom, the element should be always focusable
+      if (this.getAttribute('tabindex') == null) {
+        this._setTabindex(window.ShadyDOM ? -1 : 0);
+      }
+
       this.addEventListener('focus', this._focus.bind(this));
 
       Polymer.RenderStatus.afterNextRender(this, () => {
-        this._getFocusElement().addEventListener('focus', this._onElemFocus.bind(this));
-        this._getFocusElement().addEventListener('blur', this._onElemBlur.bind(this));
-        this._getFocusElement().addEventListener('keydown', this._onElemKeydown.bind(this));
+        this.focusElement.addEventListener('focus', () => this._setFocused(true));
+        this.focusElement.addEventListener('blur', () => this._setFocused(false));
+        this.focusElement.addEventListener('keydown', e => {
+          if (e.shiftKey && e.keyCode === 9) {
+            this.focus();
+          }
+        });
       });
     }
 
-    _getFocusElement() {
-      window.console.warn(`Please implement _getFocusElement() in <${this.localName}>`);
+    get focusElement() {
+      window.console.warn(`Please implement the 'focusElement' property in <${this.localName}>`);
       return this;
     }
 
-    _onElemFocus() {
-      this._setFocused(true);
-    }
-
     _focus() {
-      this._getFocusElement().focus();
-    }
-
-    _onElemBlur() {
-      this._setFocused(false);
-      this.invalid = this._isInvalid();
+      this.focusElement.focus();
     }
 
     blur() {
-      this._getFocusElement().blur();
-    }
-
-    _onElemKeydown(e) {
-      // on shift-tab
-      if (e.shiftKey && e.keyCode === 9) {
-        this.focus();
-      }
+      this.focusElement.blur();
     }
 
     _disabledChanged(disabled) {
-      this._getFocusElement().disabled = disabled;
+      this.focusElement.disabled = disabled;
       if (disabled) {
         this.blur();
         this._setTabindex(undefined);
       } else {
-        this.tabIndex = this._getFocusElement().tabIndex;
+        this.tabIndex = this.focusElement.tabIndex;
       }
     }
 
     _tabindexChanged(tabindex) {
       if (!this._tabindexLocked) {
-        this._getFocusElement().tabIndex = tabindex;
+        this.focusElement.tabIndex = tabindex;
         if (this.disabled) {
           this._setTabindex(undefined);
-        }
-        if (window.ShadyDOM) {
+        } else if (window.ShadyDOM) {
           this._setTabindex(-1);
         }
       }
@@ -119,7 +111,7 @@
       delete this._tabindexLocked;
     }
 
-    _focusedChanged() {
+    focusedChanged() {
       // Needed for Edge, until they have support for CSS Custom Properties
       // (already shipping in Edge Preview)
       this.updateStyles();
