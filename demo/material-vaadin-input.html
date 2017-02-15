@@ -7,6 +7,8 @@
         padding: 16px 0 8px;
         color: rgba(0, 0, 0, 0.87);
 
+        margin-top: 10px;
+
         --material-input__input: {
           outline: none;
           margin: 0;
@@ -42,6 +44,20 @@
         --vaadin-input__input-placeholder: {
           color: rgba(0, 0, 0, 0.38);
         }
+
+        --material-input__label: {
+          font-size: 14px;
+          font-family: Roboto, sans-serif;
+          padding: 0 0 4px 0;
+          transform: translateY(20px);
+          font-size: 16px;
+          transition: all 0.25s;
+          color: rgba(0, 0, 0, 0.38);
+        }
+
+        --vaadin-input__label: {
+          @apply --material-input__label;
+        }
       }
 
       vaadin-input[focused] {
@@ -73,6 +89,15 @@
           background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.24) 0, rgba(0, 0, 0, 0) 2px);
           background-size: 4px 1px;
           background-repeat: repeat-x;
+        }
+      }
+
+      vaadin-input[has-value] {
+        --vaadin-input__label: {
+          @apply --material-input__label;
+          transform: translateY(0px);
+          color: #3F51B5;
+          font-size: 14px;
         }
       }
     </style>
