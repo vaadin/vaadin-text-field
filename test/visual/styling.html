@@ -20,7 +20,7 @@
       }
 
       vaadin-input {
-        --test-theme: {
+        --test-theme__input: {
           outline: none;
           color: black;
           margin: 0;
@@ -34,46 +34,56 @@
           border: solid 1px silver;
         };
 
-        --test-theme-focus: {
-          @apply --test-theme;
+        --test-theme__input-focus: {
+          @apply --test-theme__input;
           border: solid 1px deepskyblue;
         };
 
         --vaadin-input__input: {
-          @apply --test-theme;
+          @apply --test-theme__input;
         };
 
         --vaadin-input__input-placeholder: {
+          color: silver;
+        };
+
+        --vaadin-input__label: {
           color: silver;
         };
       }
 
       vaadin-input[focused] {
         --vaadin-input__input: {
-          @apply --test-theme-focus;
+          @apply --test-theme__input-focus;
         };
       }
 
       vaadin-input[invalid] {
         --vaadin-input__input: {
-          @apply --test-theme;
+          @apply --test-theme__input;
           border: solid 1px red;
         };
       }
 
       vaadin-input[disabled] {
         --vaadin-input__input: {
-          @apply --test-theme;
+          @apply --test-theme__input;
           color: silver;
         };
       }
 
       vaadin-input[focused]#hidden-caret {
         --vaadin-input__input: {
-          @apply --test-theme-focus;
+          @apply --test-theme__input-focus;
           font-size: 0;
           padding: 0 100px;
         }
+      }
+
+      vaadin-input[has-value] {
+        --vaadin-input__label: {
+          color: deepskyblue;
+        };
       }
     </style>
   </custom-style>
