@@ -34,37 +34,36 @@
 
           /* Disable default invalid style in Firefox */
           box-shadow: none;
-        }
+        };
 
         --vaadin-input__input: {
           @apply --material-input__input;
           background-size: 0% 2px, 100% 2px;
-        }
+        };
 
         --vaadin-input__input-placeholder: {
           color: rgba(0, 0, 0, 0.38);
-        }
+        };
 
         --material-input__label: {
-          font-size: 14px;
           font-family: Roboto, sans-serif;
-          padding: 0 0 4px 0;
+          padding: 0 0 4px;
           transform: translateY(20px);
           font-size: 16px;
           transition: all 0.25s;
           color: rgba(0, 0, 0, 0.38);
-        }
+        };
 
         --vaadin-input__label: {
           @apply --material-input__label;
-        }
+        };
       }
 
       vaadin-input[focused] {
         --vaadin-input__input: {
           @apply --material-input__input;
           background-size: 100% 2px, 100% 2px;
-        }
+        };
       }
 
       vaadin-input[invalid] {
@@ -74,7 +73,7 @@
           @apply --material-input__input;
           background-image: linear-gradient(#dd2c00, #dd2c00);
           background-size: 100% 2px;
-        }
+        };
       }
 
       vaadin-input[disabled] {
@@ -82,23 +81,23 @@
 
         --vaadin-input__input-placeholder: {
           opacity: 0;
-        }
+        };
 
         --vaadin-input__input: {
           @apply --material-input__input;
           background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.24) 0, rgba(0, 0, 0, 0) 2px);
           background-size: 4px 1px;
           background-repeat: repeat-x;
-        }
+        };
       }
 
       vaadin-input[has-value] {
         --vaadin-input__label: {
           @apply --material-input__label;
-          transform: translateY(0px);
+          transform: translateY(0);
           color: #3F51B5;
           font-size: 14px;
-        }
+        };
       }
     </style>
   </template>
