@@ -245,13 +245,14 @@ Custom property | Description | Default
         return !(this.invalid = !this.$.input.checkValidity());
       }
 
-      // Needed for Edge, until they have support for CSS Custom Properties
-      // (already shipping in Edge Preview)
       attributeChangedCallback(prop, oldVal, newVal) {
         super.attributeChangedCallback(prop, oldVal, newVal);
-        this.updateStyles();
+        // Needed until Edge has CSS Custom Properties (present in Edge Preview)
+        if (!window.ShadyCSS.nativeCss &&
+          /^(focused|invalid|disabled|placeholder|has-value)$/.test(prop)) {
+          this.updateStyles();
+        }
       }
-
     }
 
     customElements.define(VaadinInputElement.is, VaadinInputElement);
