@@ -19,17 +19,6 @@
         width: 550px;
         border: solid 1px grey;
       }
-
-      vaadin-input[focused]#hidden-caret {
-        --vaadin-input__input: {
-          @apply --material-input__input;
-          background-size: 100% 2px, 100% 2px;
-
-          font-size: 0;
-          padding: 0 100px;
-          width: 350px;
-        }
-      }
     </style>
   </custom-style>
 
@@ -37,7 +26,7 @@
     <fieldset id="theming-md-tests">
       <vaadin-input label="default input"></vaadin-input>
       <vaadin-input label="input with value" value="Go Vaadin"></vaadin-input>
-      <vaadin-input label="focused input" autofocus id="hidden-caret"></vaadin-input>
+      <vaadin-input label="focused input" focused></vaadin-input>
       <vaadin-input label="disabled input" value="disabled" disabled></vaadin-input>
       <vaadin-input placeholder="input with placeholder"></vaadin-input>
       <vaadin-input label="invalid input" required invalid></vaadin-input>
