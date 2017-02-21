@@ -62,6 +62,10 @@ Custom property | Description | Default
       input::-ms-clear {
         display: none;
       }
+
+      :host(:not([required]):not([has-value]):not([readonly]):not([disabled])) label::after {
+        content: " (optional)";
+      }
     </style>
 
     <label id="label" on-click="focus">[[label]]</label>
@@ -224,6 +228,12 @@ Custom property | Description | Default
               notify: true
             },
 
+            valid: {
+              type: Boolean,
+              reflectToAttribute: true,
+              notify: true
+            },
+
             /**
              * A read-only property indicating whether this input has a non empty value.
              * It can be used for example in styling of the component.
@@ -244,6 +254,18 @@ Custom property | Description | Default
               notify: true,
               readOnly: true,
               reflectToAttribute: true
+            },
+
+            indicateInvalidOn: {
+              type: String,
+              value: "blur",
+              observer: "_indicateInvalidOnChanged"
+            },
+
+            indicateValidOn: {
+              type: String,
+              value: "",
+              observer: "_indicateValidOnChanged"
             }
           }
         };
@@ -268,7 +290,6 @@ Custom property | Description | Default
 
       _onInputBlur() {
         this._setFocused(false);
-        this.invalid = this._isInvalid();
       }
 
       blur() {
@@ -276,14 +297,8 @@ Custom property | Description | Default
       }
 
       _valueChanged(value) {
-        if (this.invalid) {
-          this.invalid = this._isInvalid();
-        }
+        // this.invalid = this._isInvalid();
         this._setHasValue(value != null && value !== '');
-      }
-
-      _isInvalid() {
-        return !this.validate();
       }
 
       /**
@@ -293,6 +308,14 @@ Custom property | Description | Default
        * @return {boolean} True if the value is valid.
        */
       validate() {
+        if (this.indicateInvalidOn !== "") {
+          this._indicateInvalid.bind(this.$.input)();
+        }
+
+        if (this.indicateValidOn !== "") {
+          this._indicateValid.bind(this.$.input)();
+        }
+
         return this.$.input.checkValidity();
       }
 
@@ -303,8 +326,50 @@ Custom property | Description | Default
         this.updateStyles();
       }
 
+      _indicateInvalidOnChanged(value, oldValue) {
+        if (oldValue) {
+          this.$.input.removeEventListener("blur", this._indicateInvalid);
+          this.$.input.removeEventListener("input", this._indicateInvalid);
+        }
+
+        if (value) {
+          switch(value) {
+            case "input":
+              this.$.input.addEventListener("input", this._indicateInvalid);
+            case "blur":
+              this.$.input.addEventListener("blur", this._indicateInvalid);
+          }
+        }
+      }
+
+      _indicateValidOnChanged(value, oldValue) {
+        if (oldValue) {
+          this.$.input.removeEventListener("blur", this._indicateValid);
+          this.$.input.removeEventListener("input", this._indicateValid);
+        }
+
+        if (value) {
+          switch(value) {
+            case "input":
+              this.$.input.addEventListener("input", this._indicateValid);
+            case "blur":
+              this.$.input.addEventListener("blur", this._indicateValid);
+          }
+        }
+      }
+
+      _indicateInvalid() {
+        this.getRootNode().host.invalid = !this.checkValidity();
+      }
+
+      _indicateValid() {
+        // Don’t show success feedback for empty fields
+        this.getRootNode().host.valid = this.value !== "" && this.checkValidity();
+      }
+
     }
 
     customElements.define(VaadinInput.is, VaadinInput);
+
   </script>
 </dom-module>
