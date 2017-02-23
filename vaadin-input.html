@@ -64,8 +64,12 @@ Custom property | Description | Default
         display: none;
       }
 
-      :host(:not([required]):not([has-value]):not([readonly]):not([disabled])) label::after {
-        content: " (optional)";
+      label {
+        @apply --vaadin-input__label;
+      }
+
+      label:empty {
+        display: none;
       }
     </style>
 
@@ -119,14 +123,8 @@ Custom property | Description | Default
              * String used for the label element.
              */
             label: {
-              type: String
-            },
-
-            /**
-             * String used for the label element. If empty the element is removed from the dom.
-             */
-            label: {
-              type: String
+              type: String,
+              value: ''
             },
 
             /**
@@ -293,7 +291,7 @@ Custom property | Description | Default
       attributeChangedCallback(prop, oldVal, newVal) {
         super.attributeChangedCallback(prop, oldVal, newVal);
         // Needed until Edge has CSS Custom Properties (present in Edge Preview)
-        if (!window.ShadyCSS.nativeCss &&
+        if (!(window.ShadyCSS && window.ShadyCSS.nativeCss) &&
           /^(focused|invalid|disabled|placeholder|has-value)$/.test(prop)) {
           this.updateStyles();
         }

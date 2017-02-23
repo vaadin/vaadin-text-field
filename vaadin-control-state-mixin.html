@@ -10,11 +10,17 @@
           /**
            * If true, the element currently has focus.
            */
+          'autofocus': {
+            type: Boolean
+          },
+
+          /**
+           * If true, the element currently has focus.
+           */
           'focused': {
             type: Boolean,
             notify: true,
             readOnly: true,
-            observer: 'focusedChanged',
             reflectToAttribute: true
           },
 
@@ -63,9 +69,8 @@
         }
       });
 
-      // Make FF take the focus (#9)
       if (this.autofocus && !this.focused) {
-        this.focus();
+        window.requestAnimationFrame(() => this.focus());
       }
     }
 
@@ -114,19 +119,13 @@
         this.focusElement.tabIndex = tabindex;
       }
 
-      if (this.disabled) {
+      if (this.disabled && this.tabindex) {
         this.tabindex = tabindex = undefined;
       }
 
       if (window.ShadyDOM) {
         this.setProperties({tabIndex: tabindex, tabindex: tabindex});
       }
-    }
-
-    focusedChanged() {
-      // Needed for Edge, until they have support for CSS Custom Properties
-      // (already shipping in Edge Preview)
-      this.updateStyles();
     }
   };
 </script>
