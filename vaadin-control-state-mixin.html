@@ -58,7 +58,7 @@
       super.ready();
 
       this.addEventListener('focus', e => this._focus(e));
-      this.addEventListener('blur', () => this._setFocused(false));
+      this.focusElement.addEventListener('blur', () => this._setFocused(false));
       this.addEventListener('click', e => this._focus(e));
 
       this.addEventListener('keydown', e => {
