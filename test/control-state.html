@@ -13,7 +13,7 @@
   <script>
     var elementName = /[?&]wc-name=([\w-]+)/.exec(location.search)[1];
 
-    var importUrl = `../${elementName}.html`;
+    var importUrl = `../../${elementName}/${elementName}.html`;
 
     var importElement = `<link rel="import" href="${importUrl}">`;
     var defaultFixture = `<test-fixture id="default"><template><${elementName}></${elementName}></template></test-fixture>`;
