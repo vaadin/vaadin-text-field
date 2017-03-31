@@ -1,7 +1,7 @@
 <dom-module id="material-vaadin-text-field">
   <template>
     <style>
-      vaadin-text-field {
+      .vaadin-text-field {
         position: relative;
         width: 160px;
         padding: 16px 0 8px;
@@ -71,7 +71,7 @@
         };
       }
 
-      vaadin-text-field[focused] {
+      .vaadin-text-field[focused] {
         --vaadin-text-field__input: {
           @apply --material-text-field__input;
           background-size: 100% 2px, 100% 2px;
@@ -83,7 +83,7 @@
         };
       }
 
-      vaadin-text-field[invalid] {
+      .vaadin-text-field[invalid] {
         --vaadin-text-field__input: {
           @apply --material-text-field__input;
           background-image: linear-gradient(#dd2c00, #dd2c00);
@@ -96,7 +96,7 @@
         };
       }
 
-      vaadin-text-field[disabled] {
+      .vaadin-text-field[disabled] {
         color: rgba(0, 0, 0, 0.38);
 
         --vaadin-text-field__input-placeholder: {
@@ -111,7 +111,7 @@
         };
       }
 
-      vaadin-text-field:not([has-value]):not([placeholder]) {
+      .vaadin-text-field:not([has-value]):not([placeholder]) {
         --vaadin-text-field__label: {
           @apply --material-text-field__label;
           transform: scale(1) translateY(calc(16px + 50%));

@@ -247,14 +247,20 @@ Custom property | Description | Default
 
       _valueChanged(value) {
         if (this.invalid) {
-          this.validate();
+          this.invalid = !this.validate(value);
         }
         this._setHasValue(value != null && value !== '');
+      }
+
+      _onBlur() {
+        this.invalid = !this.validate(this.value);
       }
 
       /**
        * Returns true if `value` is valid.
        * `<iron-form>` uses this to check the validity or all its elements.
+       * In the case you use an asynchronous validator, you might set the
+       * `invalid` property appropriately.
        *
        * @return {boolean} True if the value is valid.
        */
@@ -271,6 +277,7 @@ Custom property | Description | Default
 
       ready() {
         super.ready();
+        this.classList.add('vaadin-text-field');
         if (!(window.ShadyCSS && window.ShadyCSS.nativeCss)) {
           this.updateStyles();
         }
