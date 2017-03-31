@@ -246,14 +246,12 @@ Custom property | Description | Default
       }
 
       _valueChanged(value) {
-        if (this.invalid) {
-          this.invalid = !this.validate(value);
-        }
+        this.validate();
         this._setHasValue(value != null && value !== '');
       }
 
       _onBlur() {
-        this.invalid = !this.validate(this.value);
+        this.validate();
       }
 
       /**

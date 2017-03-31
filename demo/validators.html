@@ -18,7 +18,10 @@
 
     <demo-navigation></demo-navigation>
 
-    <h3>Custom Validator by Extending VaadinTextFieldElement </h3>
+    <h3>Synchronous Custom Validator</h3>
+
+    <p>Extend <code>VaadinTextFieldElement</code> to create your own custom element,
+      then override the <code>validate()</code> method to validate user's input</p>
 
     <demo-snippet>
       <template>
@@ -39,8 +42,8 @@
                 return 'employee-role';
               }
 
-              validate(value) {
-                return ['Architect', 'Developer', 'Designer'].indexOf(value) > -1;
+              checkValidity() {
+                return ['Architect', 'Developer', 'Designer'].indexOf(this.value) > -1;
               }
             }
 
@@ -51,26 +54,11 @@
       </template>
     </demo-snippet>
 
-    <h3>Custom Validator by Using Events</h3>
+    <h3>Asynchronous Custom Validator</h3>
 
-    <demo-snippet>
-      <template>
-
-        <vaadin-text-field id="demo1" label="Position"></vaadin-text-field>
-
-        <script>
-          var textField = document.getElementById('demo1');
-          textField.addEventListener('vaadin-text-field-validate', function(e) {
-            if (['Architect', 'Developer', 'Designer'].indexOf(e.detail.value) < 0) {
-              e.preventDefault();
-            }
-          });
-        </script>
-
-      </template>
-    </demo-snippet>
-
-    <h3>Asynchronous Custom Validator by Extending VaadinTextFieldElement </h3>
+    <p>Extend <code>VaadinTextFieldElement</code> to create your own custom element,
+      then override the <code>validate()</code> to make your asynchornous validation,
+      and finally set the <code>invalid</code> flag appropriately.</p>
 
     <demo-snippet>
       <template>
@@ -95,7 +83,7 @@
                 }.bind(this));
               }
 
-              validate(value) {
+              checkValidity() {
                 this.ajax.generateRequest();
               }
             }
@@ -106,31 +94,6 @@
 
       </template>
     </demo-snippet>
-
-    <h3>Asynchronous Custom Validator by Using Events</h3>
-
-    <demo-snippet>
-      <template>
-
-        <iron-ajax id="ajax2" handle-as="json" url="chemical-elements.json"></iron-ajax>
-        <vaadin-text-field id="demo2" label="Element Name"></vaadin-text-field>
-
-        <script>
-          var textField = document.getElementById('demo2');
-          var ajax = document.getElementById('ajax2');
-
-          textField.addEventListener('vaadin-text-field-validate', function(e) {
-            ajax.generateRequest();
-          });
-
-          ajax.addEventListener('response', function() {
-            textField.invalid = ajax.lastResponse.elements.indexOf(textField.value) < 0;
-          });
-        </script>
-
-      </template>
-    </demo-snippet>
-
   </div>
 </body>
 </html>
