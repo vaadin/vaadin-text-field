@@ -21,6 +21,28 @@
     </template>
   </test-fixture>
 
+  <test-fixture id="extension">
+    <template>
+      <employee-role label="Position"></employee-role>
+
+      <script>
+        window.addEventListener('WebComponentsReady', function() {
+          class EmployeeRole extends VaadinTextFieldElement {
+            static get is() {
+              return 'employee-role';
+            }
+
+            validate(value) {
+              return ['Architect', 'Developer', 'Designer'].indexOf(value) > -1;
+            }
+          }
+
+          customElements.define('employee-role', EmployeeRole);
+        });
+      </script>
+    </template>
+  </test-fixture>
+
   <script>
 
     describe('validate', function() {
