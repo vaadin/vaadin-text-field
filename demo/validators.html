@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>vaadin-text-field Custom Validators</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="common.html">
+  <link rel="import" href="material-vaadin-text-field.html">
+  <link rel="import" href="../../iron-ajax/iron-ajax.html">
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+
+    <demo-navigation></demo-navigation>
+
+    <h3>Custom Validator by Extending VaadinTextFieldElement </h3>
+
+    <demo-snippet>
+      <template>
+        <custom-style>
+          <style include="material-vaadin-text-field" />
+            .vaadin-text-field {
+              width: 100% !important;
+            }
+          </style>
+        </custom-style>
+
+        <employee-role label="Position"></employee-role>
+
+        <script>
+          window.addEventListener('WebComponentsReady', function() {
+            class EmployeeRole extends VaadinTextFieldElement {
+              static get is() {
+                return 'employee-role';
+              }
+
+              validate(value) {
+                return ['Architect', 'Developer', 'Designer'].indexOf(value) > -1;
+              }
+            }
+
+            customElements.define('employee-role', EmployeeRole);
+          });
+        </script>
+
+      </template>
+    </demo-snippet>
+
+    <h3>Custom Validator by Using Events</h3>
+
+    <demo-snippet>
+      <template>
+
+        <vaadin-text-field id="demo1" label="Position"></vaadin-text-field>
+
+        <script>
+          var textField = document.getElementById('demo1');
+          textField.addEventListener('vaadin-text-field-validate', function(e) {
+            if (['Architect', 'Developer', 'Designer'].indexOf(e.detail.value) < 0) {
+              e.preventDefault();
+            }
+          });
+        </script>
+
+      </template>
+    </demo-snippet>
+
+    <h3>Asynchronous Custom Validator by Extending VaadinTextFieldElement </h3>
+
+    <demo-snippet>
+      <template>
+
+        <iron-ajax id="ajax1" handle-as="json" url="chemical-elements.json"></iron-ajax>
+        <valid-word label="Element Name"></valid-word>
+
+        <script>
+          window.addEventListener('WebComponentsReady', function() {
+            class ValidWord extends VaadinTextFieldElement {
+              static get is() {
+                return 'valid-word';
+              }
+
+              ready() {
+                super.ready();
+
+                this.ajax = document.getElementById('ajax1');
+
+                this.ajax.addEventListener('response', function() {
+                  this.invalid = this.ajax.lastResponse.elements.indexOf(this.value) < 0;
+                }.bind(this));
+              }
+
+              validate(value) {
+                this.ajax.generateRequest();
+              }
+            }
+
+            customElements.define('valid-word', ValidWord);
+          });
+        </script>
+
+      </template>
+    </demo-snippet>
+
+    <h3>Asynchronous Custom Validator by Using Events</h3>
+
+    <demo-snippet>
+      <template>
+
+        <iron-ajax id="ajax2" handle-as="json" url="chemical-elements.json"></iron-ajax>
+        <vaadin-text-field id="demo2" label="Element Name"></vaadin-text-field>
+
+        <script>
+          var textField = document.getElementById('demo2');
+          var ajax = document.getElementById('ajax2');
+
+          textField.addEventListener('vaadin-text-field-validate', function(e) {
+            ajax.generateRequest();
+          });
+
+          ajax.addEventListener('response', function() {
+            textField.invalid = ajax.lastResponse.elements.indexOf(textField.value) < 0;
+          });
+        </script>
+
+      </template>
+    </demo-snippet>
+
+  </div>
+</body>
+</html>
