@@ -321,7 +321,7 @@ Custom property | Description | Default
         super.attributeChangedCallback(prop, oldVal, newVal);
         // Needed until Edge has CSS Custom Properties (present in Edge Preview)
         if (!(window.ShadyCSS && window.ShadyCSS.nativeCss) &&
-          /^(focused|invalid|disabled|placeholder|has-value)$/.test(prop)) {
+          /^(focus-ring|invalid|disabled|placeholder|has-value)$/.test(prop)) {
           this.updateStyles();
         }
       }

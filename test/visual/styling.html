@@ -34,7 +34,7 @@
           border: solid 1px silver;
         };
 
-        --test-theme__input-focus: {
+        --test-theme__input-focus-ring: {
           @apply --test-theme__input;
           border: solid 1px deepskyblue;
         };
@@ -52,9 +52,9 @@
         };
       }
 
-      vaadin-text-field[focused] {
+      vaadin-text-field[focus-ring] {
         --vaadin-text-field__input: {
-          @apply --test-theme__input-focus;
+          @apply --test-theme__input-focus-ring;
         };
       }
 
@@ -87,7 +87,7 @@
       <p>
       value: <vaadin-text-field value="Go Vaadin"></vaadin-text-field>
       <p>
-      focused: <vaadin-text-field focused></vaadin-text-field>
+      focus-ring: <vaadin-text-field focus-ring></vaadin-text-field>
       <p>
       disabled: <vaadin-text-field value="disabled" disabled></vaadin-text-field>
       <p>

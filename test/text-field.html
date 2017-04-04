@@ -121,13 +121,13 @@
         describe('label', function() {
           it('should focus the internal input on click', function() {
             textField.$.label.click();
-            expect(textField.focused).to.be.true;
+            expect(textField.focusRing).to.be.true;
           });
 
-          it('should not update focused property on click if disabled', function() {
+          it('should not update focusRing property on click if disabled', function() {
             textField.disabled = true;
             textField.$.label.click();
-            expect(textField.focused).to.be.false;
+            expect(textField.focusRing).to.be.false;
           });
         });
       }

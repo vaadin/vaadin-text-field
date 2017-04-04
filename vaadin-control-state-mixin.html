@@ -5,18 +5,20 @@
   // implementation fails in the shadow dom, so we have this for vaadin elements.
   Vaadin.ControlStateMixin = subclass => class VaadinControlStateMixin extends subclass {
     static get properties() {
-      var cfg = {
+      var properties = {
         /**
-         * If true, the element currently has focus.
+         * If true, the element will get focusRing once DOM is loaded.
          */
         'autofocus': {
           type: Boolean
         },
 
         /**
-         * If true, the element currently has focus.
+         * True when the element is being focused from the keyboard
+         * Focus Ring [A11ycasts]: https://youtu.be/ilj2P5-5CjI
+         * https://drafts.csswg.org/selectors-4/#the-focusring-pseudo
          */
-        'focused': {
+        'focusRing': {
           type: Boolean,
           notify: true,
           readOnly: true,
@@ -48,20 +50,20 @@
 
       if (window.ShadyDOM) {
         // ShadyDOM browsers need the `tabIndex` in order to notify when the user changes it programatically.
-        cfg['tabIndex'] = cfg.tabindex;
+        properties['tabIndex'] = properties.tabindex;
       }
 
-      return cfg;
+      return properties;
     }
 
     ready() {
       super.ready();
 
-      this.focusElement.addEventListener('focus', () => this._setFocused(true));
+      this.focusElement.addEventListener('focus', () => this._setFocusRing(true));
       this.addEventListener('focus', e => this._focus(e));
 
-      this.focusElement.addEventListener('blur', () => this._setFocused(false));
-      this.addEventListener('blur', () => this._setFocused(false));
+      this.focusElement.addEventListener('blur', () => this._setFocusRing(false));
+      this.addEventListener('blur', () => this._setFocusRing(false));
 
       this.addEventListener('click', e => this._focus(e));
 
@@ -72,7 +74,7 @@
         }
       });
 
-      if (this.autofocus && !this.focused) {
+      if (this.autofocus && !this.focusRing) {
         window.requestAnimationFrame(() => this.focus());
       }
     }
@@ -87,7 +89,7 @@
     }
 
     _focus(e) {
-      this._setFocused(!this.disabled);
+      this._setFocusRing(!this.disabled);
 
       if (this._skipFocus) {
         this._skipFocus = false;
@@ -105,7 +107,7 @@
     _disabledChanged(disabled) {
       this.focusElement.disabled = disabled;
       if (disabled) {
-        this._setFocused(false);
+        this._setFocusRing(false);
         this.blur();
         this.tabindex = undefined;
       } else {
