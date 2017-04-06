@@ -68,21 +68,24 @@
       });
 
       if (!window.ShadyDOM) {
-        describe('focus', function() {
+        describe('focus and focus-ring', function() {
           it('should focus the internal input on focus', function() {
             focusElement.focus();
             expect(customElement.focused).to.be.true;
+            expect(customElement.focusRing).to.be.true;
           });
 
           it('should blur the internal input on blur', function() {
             customElement.focus();
             focusElement.blur();
             expect(customElement.focused).to.be.false;
+            expect(customElement.focusRing).to.be.false;
           });
 
           it('should focus the internal input on host click', function() {
             customElement.click();
             expect(customElement.focused).to.be.true;
+            expect(customElement.focusRing).to.be.true;
           });
         });
       }
