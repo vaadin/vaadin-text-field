@@ -1,0 +1,15 @@
+<script>
+  window.addEventListener('WebComponentsReady', function() {
+    window.webComponentsAreReady = true;
+  });
+
+  HTMLImports.whenReady(function() {
+    var hiddenCaretInputs = document.querySelectorAll('.hidden-caret');
+    for (var i = 0; i < hiddenCaretInputs.length; i++) {
+      const style = hiddenCaretInputs[i].$.input.style;
+      style.fontSize = '0';
+      style.padding = '0 100px';
+      style.height = '24px';
+    }
+  });
+</script>
