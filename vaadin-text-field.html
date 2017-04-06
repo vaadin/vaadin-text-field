@@ -93,6 +93,14 @@ Custom property | Description | Default
       #labelPlaceholder[no-label] {
         display: none;
       }
+
+      .error {
+        visibility: hidden;
+      }
+
+      :host([invalid]) .error {
+        visibility: visible;
+      }
     </style>
 
     <div id="container">
@@ -122,10 +130,15 @@ Custom property | Description | Default
             title="[[title]]"
             on-blur="validate"
             on-input="_onInput"
+            aria-describedby="error"
           >
         </div>
 
         <slot id="suffix" name="suffix"></slot>
+
+        <template is="dom-if" if="[[errorMessage]]">
+          <div id="error" aria-live="assertive" class="error">[[errorMessage]]</div>
+        </template>
 
       </div>
     </div>
@@ -154,6 +167,13 @@ Custom property | Description | Default
            */
           autofocus: {
             type: Boolean
+          },
+
+          /**
+           * Error to show when the input value is invalid.
+           */
+          errorMessage: {
+            type: String
           },
 
           /**
@@ -316,6 +336,16 @@ Custom property | Description | Default
         if (!(window.ShadyCSS && window.ShadyCSS.nativeCss)) {
           this.updateStyles();
         }
+
+        setTimeout(() => {
+          this._error = Polymer.dom(this.root).querySelector('#error');
+
+          // In shady we need unique ids in the document
+          if (window.ShadyDOM) {
+            this._error.id += (VaadinTextFieldElement.uniqueId = 1 + VaadinTextFieldElement.uniqueId || 0);
+            this.$.input.setAttribute('aria-describedby', this._error.id);
+          }
+        });
       }
 
       attributeChangedCallback(prop, oldVal, newVal) {
