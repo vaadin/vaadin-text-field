@@ -5,9 +5,9 @@
   // implementation fails in the shadow dom, so we have this for vaadin elements.
   Vaadin.ControlStateMixin = subclass => class VaadinControlStateMixin extends subclass {
     static get properties() {
-      var cfg = {
+      var properties = {
         /**
-         * If true, the element currently has focus.
+         * If true, the element will get focus once DOM is loaded.
          */
         'autofocus': {
           type: Boolean
@@ -20,6 +20,7 @@
           type: Boolean,
           notify: true,
           readOnly: true,
+          observer: '_focusedChanged',
           reflectToAttribute: true
         },
 
@@ -48,10 +49,10 @@
 
       if (window.ShadyDOM) {
         // ShadyDOM browsers need the `tabIndex` in order to notify when the user changes it programatically.
-        cfg['tabIndex'] = cfg.tabindex;
+        properties['tabIndex'] = properties.tabindex;
       }
 
-      return cfg;
+      return properties;
     }
 
     ready() {
@@ -75,6 +76,38 @@
       if (this.autofocus && !this.focused) {
         window.requestAnimationFrame(() => this.focus());
       }
+    }
+
+    connectedCallback() {
+      super.connectedCallback();
+
+      document.body.addEventListener('keydown', this._bodyKeydownListener.bind(this), true);
+      document.body.addEventListener('keyup', this._bodyKeyupListener.bind(this), true);
+    }
+
+    disconnectedCallback() {
+      super.disconnectedCallback();
+
+      document.body.removeEventListener('keydown', this._bodyKeydownListener.bind(this), true);
+      document.body.removeEventListener('keyup', this._bodyKeyupListener.bind(this), true);
+    }
+
+    _focusedChanged(focused) {
+      // focus-ring is true when the element was focused from the keyboard.
+      // Focus Ring [A11ycasts]: https://youtu.be/ilj2P5-5CjI
+      if (this.focused && this._tabPressed) {
+        this.setAttribute('focus-ring', true);
+      } else {
+        this.removeAttribute('focus-ring');
+      }
+    }
+
+    _bodyKeydownListener(e) {
+      this._tabPressed = e.keyCode === 9;
+    }
+
+    _bodyKeyupListener() {
+      this._tabPressed = false;
     }
 
     /**
