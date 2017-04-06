@@ -33,6 +33,6 @@
     "lighthouse": "~1.2.2",
     "polyserve": "^0.15.0",
     "stylelint-config-vaadin": "^0.1.0",
-    "web-component-tester": "^5.0.0"
+    "web-component-tester": "^6.0.0-prerelease.7"
   }
 }
