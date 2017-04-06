@@ -5,9 +5,9 @@
   // implementation fails in the shadow dom, so we have this for vaadin elements.
   Vaadin.ControlStateMixin = subclass => class VaadinControlStateMixin extends subclass {
     static get properties() {
-      var cfg = {
+      var properties = {
         /**
-         * If true, the element currently has focus.
+         * If true, the element will get focus once DOM is loaded.
          */
         'autofocus': {
           type: Boolean
@@ -20,6 +20,18 @@
           type: Boolean,
           notify: true,
           readOnly: true,
+          observer: '_focusedChanged',
+          reflectToAttribute: true
+        },
+
+        /**
+         * If true, the element is being focused from the keyboard.
+         * Focus Ring [A11ycasts]: https://youtu.be/ilj2P5-5CjI
+         * https://drafts.csswg.org/selectors-4/#the-focusring-pseudo
+         */
+        'focusRing': {
+          type: Boolean,
+          notify: true,
           reflectToAttribute: true
         },
 
@@ -48,10 +60,10 @@
 
       if (window.ShadyDOM) {
         // ShadyDOM browsers need the `tabIndex` in order to notify when the user changes it programatically.
-        cfg['tabIndex'] = cfg.tabindex;
+        properties['tabIndex'] = properties.tabindex;
       }
 
-      return cfg;
+      return properties;
     }
 
     ready() {
@@ -75,6 +87,18 @@
       if (this.autofocus && !this.focused) {
         window.requestAnimationFrame(() => this.focus());
       }
+
+      document.body.addEventListener('keydown', e => {
+        this._tabPressed = e.keyCode === 9;
+      }, true);
+
+      document.body.addEventListener('keyup', e => {
+        this._tabPressed = false;
+      }, true);
+    }
+
+    _focusedChanged(focused) {
+      this.focusRing = (this.focused && this._tabPressed);
     }
 
     /**
