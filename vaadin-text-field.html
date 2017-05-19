@@ -98,7 +98,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
       <div part="input-field">
 
-        <slot name="prefix"></slot>
+        <slot name="prefix" on-slotchange="_updateInputBounds"></slot>
 
         <input id="input" part="value"
           autocomplete$="[[autocomplete]]"
@@ -322,6 +322,14 @@ This program is available under Apache License Version 2.0, available at https:/
               input.value = this.value || '';
             }
           }
+          this._updateInputBounds();
+        }
+
+        _updateInputBounds() {
+          this.updateStyles({
+            '--vaadin-text-field-input-left': this.$.input.offsetLeft + 'px',
+            '--vaadin-text-field-input-width': this.$.input.offsetWidth + 'px'
+          });
         }
 
         _valueChanged(newVal, oldVal) {
@@ -369,6 +377,8 @@ This program is available under Apache License Version 2.0, available at https:/
           var uniqueId = TextFieldElement._uniqueId = 1 + TextFieldElement._uniqueId || 0;
           this._errorId = 'vaadin-text-field-error-' + uniqueId;
           this._labelId = 'vaadin-text-field-label-' + uniqueId;
+
+          requestAnimationFrame(this._updateInputBounds.bind(this));
         }
 
         attributeChangedCallback(prop, oldVal, newVal) {
