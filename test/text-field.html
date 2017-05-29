@@ -13,7 +13,7 @@
 <body>
   <test-fixture id="default">
     <template>
-      <vaadin-text-field></vaadin-text-field>
+      <vaadin-text-field name="username"></vaadin-text-field>
     </template>
   </test-fixture>
 
@@ -90,6 +90,10 @@
       describe('binding', function() {
         it('default value should be empty string', function() {
           expect(textField.value).to.be.equal('');
+        });
+
+        it('should bind name to the native input', function() {
+          expect(input.getAttribute('name')).to.be.equal('username');
         });
 
         it('setting input value updates value', function() {
