@@ -58,8 +58,13 @@ This program is available under Apache License Version 2.0, available at https:/
     <style>
       :host {
         display: inline-block;
-        width: 175px;
         outline: none;
+      }
+
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        :host {
+          width: 175px;
+        }
       }
 
       .container {
