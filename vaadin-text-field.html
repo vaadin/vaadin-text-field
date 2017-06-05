@@ -101,6 +101,11 @@ This program is available under Apache License Version 2.0, available at https:/
         <slot name="prefix"></slot>
 
         <input id="input" part="value"
+          aria-describedby$="[[_getActiveErrorId(invalid, errorMessage, _errorId)]]"
+          aria-invalid$="[[invalid]]"
+          aria-labelledby$="[[_getActiveLabelId(label, _labelId)]]"
+          aria-readonly$="[[readonly]]"
+          aria-required$="[[required]]"
           autocomplete$="[[autocomplete]]"
           autocorrect$="[[autocorrect]]"
           autofocus$="[[autofocus]]"
@@ -108,19 +113,15 @@ This program is available under Apache License Version 2.0, available at https:/
           list="[[list]]"
           maxlength$="[[maxlength]]"
           minlength$="[[minlength]]"
+          name="[[name]]"
+          on-blur="validate"
+          on-input="_onInput"
           pattern="[[pattern]]"
           placeholder="[[placeholder]]"
           readonly$="[[readonly]]"
-          aria-readonly$="[[readonly]]"
           required$="[[required]]"
-          aria-required$="[[required]]"
-          value="{{value::input}}"
           title="[[title]]"
-          on-blur="validate"
-          on-input="_onInput"
-          aria-describedby$="[[_getActiveErrorId(invalid, errorMessage, _errorId)]]"
-          aria-labelledby$="[[_getActiveLabelId(label, _labelId)]]"
-          aria-invalid$="[[invalid]]"
+          value="{{value::input}}"
         >
 
         <slot name="suffix"></slot>
