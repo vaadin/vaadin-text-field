@@ -37,6 +37,7 @@
     "vaadin-control-state-mixin": "vaadin/vaadin-control-state-mixin#^1.0.1"
   },
   "resolutions": {
-    "iron-ajax": "^2.0.0"
+    "iron-ajax": "^2.0.0",
+    "iron-doc-viewer": "1 - 2"
   }
 }
