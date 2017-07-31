@@ -29,7 +29,7 @@
 <vaadin-password-field label="Password"></vaadin-password-field>
 ```
 
-[<img src="https://raw.githubusercontent.com/vaadin/vaadin-text-field/master/screenshot.png" width="200" alt="Screenshot of vaadin-text-field">](https://vaadin.com/elements/-/element/vaadin-text-field)
+[<img src="https://raw.githubusercontent.com/vaadin/vaadin-text-field/master/screenshot.png" width="413" alt="Screenshot of vaadin-text-field">](https://vaadin.com/elements/-/element/vaadin-text-field)
 
 
 ## Running demos and tests in browser
