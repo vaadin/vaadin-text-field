@@ -1,0 +1,29 @@
+<!--
+@license
+Copyright (c) 2017 Vaadin Ltd.
+This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
+-->
+
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../vaadin-themable-mixin/vaadin-themable-mixin.html">
+<link rel="import" href="vaadin-text-field.html">
+
+<dom-module id="vaadin-number-field">
+
+  <script>
+    class VaadinNumberField extends Polymer.GestureEventListeners(Vaadin.TextFieldElement) {
+      static get is() {
+        return "vaadin-number-field";
+      }
+
+      ready() {
+        super.ready();
+        this.$.input.pattern = "\\d*";
+        this.preventInvalidInput = true;
+      }
+    }
+
+    window.customElements.define(VaadinNumberField.is, VaadinNumberField);
+  </script>
+</dom-module>
