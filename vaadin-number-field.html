@@ -9,21 +9,185 @@ This program is available under Apache License Version 2.0, available at https:/
 <link rel="import" href="../vaadin-themable-mixin/vaadin-themable-mixin.html">
 <link rel="import" href="vaadin-text-field.html">
 
-<dom-module id="vaadin-number-field">
+<dom-module id="vaadin-number-field-default-theme">
+</dom-module>
+
+<dom-module id="vaadin-number-field-template">
+  <template>
+    <style>
+
+      :host{
+        width: 120px;
+      }
+
+      :host([has-controls]) [part="value"] {
+        text-align: center;
+      }
+
+      /* Value control styles */
+      [part="decrease-button"],
+      [part="increase-button"] {
+        display: inline-block;
+        cursor: pointer;
+        padding: 0 8px;
+        opacity: 0.5;
+      }
+
+      [part="decrease-button"][hidden],
+      [part="increase-button"][hidden] {
+        display: none;
+      }
+
+      [part="decrease-button"]::before {
+        content: "–"; /* en dash */
+      }
+
+      [part="increase-button"]::before {
+        content: "+";
+      }
+
+      /* Hide the native arrow icons */
+      [part="value"]::-webkit-outer-spin-button,
+      [part="value"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      [part="value"] {
+        -moz-appearance: textfield;
+      }
+    </style>
+
+    <div 
+      part="decrease-button" 
+      on-tap="_decreaseValue" 
+      hidden$="[[!hasControls]]">
+    </div>
+
+    <div 
+      part="increase-button" 
+      on-tap="_increaseValue" 
+      hidden$="[[!hasControls]]">
+    </div>
+  </template>
 
   <script>
-    class VaadinNumberField extends Polymer.GestureEventListeners(Vaadin.TextFieldElement) {
-      static get is() {
-        return "vaadin-number-field";
+    (function () {
+      /**
+      * `<vaadin-number-field>` is a Polymer 2 element for number field control in forms.
+      *
+      * ```html
+      * <vaadin-number-field label="Number">
+      * </vaadin-number-field>
+      * ```
+      *
+      * @memberof Vaadin
+      * @extends Vaadin.TextFieldElement
+      * @demo demo/index.html
+      */
+
+      let memoizedTemplate;
+
+      class NumberFieldElement extends Polymer.GestureEventListeners(Vaadin.ThemableMixin(Vaadin.TextFieldElement)) {
+        static get is() {
+          return "vaadin-number-field";
+        }
+
+        static get properties() {
+          return {
+            /**
+            * Set to true to display value increase/decrease controls.
+            */
+            hasControls: {
+              type: Boolean,
+              value: false,
+              reflectToAttribue: true
+            },
+
+            /**
+            * The minimum value of the field.
+            */
+            min: {
+              type: Number,
+              reflectToAttribue: true,       
+              observer: "_minChanged"
+            },
+
+            /**
+             * The maximum value of the field.
+             */
+            max: {
+              type: Number,
+              reflectToAttribue: true,
+              observer: "_maxChanged"
+            }
+          }
+        }
+
+        ready() {
+          super.ready();          
+          this.$.input.type = 'number';
+        }
+
+        static get template() {
+          if (!memoizedTemplate) {
+            // Clone the superclass template
+            memoizedTemplate = super.template.cloneNode(true);
+
+            // Retrieve this element's dom-module template
+            const thisTemplate = Polymer.DomModule.import(this.is + '-template', 'template');
+            const decreaseButton = thisTemplate.content.querySelector('[part="decrease-button"]');
+            const increaseButton = thisTemplate.content.querySelector('[part="increase-button"]');
+            const styles = thisTemplate.content.querySelector('style');
+
+            // Add the buttons and styles to the text-field template
+            const inputField = memoizedTemplate.content.querySelector('[part="input-field"]');
+            const prefixSlot = memoizedTemplate.content.querySelector('[name="prefix"]');
+            inputField.insertBefore(decreaseButton, prefixSlot);
+            inputField.appendChild(increaseButton);
+            memoizedTemplate.content.appendChild(styles);
+
+            return memoizedTemplate;
+          }
+        }
+
+        _decreaseValue() {
+          if (this.min) {
+            if (this.value > this.min) {
+              this.value--;
+            }
+          } else {
+            this.value--;
+          }
+        }
+
+        _increaseValue() {
+          if (this.max) {
+            if (this.value < this.max) {
+              this.value++;
+            }
+          } else {
+            this.value++;
+          }
+        }
+
+        _minChanged() {
+          this.$.input.min = this.min;
+        }
+
+        _maxChanged() {
+          this.$.input.max = this.max;
+        }
+        
       }
 
-      ready() {
-        super.ready();
-        this.$.input.pattern = "\\d*";
-        this.preventInvalidInput = true;
-      }
-    }
+      window.customElements.define(NumberFieldElement.is, NumberFieldElement);
 
-    window.customElements.define(VaadinNumberField.is, VaadinNumberField);
+      /**
+       * @namespace Vaadin
+       */
+      window.Vaadin = window.Vaadin || {};
+      Vaadin.NumberFieldElement = NumberFieldElement;
+    })();
   </script>
 </dom-module>
