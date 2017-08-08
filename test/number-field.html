@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>vaadin-number-field tests</title>
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" href="../vaadin-number-field.html">
+  <link rel="import" href="../../iron-form/iron-form.html">
+</head>
+
+<body>
+  <test-fixture id="default">
+    <template>
+      <vaadin-number-field></vaadin-number-field>
+    </template>
+  </test-fixture>
+
+  <script>
+    describe('number-field', function() {
+      var numberField, input, decreaseButton, increaseButton;
+
+      beforeEach(function(){
+        numberField = fixture('default');
+        input = numberField.$.input;
+        decreaseButton = numberField.root.querySelector('[part=decrease-button]');
+        increaseButton = numberField.root.querySelector('[part=increase-button]');
+      });
+
+      describe('native', function() {
+  
+        it('should have [type=number]', function() {
+          expect(input.type).to.equal('number');
+        });
+
+        it('should have hidden controls', function() {
+          expect(decreaseButton.hidden).to.be.true;
+          expect(increaseButton.hidden).to.be.true;
+        });
+
+        ['min', 'max'].forEach(function(attr) {
+          it('should set numeric attribute ' + attr, function() {
+            var value = 5;
+            numberField[attr] = value;
+            var attrval = input.getAttribute(attr);
+
+            expect(attrval).to.be.equal(String(value));
+          });
+        });
+          
+      });
+
+      describe('value control buttons', function() {
+        it('should have value controls when hasControls is set to true', function() {
+          expect(decreaseButton.hidden).to.be.true;
+          expect(increaseButton.hidden).to.be.true;
+
+          numberField.hasControls = true;
+
+          expect(decreaseButton.hidden).to.be.false;
+          expect(increaseButton.hidden).to.be.false;
+        });
+
+        it('should increase value by 1 when increaseButton is clicked', function() {
+          numberField.value = 0;
+          
+          increaseButton.click();
+          
+          expect(numberField.value).to.be.equal(1);
+        });
+
+        it('should decrease value by 1 when increaseButton is clicked', function() {
+          numberField.value = 0;
+          
+          decreaseButton.click();
+          
+          expect(numberField.value).to.be.equal(-1);
+        });
+
+        it('should not increase value when increaseButton is clicked and max value is reached', function() {
+          numberField.value = 10;
+          numberField.max = 10;
+          
+          increaseButton.click();
+          
+          expect(numberField.value).to.be.equal(10);
+        });
+
+        it('should not decrease value when decreaseButton is clicked and min value is reached', function() {
+          numberField.value = 1;
+          numberField.min = 1;
+          
+          decreaseButton.click();
+          
+          expect(numberField.value).to.be.equal(1);
+        });
+      });
+
+    });
+  </script>
+</body>
+</html>

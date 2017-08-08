@@ -45,4 +45,15 @@ gemini.suite('vaadin-text-field', function(rootSuite) {
       .capture('password');
   });
 
+  // NOTE: gemini not working currently due to 3rd party dependency issue:
+  // TypeError: wrapped.apply is not a function
+
+  // TODO: limonte revisit after gemini 5.0 release
+  // gemini.suite('number-field', function(suite) {
+  //   suite
+  //     .setUrl('number-field.html')
+  //     .setCaptureElements('#number-field')
+  //     .capture('number-field');
+  // });
+
 });
