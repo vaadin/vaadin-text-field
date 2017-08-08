@@ -15,8 +15,7 @@ This program is available under Apache License Version 2.0, available at https:/
 <dom-module id="vaadin-number-field-template">
   <template>
     <style>
-
-      :host{
+      :host {
         width: 120px;
       }
 
@@ -72,7 +71,7 @@ This program is available under Apache License Version 2.0, available at https:/
   </template>
 
   <script>
-    (function () {
+    (function() {
       /**
       * `<vaadin-number-field>` is a Polymer 2 element for number field control in forms.
       *
@@ -90,7 +89,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
       class NumberFieldElement extends Polymer.GestureEventListeners(Vaadin.ThemableMixin(Vaadin.TextFieldElement)) {
         static get is() {
-          return "vaadin-number-field";
+          return 'vaadin-number-field';
         }
 
         static get properties() {
@@ -110,7 +109,7 @@ This program is available under Apache License Version 2.0, available at https:/
             min: {
               type: Number,
               reflectToAttribue: true,       
-              observer: "_minChanged"
+              observer: '_minChanged'
             },
 
             /**
@@ -119,9 +118,9 @@ This program is available under Apache License Version 2.0, available at https:/
             max: {
               type: Number,
               reflectToAttribue: true,
-              observer: "_maxChanged"
+              observer: '_maxChanged'
             }
-          }
+          };
         }
 
         ready() {
