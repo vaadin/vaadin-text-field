@@ -5,7 +5,6 @@ This program is available under Apache License Version 2.0, available at https:/
 -->
 
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
 <link rel="import" href="../vaadin-themable-mixin/vaadin-themable-mixin.html">
 <link rel="import" href="vaadin-text-field.html">
 
@@ -59,13 +58,13 @@ This program is available under Apache License Version 2.0, available at https:/
 
     <div 
       part="decrease-button" 
-      on-tap="_decreaseValue" 
+      on-click="_decreaseValue" 
       hidden$="[[!hasControls]]">
     </div>
 
     <div 
       part="increase-button" 
-      on-tap="_increaseValue" 
+      on-click="_increaseValue" 
       hidden$="[[!hasControls]]">
     </div>
   </template>
@@ -87,7 +86,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
       let memoizedTemplate;
 
-      class NumberFieldElement extends Polymer.GestureEventListeners(Vaadin.ThemableMixin(Vaadin.TextFieldElement)) {
+      class NumberFieldElement extends Vaadin.ThemableMixin(Vaadin.TextFieldElement) {
         static get is() {
           return 'vaadin-number-field';
         }
