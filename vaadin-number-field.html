@@ -56,15 +56,15 @@ This program is available under Apache License Version 2.0, available at https:/
       }
     </style>
 
-    <div 
-      part="decrease-button" 
-      on-click="_decreaseValue" 
+    <div
+      part="decrease-button"
+      on-click="_decreaseValue"
       hidden$="[[!hasControls]]">
     </div>
 
-    <div 
-      part="increase-button" 
-      on-click="_increaseValue" 
+    <div
+      part="increase-button"
+      on-click="_increaseValue"
       hidden$="[[!hasControls]]">
     </div>
   </template>
@@ -107,7 +107,7 @@ This program is available under Apache License Version 2.0, available at https:/
             */
             min: {
               type: Number,
-              reflectToAttribue: true,       
+              reflectToAttribue: true,
               observer: '_minChanged'
             },
 
@@ -123,7 +123,7 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         ready() {
-          super.ready();          
+          super.ready();
           this.$.input.type = 'number';
         }
 
@@ -150,6 +150,10 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _decreaseValue() {
+          if (this.disabled) {
+            return;
+          }
+
           if (this.min) {
             if (this.value > this.min) {
               this.value--;
@@ -160,6 +164,10 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _increaseValue() {
+          if (this.disabled) {
+            return;
+          }
+
           if (this.max) {
             if (this.value < this.max) {
               this.value++;
@@ -176,7 +184,7 @@ This program is available under Apache License Version 2.0, available at https:/
         _maxChanged() {
           this.$.input.max = this.max;
         }
-        
+
       }
 
       window.customElements.define(NumberFieldElement.is, NumberFieldElement);
