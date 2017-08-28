@@ -116,4 +116,10 @@ gemini.suite('vaadin-text-field', function(rootSuite) {
     });
   });
 
+  gemini.suite('number-field', function(suite) {
+    suite
+      .setUrl('number-field.html')
+      .setCaptureElements('#number-field')
+      .capture('number-field');
+  });
 });
