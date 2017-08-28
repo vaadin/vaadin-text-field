@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <title>vaadin-number-field Basic Examples</title>
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../iron-form/iron-form.html">
+  <link rel="import" href="common.html">
+</head>
+
+<body unresolved>
+  <div class="vertical-section-container centered">
+    <demo-navigation></demo-navigation>
+    <h3>Number Field</h3>
+    <demo-snippet>
+      <template>
+        <vaadin-number-field></vaadin-number-field>
+      </template>
+    </demo-snippet>
+
+    <h3>Number Field with controls</h3>
+    <demo-snippet>
+      <template>
+        <vaadin-number-field has-controls></vaadin-number-field>
+      </template>
+    </demo-snippet>
+
+    <h3>Number Field with value limits</h3>
+    <demo-snippet>
+      <template>
+        <vaadin-number-field value="1" min="1" max="10" has-controls></vaadin-number-field>
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>
