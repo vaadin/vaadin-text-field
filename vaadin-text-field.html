@@ -92,7 +92,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
     </style>
 
-    <div class="container">
+    <div class="container" id="container">
 
       <label part="label" on-click="focus" id="[[_labelId]]">[[label]]</label>
 
@@ -347,6 +347,12 @@ This program is available under Apache License Version 2.0, available at https:/
           this._setHasValue(newVal !== '' && newVal != null);
         }
 
+        _clickHandler(e) {
+          if (e.target.hasAttribute('prevent-focus')) {
+            e.stopPropagation();
+          }
+        }
+
         /**
          * Returns true if `value` is valid.
          * `<iron-form>` uses this to check the validity or all its elements.
@@ -381,6 +387,8 @@ This program is available under Apache License Version 2.0, available at https:/
           var uniqueId = TextFieldElement._uniqueId = 1 + TextFieldElement._uniqueId || 0;
           this._errorId = `${this.constructor.is}-error-${uniqueId}`;
           this._labelId = `${this.constructor.is}-label-${uniqueId}`;
+
+          this.$.container.addEventListener('click', this._clickHandler);
         }
 
         attributeChangedCallback(prop, oldVal, newVal) {
