@@ -13,18 +13,29 @@
 <body>
   <test-fixture id="default">
     <template>
-      <vaadin-text-field></vaadin-text-field>
+      <vaadin-text-field>
+        <div slot="prefix">
+          <div>prefix</div>
+        </div>
+        <div slot="suffix">
+          <div>suffix</div>
+        </div>
+      </vaadin-text-field>
     </template>
   </test-fixture>
 
   <script>
 
     describe('properties', function() {
-      var textField, input;
+      var textField, input, slots;
 
       beforeEach(function() {
         textField = fixture('default');
         input = textField.$.input;
+        slots = {
+          prefix: textField.querySelector('[slot=prefix] div'),
+          suffix: textField.querySelector('[slot=suffix] div')
+        };
       });
 
       describe('native', function() {
@@ -75,6 +86,21 @@
           it('should set boolean attribute ' + prop, function() {
             assertAttrCanBeSet(prop, true);
             assertAttrCanBeSet(prop, false);
+          });
+        });
+      });
+
+      describe('prefix-suffix', () => {
+        ['prefix', 'suffix'].forEach((slot) => {
+          it(`should focus input on ${slot} click by default`, () => {
+            slots[slot].dispatchEvent(new CustomEvent('click', {bubbles: true, composed: true}));
+            expect(textField.focused).to.be.true;
+          });
+
+          it(`should not focus input on ${slot} click if prevent-focus is set`, () => {
+            slots[slot].setAttribute('prevent-focus', '');
+            slots[slot].dispatchEvent(new CustomEvent('click', {bubbles: true, composed: true}));
+            expect(textField.focused).not.to.be.true;
           });
         });
       });
