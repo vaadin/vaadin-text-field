@@ -35,12 +35,12 @@
     <demo-snippet>
       <template>
         <vaadin-text-field label="Sum" value="1000">
-          <div slot="prefix">$</div>
+          <span slot="prefix">$</span>
         </vaadin-text-field>
         <br>
         <br>
         <vaadin-text-field label="Email">
-          <div slot="suffix">@vaadin.com</div>
+          <span slot="suffix">@vaadin.com</span>
         </vaadin-text-field>
       </template>
     </demo-snippet>
@@ -52,6 +52,17 @@
         <vaadin-text-field tabindex="3" placeholder="TabIndex 3"></vaadin-text-field>
         <vaadin-text-field tabindex="2" placeholder="TabIndex 2 disabled" disabled></vaadin-text-field>
         <vaadin-text-field tabindex="1" placeholder="TabIndex 1"></vaadin-text-field>
+      </template>
+    </demo-snippet>
+
+    <h3>Right-To-Left</h3>
+    <demo-snippet>
+      <template>
+        <vaadin-text-field dir="rtl" label="كلمه السر" placeholder="أنشئ كلمة مرور"></vaadin-text-field>
+        <vaadin-text-field dir="rtl" label="البادئة واللاحقة">
+          <span slot="prefix">اختصار</span>
+          <span slot="suffix">لاحقة</span>
+        </vaadin-text-field>
       </template>
     </demo-snippet>
 

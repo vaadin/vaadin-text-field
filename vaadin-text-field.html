@@ -105,6 +105,7 @@ This program is available under Apache License Version 2.0, available at https:/
           autocorrect$="[[autocorrect]]"
           autofocus$="[[autofocus]]"
           disabled$="[[disabled]]"
+          dir="[[dir]]"
           list="[[list]]"
           maxlength$="[[maxlength]]"
           minlength$="[[minlength]]"
@@ -189,6 +190,20 @@ This program is available under Apache License Version 2.0, available at https:/
              */
             autocorrect: {
               type: String
+            },
+
+            /**
+             * Directionality of the element's text
+             * https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir
+             *
+             * Possible values are:
+             * ltr: left to right.
+             * rtl: right to left.
+             */
+            dir: {
+              type: String,
+              value: 'ltr',
+              observer: '_dirChanged'
             },
 
             /**
@@ -333,6 +348,12 @@ This program is available under Apache License Version 2.0, available at https:/
             if (input.value.length > 0 && !this.checkValidity()) {
               input.value = this.value || '';
             }
+          }
+        }
+
+        _dirChanged(dir) {
+          if (dir !== 'ltr' && dir !== 'rtl') {
+            console.warn(`${this.is}: unknown "dir" value "${dir}", possible values are "ltr" and "rtl"`);
           }
         }
 
