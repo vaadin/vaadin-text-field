@@ -57,5 +57,15 @@ gemini.suite(component, function(rootSuite) {
           .capture('rtl');
       });
       break;
+
+    case 'vaadin-number-field':
+      gemini.suite('number', function(suite) {
+        suite
+          .setUrl('vaadin-number-field/number-field.html')
+          .setCaptureElements('#number-field')
+          .capture('number-field');
+      });
+
+      break;
   }
 });

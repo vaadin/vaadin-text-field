@@ -1,0 +1,40 @@
+<dom-module id="text-field-number-demos">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <h3>Number Field</h3>
+    <vaadin-demo-snippet id='text-field-number-demos-default-number-field'>
+      <template preserve-content>
+        <vaadin-number-field></vaadin-number-field>
+      </template>
+    </vaadin-demo-snippet>
+
+    <h3>Number Field with controls</h3>
+    <vaadin-demo-snippet id='text-field-number-demos-number-field-with-controls'>
+      <template preserve-content>
+        <vaadin-number-field has-controls></vaadin-number-field>
+      </template>
+    </vaadin-demo-snippet>
+
+    <h3>Number Field with value limits</h3>
+    <vaadin-demo-snippet id='text-field-number-demos-number-field-with-value-limits'>
+      <template preserve-content>
+        <vaadin-number-field value="1" min="1" max="10" has-controls></vaadin-number-field>
+      </template>
+    </vaadin-demo-snippet>
+
+  </div>
+  </template>
+  <script>
+    class TextFieldNumberDemos extends DemoReadyEventEmitter(TextFieldDemo(Polymer.Element)) {
+      static get is() {
+        return 'text-field-number-demos';
+      }
+    }
+    customElements.define(TextFieldNumberDemos.is, TextFieldNumberDemos);
+  </script>
+</dom-module>
