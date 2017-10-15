@@ -57,5 +57,28 @@ gemini.suite(component, function(rootSuite) {
           .capture('rtl');
       });
       break;
+
+    case 'vaadin-text-area':
+      gemini.suite('text-area', function(suite) {
+        suite
+          .setUrl('vaadin-text-area/text-area.html')
+          .setCaptureElements('#text-area')
+          .capture('text-area');
+      });
+
+      gemini.suite('styling', function(suite) {
+        suite
+          .setUrl('vaadin-text-area/styling.html')
+          .setCaptureElements('vaadin-text-area')
+          .capture('styling');
+      });
+
+      gemini.suite('rtl', function(suite) {
+        suite
+          .setUrl('vaadin-text-area/rtl.html')
+          .setCaptureElements('#rtl')
+          .capture('rtl');
+      });
+      break;
   }
 });
