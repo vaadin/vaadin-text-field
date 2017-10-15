@@ -8,16 +8,17 @@ This program is available under Apache License Version 2.0, available at https:/
 <link rel="import" href="vaadin-text-field-mixin.html">
 <link rel="import" href="vaadin-text-field-styles.html">
 
-<dom-module id="vaadin-text-field">
+<dom-module id="vaadin-text-area">
   <template>
     <style>
       :host {
         display: inline-block;
-        width: 175px;
+        min-width: 175px;
         outline: none;
+        line-height: var(--vaadin-text-area-line-height​​, 1.5);
       }
 
-      .vaadin-text-field-container {
+      .vaadin-text-area-container {
         display: flex;
         flex-direction: column;
         position: relative;
@@ -29,7 +30,6 @@ This program is available under Apache License Version 2.0, available at https:/
 
       [part="input-field"] {
         display: flex;
-        align-items: center;
       }
 
       [part="value"] {
@@ -37,15 +37,24 @@ This program is available under Apache License Version 2.0, available at https:/
         box-sizing: border-box;
         flex: 1;
         min-width: 0;
+        min-height: calc(3em * var(--vaadin-text-area-line-height​​, 1.5));
+        max-height: var(--vaadin-text-area-max-height, auto);
+        align-self: center;
+        resize: none;
       }
 
       [part="value"]::-ms-clear {
         display: none;
       }
 
+      .mirror-text {
+        visibility: hidden;
+        word-wrap: break-word;
+        position: absolute;
+      }
     </style>
 
-    <div class="vaadin-text-field-container">
+    <div class="vaadin-text-area-container">
 
       <label part="label" on-click="focus" id="[[_labelId]]">[[label]]</label>
 
@@ -53,32 +62,29 @@ This program is available under Apache License Version 2.0, available at https:/
 
         <slot name="prefix"></slot>
 
-        <input part="value"
-          autocomplete$="[[autocomplete]]"
-          autocorrect$="[[autocorrect]]"
-          autofocus$="[[autofocus]]"
-          disabled$="[[disabled]]"
-          list="[[list]]"
-          maxlength$="[[maxlength]]"
-          minlength$="[[minlength]]"
-          pattern="[[pattern]]"
-          placeholder="[[placeholder]]"
-          readonly$="[[readonly]]"
-          aria-readonly$="[[readonly]]"
-          required$="[[required]]"
-          aria-required$="[[required]]"
-          value="{{value::input}}"
-          title="[[title]]"
-          on-blur="validate"
-          on-input="_onInput"
-          aria-describedby$="[[_getActiveErrorId(invalid, errorMessage, _errorId)]]"
-          aria-labelledby$="[[_getActiveLabelId(label, _labelId)]]"
-          aria-invalid$="[[invalid]]"
-        >
+        <textarea part="value"
+            autocomplete$="[[autocomplete]]"
+            autofocus$="[[autofocus]]"
+            disabled$="[[disabled]]"
+            maxlength$="[[maxlength]]"
+            minlength$="[[minlength]]"
+            placeholder="[[placeholder]]"
+            readonly$="[[readonly]]"
+            aria-readonly$="[[readonly]]"
+            required$="[[required]]"
+            aria-required$="[[required]]"
+            value="{{value::input}}"
+            on-blur="validate"
+            on-input="_onInput"
+            aria-describedby$="[[_getActiveErrorId(invalid, errorMessage, _errorId)]]"
+            aria-labelledby$="[[_getActiveLabelId(label, _labelId)]]"
+            aria-invalid$="[[invalid]]"
+            id="input"></textarea>
 
         <slot name="suffix"></slot>
 
       </div>
+      <div id="mirror" class="mirror-text" aria-hidden="true"></div>
 
       <div id="[[_errorId]]" aria-live="assertive" part="error-message" hidden$="[[!_getActiveErrorId(invalid, errorMessage, _errorId)]]">[[errorMessage]]</div>
 
@@ -89,25 +95,32 @@ This program is available under Apache License Version 2.0, available at https:/
   <script>
     (function() {
       /**
-       * `<vaadin-text-field>` is a Polymer 2 element for text field control in forms.
+       * `<vaadin-text-area>` is a Polymer 2 element for text area control in forms.
        *
        * ```html
-       * <vaadin-text-field label="First Name">
-       * </vaadin-text-field>
+       * <vaadin-text-area label="Add description">
+       * </vaadin-text-area>
        * ```
        *
        * ### Styling
        *
        * [Generic styling/theming documentation](https://cdn.vaadin.com/vaadin-valo-theme/0.3.1/demo/customization.html)
        *
+       * The following custom properties are available for styling:
+       *
+       * Custom property | Description | Default
+       * ----------------|-------------|-------------
+       * `--vaadin-text-area-line-height` | Property that determines the line height of the textarea element | `1.5`
+       * `--vaadin-text-area-max-height` | Property that determines the max height of the textarea element | `auto`
+       *
        * The following shadow DOM parts are available for styling:
        *
        * Part name | Description
        * ----------------|----------------
        * `label` | The label element
-       * `value` | The input element
+       * `value` | The textarea element
        * `error-message` | The error message element
-       * `input-field` | The element that wraps prefix, value and suffix
+       * `text-area` | The element that wraps prefix, value and suffix
        *
        * The following state attributes are available for styling:
        *
@@ -120,54 +133,12 @@ This program is available under Apache License Version 2.0, available at https:/
        * `focus-ring` | Set when the element is keyboard focused | :host
        *
        * @memberof Vaadin
-       * @mixes Vaadin.ControlStateMixin
-       * @mixes Vaadin.FormElementMixin
-       * @mixes Vaadin.ThemableMixin
+       * @mixes Vaadin.TextFieldElement
        * @demo demo/index.html
        */
-      class TextFieldElement extends Vaadin.TextFieldMixin(Vaadin.ThemableMixin(Polymer.Element)) {
+      class TextAreaElement extends Vaadin.ThemableMixin(Vaadin.TextFieldMixin(Polymer.Element)) {
         static get is() {
-          return 'vaadin-text-field';
-        }
-
-        static get properties() {
-          return {
-            
-
-            /**
-             * This is a property supported by Safari that is used to control whether
-             * autocorrection should be enabled when the user is entering/editing the text.
-             * Possible values are:
-             * on: Enable autocorrection.
-             * off: Disable autocorrection.
-             */
-            autocorrect: {
-              type: String
-            },
-
-            /**
-             * Identifies a list of pre-defined options to suggest to the user.
-             * The value must be the id of a <datalist> element in the same document.
-             */
-            list: {
-              type: String
-            },
-
-            /**
-             * A regular expression that the value is checked against.
-             * The pattern must match the entire value, not just some subset.
-             */
-            pattern: {
-              type: String
-            },
-
-            /**
-             * Message to show to the user when validation fails.
-             */
-            title: {
-              type: String
-            }
-          };
+          return 'vaadin-text-area';
         }
 
         _valueChanged(newVal, oldVal) {
@@ -179,13 +150,31 @@ This program is available under Apache License Version 2.0, available at https:/
             this.validate();
           }
           this._setHasValue(newVal !== '' && newVal != null);
+          this._setInputHeight();
+        }
+
+        _setInputHeight() {
+          const input = this.focusElement;
+          const rows = (input && input.value) ?
+            input.value
+              .replace(/&/gm, '&amp;')
+              .replace(/"/gm, '&quot;')
+              .replace(/'/gm, '&#39;')
+              .replace(/</gm, '&lt;')
+              .replace(/>/gm, '&gt;')
+              .split('\n')
+            : [''];
+
+          this.$.mirror.innerHTML = rows.join('<br/>') + '<br/>';
+          this.$.mirror.style.width = window.getComputedStyle(this.$.input).width;
+          this.$.input.style.height = window.getComputedStyle(this.$.mirror).height;
         }
 
         /**
-         * Returns true if the current input value satisfies all constraints (if any)
+         * Returns true if the current textarea value satisfies all constraints (if any)
          */
         checkValidity() {
-          if (this.required || this.pattern || this.maxlength || this.minlength) {
+          if (this.required || this.maxlength || this.minlength) {
             return this.focusElement.checkValidity();
           } else {
             return !this.invalid;
@@ -198,19 +187,19 @@ This program is available under Apache License Version 2.0, available at https:/
             this.updateStyles();
           }
 
-          var uniqueId = TextFieldElement._uniqueId = 1 + TextFieldElement._uniqueId || 0;
+          var uniqueId = TextAreaElement._uniqueId = 1 + TextAreaElement._uniqueId || 0;
           this._errorId = `${this.constructor.is}-error-${uniqueId}`;
           this._labelId = `${this.constructor.is}-label-${uniqueId}`;
         }
       }
 
-      customElements.define(TextFieldElement.is, TextFieldElement);
+      customElements.define(TextAreaElement.is, TextAreaElement);
 
       /**
        * @namespace Vaadin
        */
       window.Vaadin = window.Vaadin || {};
-      Vaadin.TextFieldElement = TextFieldElement;
+      Vaadin.TextAreaElement = TextAreaElement;
     })();
   </script>
 </dom-module>
