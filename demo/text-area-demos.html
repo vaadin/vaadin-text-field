@@ -1,0 +1,30 @@
+<dom-module id="text-area-demos">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+
+    <h3>Default Text area</h3>
+    <vaadin-demo-snippet id='text-area-demos-default-text-area'>
+      <template preserve-content>
+        <vaadin-text-area
+            label="Write a description"
+            placeholder="Add detailed explanation in here">
+        </vaadin-text-area>
+      </template>
+    </vaadin-demo-snippet>
+
+  </div>
+  </template>
+  <script>
+    class TextAreaDemos extends DemoReadyEventEmitter(TextFieldDemo(Polymer.Element)) {
+      static get is() {
+        return 'text-area-demos';
+      }
+    }
+    customElements.define(TextAreaDemos.is, TextAreaDemos);
+  </script>
+</dom-module>

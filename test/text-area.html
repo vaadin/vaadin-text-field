@@ -1,0 +1,133 @@
+<!doctype html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>vaadin-text-area tests</title>
+
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" href="../vaadin-text-area.html">
+  <link rel="import" href="../../iron-form/iron-form.html">
+
+</head>
+
+<body>
+  <test-fixture id="default">
+    <template>
+      <vaadin-text-area></vaadin-text-area>
+    </template>
+  </test-fixture>
+
+  <script>
+
+    describe('properties', () => {
+      var textArea, input;
+
+      beforeEach(() => {
+        textArea = fixture('default');
+        input = textArea.focusElement;
+      });
+
+      describe('native', () => {
+
+        function assertAttrCanBeSet(prop, value) {
+          textArea[prop] = value;
+          var attrval = input.getAttribute(prop);
+
+          if (value === true) {
+            expect(attrval).not.to.be.null;
+          } else if (value === false) {
+            expect(attrval).to.be.null;
+          } else if (value) {
+            expect(attrval).to.be.equal(String(value));
+          }
+        }
+
+        function assertPropCanBeSet(prop, value) {
+          textArea[prop] = value;
+          expect(input[prop]).to.be.equal(value);
+        }
+
+        ['placeholder', 'value', 'wrap'].forEach(prop => {
+          it('should set string property ' + prop, () => {
+            assertPropCanBeSet(prop, 'foo');
+          });
+        });
+
+        ['autofocus', 'disabled'].forEach(prop => {
+          it('should set boolean property ' + prop, () => {
+            assertPropCanBeSet(prop, true);
+          });
+        });
+
+        ['maxlength', 'minlength', 'cols', 'rows'].forEach(prop => {
+          it('should set numeric attribute ' + prop, () => {
+            assertAttrCanBeSet(prop, 2);
+          });
+        });
+
+        ['autocomplete'].forEach(prop => {
+          it('should set boolean attribute ' + prop, () => {
+            assertAttrCanBeSet(prop, 'on');
+          });
+        });
+
+        ['autocomplete', 'readonly', 'required'].forEach(prop => {
+          it('should set boolean attribute ' + prop, () => {
+            assertAttrCanBeSet(prop, true);
+            assertAttrCanBeSet(prop, false);
+          });
+        });
+      });
+
+      describe('binding', () => {
+        it('default value should be empty string', () => {
+          expect(textArea.value).to.be.equal('');
+        });
+
+        it('setting input value updates value', () => {
+          input.value = 'foo';
+          input.dispatchEvent(new Event('input', {bubbles: true, cancelable: true, composed: true}));
+          expect(textArea.value).to.be.equal('foo');
+        });
+
+        it('setting input value updates has-value attribute', () => {
+          textArea.value = 'foo';
+          expect(textArea.hasValue).to.be.true;
+        });
+
+        it('setting value to undefine should not update has-value attribute', () => {
+          textArea.value = undefined;
+          expect(textArea.hasValue).to.be.false;
+        });
+
+        it('setting empty value does not update has-value property', () => {
+          textArea.value = '';
+          expect(textArea.hasValue).to.be.false;
+        });
+
+        // User could accidently set a 0 or false value
+        it('setting number value updates has-value property', () => {
+          textArea.value = 0;
+          expect(textArea.hasValue).to.be.true;
+        });
+
+        it('setting boolean value updates has-value property', () => {
+          textArea.value = false;
+          expect(textArea.hasValue).to.be.true;
+        });
+      });
+
+      if (!window.ShadyDOM) {
+        describe('label', () => {
+          it('should not update focused property on click if disabled', () => {
+            textArea.disabled = true;
+            const label = textArea.root.querySelector('[part="label"]');
+            label.click();
+            expect(textArea.focused).to.be.false;
+          });
+        });
+      }
+
+    });
+  </script>
+</body>
