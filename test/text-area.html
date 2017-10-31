@@ -167,11 +167,11 @@
       it('should grow height with unwrapped text', () => {
         const textArea = fixture('default');
         const input = textArea.focusElement;
-        const originalHeight = parseInt(window.getComputedStyle(input).height);
+        const originalHeight = input.offsetHeight;
 
         textArea.value = 'asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd';
 
-        const newHeight = parseInt(window.getComputedStyle(input).height);
+        const newHeight = input.offsetHeight;
         expect(newHeight).to.be.at.least(originalHeight + 10);
       });
 
