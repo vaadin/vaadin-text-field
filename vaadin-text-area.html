@@ -46,6 +46,11 @@ This program is available under Apache License Version 2.0, available at https:/
         box-sizing: border-box;
         flex: 1;
         resize: none;
+        overflow: hidden;
+      }
+
+      :host([overflown]) [part="value"] {
+        overflow: auto;
       }
 
       [part="value"]::-ms-clear {
@@ -115,6 +120,7 @@ This program is available under Apache License Version 2.0, available at https:/
        *
        * Attribute    | Description | Part name
        * -------------|-------------|------------
+       * `overflown` | Set when the input element content overflows | :host
        * `disabled` | Set to a disabled text field | :host
        * `has-value` | Set when the element has a value | :host
        * `invalid` | Set when the element is invalid | :host
@@ -169,6 +175,13 @@ This program is available under Apache License Version 2.0, available at https:/
           const fixedHeight = container.clientHeight + 'px';
           container.style.height = fixedHeight;
           this.focusElement.scrollTop = scrollTop;
+
+          // Hide the input overflow when there's no scrollable content (to avoid scrollbars on IE11)
+          if (this.focusElement.scrollHeight > this.focusElement.clientHeight) {
+            this.setAttribute('overflown', '');
+          } else {
+            this.removeAttribute('overflown');
+          }
         }
       }
 

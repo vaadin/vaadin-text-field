@@ -230,6 +230,16 @@
         textArea.value = '';
         expect(textArea.clientHeight).to.be.below(height);
       });
+
+      it('should have overflow hidden', () => {
+        expect(getComputedStyle(input).overflow).to.equal('hidden');
+      });
+
+      it('should have overflow auto', () => {
+        textArea.style.maxHeight = '100px';
+        textArea.value = Array(400).join('400');
+        expect(getComputedStyle(input).overflow).to.equal('auto');
+      });
     });
   </script>
 </body>
