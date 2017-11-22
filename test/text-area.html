@@ -16,7 +16,41 @@
     </template>
   </test-fixture>
 
+  <test-fixture id="text-content">
+    <template>
+      <vaadin-text-area>
+
+  foo bar
+baz
+      </vaadin-text-area>
+      <textarea>
+
+  foo bar
+baz
+      </textarea>
+      <vaadin-text-area value="lorem">
+  foo bar
+baz
+      </vaadin-text-area>
+      <textarea value="lorem">
+      ipsum
+      </textarea>
+    </template>
+  </test-fixture>
+
   <script>
+    describe('text-content value', () => {
+      let elements;
+      beforeEach(() => elements = Array.from(fixture('text-content')));
+
+      it('should take inial value from content, if not value specified', () => {
+        expect(elements[0].value).to.be.equal(elements[1].value);
+      });
+
+      it('should take initial value from attribute when available', () => {
+        expect(elements[2].value).to.be.equal('lorem');
+      });
+    });
 
     describe('properties', () => {
       var textArea, input;
