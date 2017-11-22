@@ -6,7 +6,6 @@
       }
     </style>
 
-
     <h3>Default Text area</h3>
     <vaadin-demo-snippet id='text-area-demos-default-text-area'>
       <template preserve-content>
@@ -45,6 +44,25 @@
             class="min-height"
             label="Text area won't shrink under 150px"
             placeholder="Add more text here">
+        </vaadin-text-area>
+      </template>
+    </vaadin-demo-snippet>
+
+    <h3>Setting the Value</h3>
+    <vaadin-demo-snippet id='text-area-demos-setting-the-value'>
+      <template preserve-content>
+        <vaadin-text-area value="foo"></vaadin-text-area>
+      </template>
+    </vaadin-demo-snippet>
+
+    <h3>Setting the Value in the element's text content</h3>
+    <vaadin-demo-snippet id='text-area-demos-setting-the-value-text-content'>
+      <template preserve-content>
+        <vaadin-text-area>
+As in the HTML textarea,
+you can set the initial
+value by adding text
+in the element's content.
         </vaadin-text-area>
       </template>
     </vaadin-demo-snippet>
