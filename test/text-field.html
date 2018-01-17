@@ -128,6 +128,16 @@
         });
       }
 
+      describe('label attribute', function() {
+        it('default label should be null', function() {
+          expect(textField.label).to.be.equal(null);
+        });
+
+        it('should reflect label property to attribute', function() {
+          textField.label = 'foo';
+          expect(textField.getAttribute('label')).to.be.equal('foo');
+        });
+      });
     });
   </script>
 </body>
