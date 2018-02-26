@@ -16,35 +16,25 @@
         -moz-osx-font-smoothing: grayscale;
         -webkit-tap-highlight-color: transparent;
         padding: var(--lumo-space-xs) 0;
-      }
-
-      :host::before {
-        height: var(--lumo-text-field-size);
-        box-sizing: border-box;
-        display: inline-flex;
-        align-items: center;
+        /* Reduce the line-box of the label element. Can be avoided if we make the label a block element and allow it to wrap on multiple lines */
+        line-height: 0;
       }
 
       [part="label"] {
-        align-self: flex-start;
+        display: inline-block;
         color: var(--lumo-secondary-text-color);
         font-weight: 500;
         font-size: var(--lumo-font-size-s);
         margin-left: calc(var(--lumo-border-radius) / 4);
         transition: color 0.2s;
         line-height: 1;
-        margin-bottom: 0.5em;
+        padding-bottom: 0.5em;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
         position: relative;
         max-width: 100%;
         box-sizing: border-box;
-      }
-
-      :host([has-label])::before {
-        /* Label height + margin */
-        margin-top: calc(var(--lumo-font-size-s) * 1.5);
       }
 
       :host([has-label]) {

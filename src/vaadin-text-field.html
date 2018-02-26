@@ -12,11 +12,13 @@ This program is available under Apache License Version 2.0, available at https:/
   <template>
     <style include="vaadin-text-field-shared-styles"></style>
 
+    <label part="label" on-click="focus" id="[[_labelId]]">[[label]]</label>
+
     <div class="vaadin-text-field-container">
 
-      <label part="label" on-click="focus" id="[[_labelId]]">[[label]]</label>
-
       <div part="input-field">
+
+        <span class="vaadin-text-field-aligner"></span>
 
         <slot name="prefix"></slot>
 

@@ -11,16 +11,8 @@ This program is available under Apache License Version 2.0, available at https:/
   <template>
     <style>
       :host {
-        display: inline-flex;
-        outline: none;
-      }
-
-      :host::before {
-        content: "\2003";
-        width: 0;
         display: inline-block;
-        /* Size and position this element on the same vertical position as the input-field element
-           to make vertical align for the host element work as expected */
+        outline: none;
       }
 
       :host([hidden]) {
@@ -63,6 +55,21 @@ This program is available under Apache License Version 2.0, available at https:/
         background-color: transparent;
         /* Disable default invalid style in Firefox */
         box-shadow: none;
+      }
+
+      .vaadin-text-field-aligner,
+      .vaadin-text-area-aligner {
+        width: 0;
+        display: inline-flex;
+      }
+
+      .vaadin-text-area-aligner {
+        align-self: flex-start;
+      }
+
+      .vaadin-text-field-aligner::before,
+      .vaadin-text-area-aligner::before {
+        content: "\2003";
       }
 
       [part="input-field"] ::slotted(*) {

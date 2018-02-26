@@ -12,7 +12,6 @@ This program is available under Apache License Version 2.0, available at https:/
   <template>
     <style include="vaadin-text-field-shared-styles">
       .vaadin-text-area-container {
-        flex: auto;
         max-height: inherit; /* MSIE 11 */
         min-height: inherit; /* MSIE 11 */
       }
@@ -38,11 +37,13 @@ This program is available under Apache License Version 2.0, available at https:/
       }
     </style>
 
+    <label part="label" on-click="focus" id="[[_labelId]]">[[label]]</label>
+
     <div class="vaadin-text-area-container">
 
-      <label part="label" on-click="focus" id="[[_labelId]]">[[label]]</label>
-
       <div part="input-field">
+
+        <span class="vaadin-text-area-aligner"></span>
 
         <slot name="prefix"></slot>
 
