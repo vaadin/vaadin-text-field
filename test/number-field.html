@@ -21,7 +21,7 @@
 
       beforeEach(function() {
         numberField = fixture('default');
-        input = numberField.$.input;
+        input = numberField.focusElement;
         decreaseButton = numberField.root.querySelector('[part=decrease-button]');
         increaseButton = numberField.root.querySelector('[part=increase-button]');
       });
