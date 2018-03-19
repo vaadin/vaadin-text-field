@@ -129,29 +129,13 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _decreaseValue() {
-          if (this.disabled) {
-            return;
-          }
-
-          if (this.min !== undefined) {
-            if (this.value > this.min) {
-              this.value--;
-            }
-          } else {
+          if (!this.disabled && (this.min === undefined || this.value > this.min)) {
             this.value--;
           }
         }
 
         _increaseValue() {
-          if (this.disabled) {
-            return;
-          }
-
-          if (this.max !== undefined) {
-            if (this.value < this.max) {
-              this.value++;
-            }
-          } else {
+          if (!this.disabled && (this.max === undefined || this.value < this.max)) {
             this.value++;
           }
         }
