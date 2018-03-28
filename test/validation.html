@@ -45,7 +45,7 @@
           tf = iform.querySelector(el);
           input = tf.focusElement;
           animationFrameFlush(() => {
-            HTMLImports.whenReady(done);
+            setTimeout(done, 100);
           });
         });
 
