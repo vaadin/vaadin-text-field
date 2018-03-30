@@ -16,7 +16,9 @@ This program is available under Apache License Version 2.0, available at https:/
 
       <div part="label-container">
         <label part="label" on-click="focus" id="[[_labelId]]">[[label]]</label>
-        <slot name="label-suffix"></slot>
+        <div part="label-suffix">
+          <slot name="label-suffix"></slot>
+        </div>
       </div>
 
       <div part="input-field">
