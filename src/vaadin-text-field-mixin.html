@@ -36,8 +36,15 @@ This program is available under Apache License Version 2.0, available at https:/
         width: var(--vaadin-text-field-default-width, 12em);
       }
 
-      [part="label"]:empty {
+      :host(:not([has-label])) [part="label-container"] {
         display: none;
+      }
+
+      [part="label-container"] {
+        display: flex;
+        justify-content: space-between;
+        min-width: 100%;
+        max-width: 100%;
       }
 
       [part="input-field"] {
