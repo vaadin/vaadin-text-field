@@ -36,12 +36,14 @@ This program is available under Apache License Version 2.0, available at https:/
     </style>
 
     <div
+      disabled$="[[!_allowed(-1, value, min, max)]]"
       part="decrease-button"
       on-click="_decreaseValue"
       hidden$="[[!hasControls]]">
     </div>
 
     <div
+      disabled$="[[!_allowed(1, value, min, max)]]"
       part="increase-button"
       on-click="_increaseValue"
       hidden$="[[!hasControls]]">
@@ -129,15 +131,17 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _decreaseValue() {
-          if (!this.disabled && (this.min === undefined || this.value > this.min)) {
-            this.value--;
-          }
+          this._allowed(-1) && this.value --;
         }
 
         _increaseValue() {
-          if (!this.disabled && (this.max === undefined || this.value < this.max)) {
-            this.value++;
-          }
+          this._allowed(1) && this.value ++;
+        }
+
+        _allowed(increment, value, min, max) {
+          return !this.disabled && (increment < 0
+            ? this.min == null || this.value > this.min
+            : this.max == null || this.value < this.max);
         }
 
         _minChanged() {

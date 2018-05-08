@@ -85,6 +85,7 @@
           expect(numberField.value).to.be.equal('0');
         });
 
+
         it('should not decrease value when decreaseButton is clicked and min value is reached', function() {
           numberField.value = 0;
           numberField.min = 0;
@@ -92,6 +93,25 @@
           decreaseButton.click();
 
           expect(numberField.value).to.be.equal('0');
+        });
+
+        it('should not disable buttons if there are no limits set', function() {
+          expect(decreaseButton.hasAttribute('disabled')).to.be.false;
+          expect(increaseButton.hasAttribute('disabled')).to.be.false;
+        });
+
+        it('should disable plus button if max value is reached', function() {
+          numberField.value = 0;
+          numberField.min = 0;
+          expect(decreaseButton.hasAttribute('disabled')).to.be.true;
+          expect(increaseButton.hasAttribute('disabled')).to.be.false;
+        });
+
+        it('should disable minus button if min value is reached', function() {
+          numberField.value = 1;
+          numberField.max = 1;
+          expect(decreaseButton.hasAttribute('disabled')).to.be.false;
+          expect(increaseButton.hasAttribute('disabled')).to.be.true;
         });
 
         it('should not change value when number field is disabled and controls are clicked', function() {
