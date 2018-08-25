@@ -68,21 +68,20 @@
       describe(`${el}: accessibility`, function() {
 
         describe('default', function() {
-          let tf, label, input;
+          let tf, input;
 
           beforeEach(function() {
             tf = fixture(`${el}-default`);
             input = tf.focusElement;
-            label = tf.root.querySelector('[part=label]');
           });
 
           it('should label the input', function() {
             tf.label = 'foo';
-            expect(input.getAttribute('aria-labelledby')).to.equal(label.id);
+            expect(input.getAttribute('aria-label')).to.equal(tf.label);
           });
 
           it('should not label the input', function() {
-            expect(input.hasAttribute('aria-labelledby')).to.be.false;
+            expect(input.getAttribute('aria-label')).to.equal('');
           });
 
           it('should not be marked required', function() {

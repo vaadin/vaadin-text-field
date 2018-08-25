@@ -342,10 +342,6 @@ This program is available under Apache License Version 2.0, available at https:/
       return errorMessage && invalid ? errorId : undefined;
     }
 
-    _getActiveLabelId(label, labelId) {
-      return label ? labelId : undefined;
-    }
-
     _getErrorMessageAriaHidden(invalid, errorMessage, errorId) {
       return (!this._getActiveErrorId(invalid, errorMessage, errorId)).toString();
     }
