@@ -295,7 +295,6 @@ This program is available under Apache License Version 2.0, available at https:/
       }
     }
 
-
     ready() {
       super.ready();
       if (!(window.ShadyCSS && window.ShadyCSS.nativeCss)) {
@@ -369,6 +368,71 @@ This program is available under Apache License Version 2.0, available at https:/
           el.style[WEBKIT_PROPERTY] = '';
         });
       }
+    }
+
+    /**
+     * Select a specific range of text inside the input field.
+     *
+     * @param {number} start     The 0-based index of the first selected character
+     * @param {number} end       The 0-based index of the character after the last selected character
+     * @param {string} direction (Optional) A string indicating the direction in which the selection
+     *                            is performed. This string can be `"forward"` or `"backward"`, or
+     *                            `"none"` if the direction is unknown or irrelevant.
+     */
+    setSelectionRange(start, end, direction) {
+      this.focus();
+      this.focusElement.setSelectionRange(start, end, direction);
+    }
+
+    /**
+     * Select the text inside the input field.
+     */
+    selectAll() {
+      this.setSelectionRange(0, this.value.length);
+    }
+
+    /**
+     * Clear the selection from the input field.
+     *
+     * @param {string} direction (Optional) A string indicating the direction in which the caret
+     *                            should be placed. This string can be `"start"` or `"end"`. The
+     *                            default is `"end"`.
+     */
+    clearSelection(direction) {
+      this.selectionEnd = 0;
+      if (direction && direction == 'start') {
+        this.selectionStart = 0;
+      } else {
+        this.selectionStart = this.value.length;
+      }
+    }
+
+    /**
+     * Get or set the beginning of the selected portion of the field's text. Use in conjuction with
+     * the `selectionEnd` property. The value specifies the index of the first selected character.
+     * @returns {number}
+     */
+    get selectionStart() {
+      return this.focusElement.selectionStart;
+    }
+
+    set selectionStart(pos) {
+      this.focusElement.selectionStart = pos;
+    }
+
+    /**
+     * Get or set the end of the selected portion of the field's text. Use in conjuction with the
+     * `selectionStart` property. The value specifies the index of the character after the selection.
+     * If this value is equal to the value of the `selectionStart` property, no text is selected, but
+     * the value indicates the position of the caret (cursor) within the textbox.
+     * @returns {number}
+     */
+    get selectionEnd() {
+      return this.focusElement.selectionEnd;
+    }
+
+    set selectionEnd(pos) {
+      this.focusElement.selectionEnd = pos;
     }
 
     /**
