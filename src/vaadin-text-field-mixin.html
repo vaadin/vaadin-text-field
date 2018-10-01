@@ -380,7 +380,6 @@ This program is available under Apache License Version 2.0, available at https:/
      *                            `"none"` if the direction is unknown or irrelevant.
      */
     setSelectionRange(start, end, direction) {
-      this.focus();
       this.focusElement.setSelectionRange(start, end, direction);
     }
 
@@ -392,18 +391,17 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     /**
-     * Clear the selection from the input field.
+     * Clear the selection from the input field (collapse the selection to one of the edges of the current selection).
      *
      * @param {string} direction (Optional) A string indicating the direction in which the caret
      *                            should be placed. This string can be `"start"` or `"end"`. The
      *                            default is `"end"`.
      */
     clearSelection(direction) {
-      this.selectionEnd = 0;
       if (direction && direction == 'start') {
-        this.selectionStart = 0;
+        this.selectionEnd = this.selectionStart;
       } else {
-        this.selectionStart = this.value.length;
+        this.selectionStart = this.selectionEnd;
       }
     }
 
