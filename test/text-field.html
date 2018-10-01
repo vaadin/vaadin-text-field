@@ -85,6 +85,46 @@
             assertAttrCanBeSet(prop, false);
           });
         });
+
+        it('should set selection start', function() {
+          textField.value = "value";
+          textField.selectionStart = 2;
+          expect(input.selectionStart).to.be.equal(2);
+        });
+
+        it('should set selection end', function() {
+          textField.value = "value";
+          textField.selectionEnd = 4;
+          expect(input.selectionEnd).to.be.equal(4);
+        });
+
+        it('should set selection range', function() {
+          textField.value = "value";
+          textField.setSelectionRange(1, 3);
+          expect(input.selectionStart).to.be.equal(1);
+          expect(input.selectionEnd).to.be.equal(3);
+        });
+
+        it('should select all text', function() {
+          textField.value = "value";
+          textField.selectAll();
+          expect(textField.selectionStart).to.be.equal(0);
+          expect(textField.selectionEnd).to.be.equal(textField.value.length);
+        });
+
+        it('should clear text selection', function() {
+          textField.value = "value";
+
+          textField.setSelectionRange(1, 3);
+          textField.clearSelection();
+          expect(textField.selectionStart).to.be.equal(3);
+          expect(textField.selectionEnd).to.be.equal(3);
+
+          textField.setSelectionRange(1, 3);
+          textField.clearSelection('start');
+          expect(textField.selectionStart).to.be.equal(1);
+          expect(textField.selectionEnd).to.be.equal(1);
+        });
       });
 
       describe('binding', function() {
