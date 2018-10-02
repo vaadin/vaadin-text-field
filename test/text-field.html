@@ -94,6 +94,9 @@
 
         it('should set selection end', function() {
           textField.value = 'value';
+          // Some browsers default the selection in an input element to the end of the value, so we
+          // move the selection start in order to be able to move the selection end
+          textField.selectionStart = 0;
           textField.selectionEnd = 4;
           expect(input.selectionEnd).to.be.equal(4);
         });
