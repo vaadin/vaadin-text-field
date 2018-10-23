@@ -1,0 +1,53 @@
+<dom-module id="text-field-change-demos">
+  <template>
+    <style include="vaadin-component-demo-shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+
+    <h3>Change Event emitted Natively</h3>
+    <vaadin-demo-snippet id="text-field-change-default">
+      <template preserve-content>
+        <vaadin-text-field id="native" label="Input"></vaadin-text-field>
+        <vaadin-text-field id="native-listener" label="Last event" readonly></vaadin-text-field>
+        <script>
+          window.addDemoReadyListener('#text-field-change-default', function (document) {
+            document.getElementById("native").addEventListener("change", function (e) {
+              document.getElementById("native-listener").value = document.getElementById("native").value;
+            });
+          });
+        </script>
+      </template>
+    </vaadin-demo-snippet>
+
+
+    <h3>Change Event emitted by User input timeout</h3>
+    <vaadin-demo-snippet id="text-field-change-timeout">
+      <template preserve-content>
+        <vaadin-text-field id="timeout" label="Input" commit-on-timeout></vaadin-text-field>
+        <vaadin-text-field id="timeout-listener" label="Last event" readonly></vaadin-text-field>
+        <script>
+          window.addDemoReadyListener('#text-field-change-timeout', function (document) {
+            document.getElementById("timeout").addEventListener("change", function (e) {
+              document.getElementById("timeout-listener").value = document.getElementById("timeout").value;
+            });
+          });
+        </script>
+      </template>
+    </vaadin-demo-snippet>
+
+
+  </template>
+  <script>
+    class TextFieldChangeDemos extends DemoReadyEventEmitter(TextFieldDemo(Polymer.Element)) {
+      static get is() {
+        return 'text-field-change-demos';
+      }
+
+    }
+
+    customElements.define(TextFieldChangeDemos.is, TextFieldChangeDemos);
+  </script>
+</dom-module>

@@ -63,6 +63,8 @@ This program is available under Apache License Version 2.0, available at https:/
             on-blur="validate"
             on-input="_onInput"
             on-change="_onChange"
+            commit-timeout="[[commitTimeout]]"
+            commit-on-timeout="[[commitOnTimeout]]"
             aria-describedby$="[[_getActiveErrorId(invalid, errorMessage, _errorId)]]"
             aria-labelledby$="[[_getActiveLabelId(label, _labelId)]]"
             aria-invalid$="[[invalid]]"></textarea>

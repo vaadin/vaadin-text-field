@@ -80,6 +80,16 @@
         "description": "",
         "image": ""
       }
+    },
+    {
+      "name": "Change",
+      "url": "text-field-change-demos",
+      "src": "text-field-change-demos.html",
+      "meta": {
+        "title": "Vaadin Text Field Change Event",
+        "description": "",
+        "image": ""
+      }
     }
   ]
 }

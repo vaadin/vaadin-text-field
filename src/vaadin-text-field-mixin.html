@@ -225,6 +225,22 @@ This program is available under Apache License Version 2.0, available at https:/
           type: Boolean
         },
 
+        /**
+         * On `input` event, schedule a `change` event after a defined interval,
+         * cancelling the currently-scheduled event if any.
+         */
+        commitOnTimeout: {
+          type: Boolean
+        },
+
+        /**
+         * Timeout interval in milliseconds for `commitOnTimeout`
+         */
+        commitTimeout: {
+          type: Number,
+          value: 400
+        },
+
         _labelId: {
           type: String
         },
@@ -246,11 +262,34 @@ This program is available under Apache License Version 2.0, available at https:/
           input.value = this.value || '';
         }
       }
+      if (this.commitOnTimeout) {
+        this._clearCommitTimeout();
+        this._commitTimeoutHandler = window.setTimeout(
+          this._onCommitTimeout.bind(this, e), this.commitTimeout);
+      }
+    }
+
+    _clearCommitTimeout() {
+      this._commitTimeoutHandler && window.clearTimeout(this._commitTimeoutHandler);
+    }
+
+    _onCommitTimeout(e) {
+      this._commitTimeoutHandler = null;
+      this._dispatchChange(e);
     }
 
     _onChange(e) {
       // In the Shadow DOM, the `change` event is not leaked into the
       // ancestor tree, so we must do this manually.
+      this._dispatchChange(e);
+    }
+
+    _dispatchChange(e) {
+      const input = this.focusElement;
+      if (this._lastDispatch === input.value) {
+        return;
+      }
+      this._lastDispatch = input.value;
       const changeEvent = new CustomEvent('change', {
         detail: {
           sourceEvent: e
@@ -311,6 +350,11 @@ This program is available under Apache License Version 2.0, available at https:/
       if (navigator.userAgent.match(/Trident/)) {
         this._addIEListeners();
       }
+    }
+
+    disconnectedCallback() {
+      super.disconnectedCallback();
+      this._clearCommitTimeout();
     }
 
     /**
