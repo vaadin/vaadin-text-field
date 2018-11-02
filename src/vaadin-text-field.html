@@ -39,6 +39,7 @@ This program is available under Apache License Version 2.0, available at https:/
           aria-required$="[[required]]"
           value="{{value::input}}"
           title="[[title]]"
+          type="[[type]]"
           on-blur="validate"
           on-input="_onInput"
           on-change="_onChange"
@@ -152,6 +153,31 @@ This program is available under Apache License Version 2.0, available at https:/
              * Message to show to the user when validation fails.
              */
             title: {
+              type: String
+            },
+
+            /**
+             * The type of text the user is expected to input. The types are specified by the HTML
+             * standard. Note, that it is up to the browser/OS if the type affects the component in
+             * some way.
+             *
+             * Supported values:
+             * - date (<vaadin-date-picker> is recommended instead)
+             * - datetime-local
+             * - email
+             * - month
+             * - number
+             * - password (<vaadin-password-field> is recommended instead)
+             * - search
+             * - tel
+             * - text (default)
+             * - time (<vaadin-time-picker> is recommended instead)
+             * - url
+             * - week
+             *
+             * Any other value is not supported and might even break the component visually or functionally.
+             */
+            type: {
               type: String
             }
           };
