@@ -14,8 +14,10 @@
         <vaadin-text-field id="native-listener" label="Last event" readonly></vaadin-text-field>
         <script>
           window.addDemoReadyListener('#text-field-change-default', function (document) {
-            document.getElementById("native").addEventListener("change", function (e) {
-              document.getElementById("native-listener").value = document.getElementById("native").value;
+            let count = 0;
+            const input = document.getElementById("native");
+            input.addEventListener("change", e => {
+              document.getElementById("native-listener").value = `${++count}. "${input.value}"`;
             });
           });
         </script>
@@ -30,8 +32,10 @@
         <vaadin-text-field id="timeout-listener" label="Last event" readonly></vaadin-text-field>
         <script>
           window.addDemoReadyListener('#text-field-change-timeout', function (document) {
-            document.getElementById("timeout").addEventListener("change", function (e) {
-              document.getElementById("timeout-listener").value = document.getElementById("timeout").value;
+            let count = 0;
+            const input = document.getElementById("timeout");
+            input.addEventListener("change", e => {
+              document.getElementById("timeout-listener").value = `${++count}. "${input.value}"`;
             });
           });
         </script>
