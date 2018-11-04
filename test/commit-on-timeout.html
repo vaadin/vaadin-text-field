@@ -30,11 +30,11 @@
 
     ['vaadin-text-field', 'vaadin-text-area'].forEach(el => {
 
-      describe(`${el}: commit on timeout`, function () {
+      describe(`${el}: commit on timeout`, function() {
         let field, input;
         const maxLateGuess = 100;
 
-        beforeEach(function () {
+        beforeEach(function() {
           field = fixture(`${el}-default`);
           input = field.focusElement;
           expect(field.commitOnTimeout).to.be.true;

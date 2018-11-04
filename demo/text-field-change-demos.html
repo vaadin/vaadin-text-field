@@ -13,11 +13,11 @@
         <vaadin-text-field id="native" label="Input"></vaadin-text-field>
         <vaadin-text-field id="native-listener" label="Last event" readonly></vaadin-text-field>
         <script>
-          window.addDemoReadyListener('#text-field-change-default', function (document) {
+          window.addDemoReadyListener('#text-field-change-default', function(document) {
             let count = 0;
-            const input = document.getElementById("native");
-            input.addEventListener("change", e => {
-              document.getElementById("native-listener").value = `${++count}. "${input.value}"`;
+            const input = document.getElementById('native');
+            input.addEventListener('change', e => {
+              document.getElementById('native-listener').value = `${++count}. "${input.value}"`;
             });
           });
         </script>
@@ -31,11 +31,11 @@
         <vaadin-text-field id="timeout" label="Input" commit-on-timeout></vaadin-text-field>
         <vaadin-text-field id="timeout-listener" label="Last event" readonly></vaadin-text-field>
         <script>
-          window.addDemoReadyListener('#text-field-change-timeout', function (document) {
+          window.addDemoReadyListener('#text-field-change-timeout', function(document) {
             let count = 0;
-            const input = document.getElementById("timeout");
-            input.addEventListener("change", e => {
-              document.getElementById("timeout-listener").value = `${++count}. "${input.value}"`;
+            const input = document.getElementById('timeout');
+            input.addEventListener('change', e => {
+              document.getElementById('timeout-listener').value = `${++count}. "${input.value}"`;
             });
           });
         </script>
