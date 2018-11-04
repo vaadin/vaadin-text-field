@@ -262,6 +262,7 @@ This program is available under Apache License Version 2.0, available at https:/
           input.value = this.value || '';
         }
       }
+      this._changeDispatchedByTimeout = false;
       if (this.commitOnTimeout) {
         this._clearCommitTimeout();
         this._commitTimeoutHandler = window.setTimeout(
@@ -270,26 +271,25 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     _clearCommitTimeout() {
-      this._commitTimeoutHandler && window.clearTimeout(this._commitTimeoutHandler);
+      window.clearTimeout(this._commitTimeoutHandler);
     }
 
     _onCommitTimeout(e) {
-      this._commitTimeoutHandler = null;
       this._dispatchChange(e);
+      this._changeDispatchedByTimeout = true;
     }
 
     _onChange(e) {
+      if (this._changeDispatchedByTimeout) {
+        return;
+      }
       // In the Shadow DOM, the `change` event is not leaked into the
       // ancestor tree, so we must do this manually.
       this._dispatchChange(e);
+      this._clearCommitTimeout();
     }
 
     _dispatchChange(e) {
-      const input = this.focusElement;
-      if (this._lastDispatch === input.value) {
-        return;
-      }
-      this._lastDispatch = input.value;
       const changeEvent = new CustomEvent('change', {
         detail: {
           sourceEvent: e
