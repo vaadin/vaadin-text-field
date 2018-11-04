@@ -86,6 +86,21 @@
           input.dispatchEvent(inputEvent);
           setTimeout(done, field.commitTimeout + maxLateGuess);
         });
+
+        it.only('should not dispatch event if commit-on-timeout switched off meanwhile', done => {
+          const inputEvent = new Event('input');
+          const spy = sinon.spy();
+
+          field.addEventListener('change', spy);
+          input.dispatchEvent(inputEvent);
+          field.commitOnTimeout = false;
+
+          setTimeout(() => {
+            expect(spy.called).to.be.false;
+            done();
+          }, field.commitTimeout + maxLateGuess);
+        });
+
       });
     });
   </script>

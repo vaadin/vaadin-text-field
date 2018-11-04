@@ -230,7 +230,8 @@ This program is available under Apache License Version 2.0, available at https:/
          * cancelling the currently-scheduled event if any.
          */
         commitOnTimeout: {
-          type: Boolean
+          type: Boolean,
+          observer: '_commitOnTimeoutChanged'
         },
 
         /**
@@ -320,6 +321,12 @@ This program is available under Apache License Version 2.0, available at https:/
         this.setAttribute('has-label', '');
       } else {
         this.removeAttribute('has-label');
+      }
+    }
+
+    _commitOnTimeoutChanged(commitOnTimeout) {
+      if (!commitOnTimeout) {
+        this._clearCommitTimeout();
       }
     }
 
