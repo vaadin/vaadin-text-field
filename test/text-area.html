@@ -290,6 +290,20 @@
           - parseFloat(getComputedStyle(inputField).borderBottomWidth)
         ));
       });
+
+      it('should dispatch `iron-resize` event on height change', () => {
+        const spy = sinon.spy();
+        textArea.addEventListener('iron-resize', spy);
+        textArea.value = `
+        there
+        should
+        be
+        a
+        lot
+        of
+        rows`;
+        expect(spy.callCount).to.equal(1);
+      });
     });
   </script>
 </body>
