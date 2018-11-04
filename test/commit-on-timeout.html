@@ -87,7 +87,7 @@
           setTimeout(done, field.commitTimeout + maxLateGuess);
         });
 
-        it.only('should not dispatch event if commit-on-timeout switched off meanwhile', done => {
+        it('should not dispatch event if commit-on-timeout switched off meanwhile', done => {
           const inputEvent = new Event('input');
           const spy = sinon.spy();
 
