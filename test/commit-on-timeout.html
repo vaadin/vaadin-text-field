@@ -1,0 +1,92 @@
+<!doctype html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Commit On Timeout tests</title>
+
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+  <link rel="import" href="../vaadin-text-field.html">
+  <link rel="import" href="../vaadin-text-area.html">
+  <link rel="import" href="../../iron-form/iron-form.html">
+
+</head>
+
+<body>
+  <test-fixture id="vaadin-text-field-default">
+    <template>
+      <vaadin-text-field commit-on-timeout commit-timeout="30"></vaadin-text-field>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="vaadin-text-area-default">
+    <template>
+      <vaadin-text-area commit-on-timeout commit-timeout="30"></vaadin-text-area>
+    </template>
+  </test-fixture>
+
+  <script>
+
+    ['vaadin-text-field', 'vaadin-text-area'].forEach(el => {
+
+      describe(`${el}: commit on timeout`, function () {
+        let field, input;
+        const maxLateGuess = 100;
+
+        beforeEach(function () {
+          field = fixture(`${el}-default`);
+          input = field.focusElement;
+          expect(field.commitOnTimeout).to.be.true;
+          expect(field.commitTimeout).to.be.equal(30);
+        });
+
+        it('should dispatch change event on commit timeout', done => {
+          const inputEvent = new Event('input');
+
+          field.addEventListener('change', e => {
+            expect(e.detail.sourceEvent).to.equal(inputEvent);
+            const elapsed = new Date().getTime() - dispatchTime;
+            expect(elapsed).to
+              .least(field.commitTimeout)
+              .and
+              .most(field.commitTimeout + maxLateGuess);
+            done();
+          });
+
+          const dispatchTime = new Date().getTime();
+          input.dispatchEvent(inputEvent);
+        });
+
+        it('should not dispatch event on timeout if event already dispatched by native change', done => {
+          const inputEvent = new Event('input');
+          const changeEvent = new Event('change');
+          const spy = sinon.spy();
+          const isTimeoutDispatchedEvent = sinon.match(
+            (event) => event.detail.sourceEvent === inputEvent);
+
+          field.addEventListener('change', spy);
+          input.dispatchEvent(inputEvent);
+          input.dispatchEvent(changeEvent);
+          setTimeout(() => {
+            expect(spy.calledWithMatch(isTimeoutDispatchedEvent)).to.be.false;
+            done();
+          }, field.commitTimeout + maxLateGuess);
+        });
+
+        it('should not dispatch native event if event already dispatched by timeout', done => {
+          const inputEvent = new Event('input');
+          const changeEvent = new Event('change');
+
+          field.addEventListener('change', e => {
+            expect(e.detail.sourceEvent).to.equal(inputEvent);
+            setTimeout(() => input.dispatchEvent(changeEvent));
+          });
+
+          input.dispatchEvent(inputEvent);
+          setTimeout(done, field.commitTimeout + maxLateGuess);
+        });
+      });
+    });
+  </script>
+</body>
