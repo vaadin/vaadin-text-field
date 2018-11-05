@@ -16,8 +16,8 @@
           window.addDemoReadyListener('#text-field-change-default', function(document) {
             let count = 0;
             const input = document.getElementById('native');
-            input.addEventListener('change', e => {
-              document.getElementById('native-listener').value = `${++count}. "${input.value}"`;
+            input.addEventListener('change', function(e) {
+              document.getElementById('native-listener').value = ++count + '."' + input.value + '"';
             });
           });
         </script>
@@ -34,8 +34,8 @@
           window.addDemoReadyListener('#text-field-change-timeout', function(document) {
             let count = 0;
             const input = document.getElementById('timeout');
-            input.addEventListener('change', e => {
-              document.getElementById('timeout-listener').value = `${++count}. "${input.value}"`;
+            input.addEventListener('change', function(e) {
+              document.getElementById('timeout-listener').value = ++count + '."' + input.value + '"';
             });
           });
         </script>
