@@ -101,6 +101,22 @@
           }, field.commitTimeout + maxLateGuess);
         });
 
+        // IE11 placeholder bug
+        const IE = navigator.userAgent.match(/Trident/);
+
+        (IE ? it : it.skip)('should not dispatch change event, when IE placeholder bug workaround is activated', done => {
+          const spy = sinon.spy();
+          field.placeholder = 'foo';
+
+          field.addEventListener('change', spy);
+          field.focus();
+
+          setTimeout(() => {
+            expect(spy.called).to.be.false;
+            done();
+          }, field.commitTimeout + maxLateGuess);
+        });
+
       });
     });
   </script>
