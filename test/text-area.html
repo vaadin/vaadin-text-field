@@ -302,6 +302,8 @@
       });
 
       it('should not dispatch `iron-resize` event on init', () => {
+        document.body.addEventListener('iron-resize', spy);
+        fixture('default');
         expect(spy.callCount).to.equal(0);
       });
 
