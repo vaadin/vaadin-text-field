@@ -48,6 +48,18 @@
       </template>
     </vaadin-demo-snippet>
 
+    <h3>Display the Clear Button</h3>
+    <p>Use the <code>clear-button-visible</code> attribute to display the clear button of an individual text area.</p>
+    <vaadin-demo-snippet id="text-area-demos-text-area-with-clear-button">
+      <template preserve-content>
+        <vaadin-text-area
+            label="Can be cleared"
+            value="Clear the content"
+            clear-button-visible>
+        </vaadin-text-area>
+      </template>
+    </vaadin-demo-snippet>
+
   </template>
   <script>
     class TextAreaDemos extends DemoReadyEventEmitter(TextFieldDemo(Polymer.Element)) {
