@@ -83,6 +83,20 @@ This program is available under Apache License Version 2.0, available at https:/
       [part="value"]::-ms-clear {
         display: none;
       }
+
+      [part="clear-button"] {
+        cursor: default;
+      }
+
+      [part="clear-button"]::before {
+        content: "✕";
+      }
+
+      :host([disabled]) [part="clear-button"],
+      :host([readonly]) [part="clear-button"],
+      :host(:not([has-value])) [part="clear-button"] {
+        display: none;
+      }
     </style>
   </template>
 </dom-module>
