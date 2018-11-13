@@ -135,6 +135,14 @@ This program is available under Apache License Version 2.0, available at https:/
         },
 
         /**
+         * Set to true to display the clear icon which clears the input.
+         */
+        clearButtonVisible: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
          * Error to show when the input value is invalid.
          */
         errorMessage: {
@@ -303,6 +311,9 @@ This program is available under Apache License Version 2.0, available at https:/
         this.updateStyles();
       }
 
+      this.$.clearButton.addEventListener('mousedown', this.clear.bind(this));
+      this.addEventListener('keydown', this._onKeyDown.bind(this));
+
       var uniqueId = Vaadin.TextFieldMixin._uniqueId = 1 + Vaadin.TextFieldMixin._uniqueId || 0;
       this._errorId = `${this.constructor.is}-error-${uniqueId}`;
       this._labelId = `${this.constructor.is}-label-${uniqueId}`;
@@ -321,6 +332,17 @@ This program is available under Apache License Version 2.0, available at https:/
      */
     validate() {
       return !(this.invalid = !this.checkValidity());
+    }
+
+    clear(e) {
+      e && e.preventDefault();
+      this.value = '';
+    }
+
+    _onKeyDown(e) {
+      if (e.keyCode === 27 && this.clearButtonVisible) {
+        this.clear();
+      }
     }
 
     _addIEListeners() {
