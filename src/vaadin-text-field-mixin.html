@@ -325,7 +325,7 @@ This program is available under Apache License Version 2.0, available at https:/
         this.updateStyles();
       }
 
-      this.$.clearButton.addEventListener('mousedown', this.clear.bind(this));
+      this.$.clearButton.addEventListener('click', this._onClearButtonClick.bind(this));
       this.addEventListener('keydown', this._onKeyDown.bind(this));
 
       var uniqueId = Vaadin.TextFieldMixin._uniqueId = 1 + Vaadin.TextFieldMixin._uniqueId || 0;
@@ -348,9 +348,14 @@ This program is available under Apache License Version 2.0, available at https:/
       return !(this.invalid = !this.checkValidity());
     }
 
-    clear(e) {
-      e && e.preventDefault();
+    clear() {
       this.value = '';
+    }
+
+    _onClearButtonClick(e) {
+      // NOTE(yuriy): This line won't affect focus on the host. Cannot be properly tested.
+      this.focusElement.focus();
+      this.clear();
     }
 
     _onKeyDown(e) {
