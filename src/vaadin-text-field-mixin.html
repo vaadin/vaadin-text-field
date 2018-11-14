@@ -91,12 +91,6 @@ This program is available under Apache License Version 2.0, available at https:/
       [part="clear-button"]::before {
         content: "✕";
       }
-
-      :host([disabled]) [part="clear-button"],
-      :host([readonly]) [part="clear-button"],
-      :host(:not([has-value])) [part="clear-button"] {
-        display: none;
-      }
     </style>
   </template>
 </dom-module>
@@ -240,6 +234,14 @@ This program is available under Apache License Version 2.0, available at https:/
         },
 
         /**
+         * Specifies that the text field has value.
+         */
+        hasValue: {
+          type: Boolean,
+          reflectToAttribute: true
+        },
+
+        /**
          * When set to true, user is prevented from typing a value that
          * conflicts with the given `pattern`.
          */
@@ -257,6 +259,10 @@ This program is available under Apache License Version 2.0, available at https:/
       };
     }
 
+    static get observers() {
+      return ['_stateChanged(disabled, readonly, clearButtonVisible, hasValue)'];
+    }
+
     get focusElement() {
       return this.root && this.root.querySelector('[part=value]');
     }
@@ -267,6 +273,20 @@ This program is available under Apache License Version 2.0, available at https:/
         if (input.value.length > 0 && !this.checkValidity()) {
           input.value = this.value || '';
         }
+      }
+    }
+
+    // NOTE(yuriy): Workaround needed for IE11 and Edge for proper displaying
+    // of the clear button instead of setting display property for it depending on state.
+    _stateChanged(disabled, readonly, clearButtonVisible, hasValue) {
+      if (!disabled &&
+          !readonly &&
+          clearButtonVisible &&
+          hasValue
+      ) {
+        this.$.clearButton.removeAttribute('hidden');
+      } else {
+        this.$.clearButton.setAttribute('hidden', true);
       }
     }
 
@@ -292,9 +312,9 @@ This program is available under Apache License Version 2.0, available at https:/
         this.validate();
       }
       if (newVal !== '' && newVal != null) {
-        this.setAttribute('has-value', '');
+        this.hasValue = true;
       } else {
-        this.removeAttribute('has-value');
+        this.hasValue = false;
       }
     }
 
