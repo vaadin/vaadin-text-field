@@ -9,6 +9,7 @@
   <link rel="import" href="../../test-fixture/test-fixture.html">
   <link rel="import" href="../vaadin-text-field.html">
   <link rel="import" href="../vaadin-text-area.html">
+  <link rel="import" href="../../polymer/polymer.html">
 
 </head>
 
@@ -62,6 +63,20 @@
         <vaadin-text-area></vaadin-text-field>
       </template>
     </test-fixture>
+
+    <!-- MAGI REMOVE START -->
+    <test-fixture id="a11yTextField">
+      <template>
+        <vaadin-text-field label="foo"></vaadin-text-field>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="a11yTextArea">
+      <template>
+        <vaadin-text-area label="foo"></vaadin-text-area>
+      </template>
+    </test-fixture>
+    <!-- MAGI REMOVE END -->
 
   <script>
     ['vaadin-text-field', 'vaadin-text-area'].forEach(el => {
@@ -185,16 +200,14 @@
             expect(err0.id).not.to.equal(err1.id);
           });
 
-          it('should have unique label identifiers', function() {
-            var label0 = fields[0].root.querySelector('[part=label]');
-            var label1 = fields[1].root.querySelector('[part=label]');
-            expect(label0.id).not.to.equal(label1.id);
-          });
-
         });
 
       });
     });
 
+    /* MAGI REMOVE START */
+    a11ySuite('a11yTextField');
+    a11ySuite('a11yTextArea');
+    /* MAGI REMOVE END */
   </script>
 </body>

@@ -225,10 +225,6 @@ This program is available under Apache License Version 2.0, available at https:/
           type: Boolean
         },
 
-        _labelId: {
-          type: String
-        },
-
         _errorId: {
           type: String
         }
@@ -305,7 +301,6 @@ This program is available under Apache License Version 2.0, available at https:/
 
       var uniqueId = Vaadin.TextFieldMixin._uniqueId = 1 + Vaadin.TextFieldMixin._uniqueId || 0;
       this._errorId = `${this.constructor.is}-error-${uniqueId}`;
-      this._labelId = `${this.constructor.is}-label-${uniqueId}`;
 
       /* istanbul ignore if */
       if (navigator.userAgent.match(/Trident/)) {

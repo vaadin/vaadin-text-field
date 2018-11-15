@@ -11,6 +11,7 @@
     "sinon": false,
     "HTMLImports": false,
     "MockInteractions": false,
+    "a11ySuite": false,
     "animationFrameFlush": false
   }
 }
