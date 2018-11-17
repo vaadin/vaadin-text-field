@@ -73,6 +73,13 @@ gemini.suite('vaadin-text-field', function(rootSuite) {
         .capture('password-field-clear-button');
     });
 
+    gemini.suite(`number-field-${theme}`, function(suite) {
+      suite
+        .setUrl(`vaadin-number-field/number-field.html?theme=${theme}`)
+        .setCaptureElements('#number-field')
+        .capture('number-field');
+    });
+
     gemini.suite(`text-area-1-${theme}`, function(suite) {
       suite
         .setUrl(`vaadin-text-area/text-area-1.html?theme=${theme}`)
@@ -114,12 +121,5 @@ gemini.suite('vaadin-text-field', function(rootSuite) {
         .setCaptureElements('#text-area-clear-button')
         .capture('text-area-clear-button');
     });
-  });
-
-  gemini.suite('number-field', function(suite) {
-    suite
-      .setUrl('number-field.html')
-      .setCaptureElements('#number-field')
-      .capture('number-field');
   });
 });
