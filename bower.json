@@ -8,7 +8,9 @@
   "main": [
     "vaadin-text-field.html",
     "vaadin-password-field.html",
+    "vaadin-number-field.html",
     "vaadin-text-area.html",
+    "theme/material/vaadin-number-field.html",
     "theme/material/vaadin-password-field.html",
     "theme/material/vaadin-text-area.html",
     "theme/material/vaadin-text-field.html"
