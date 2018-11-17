@@ -52,6 +52,8 @@ This program is available under Apache License Version 2.0, available at https:/
 
   <script>
     (function() {
+      let memoizedTemplate;
+
       /**
       * `<vaadin-number-field>` is a Polymer 2 element for number field control in forms.
       *
@@ -64,9 +66,6 @@ This program is available under Apache License Version 2.0, available at https:/
       * @extends Vaadin.TextFieldElement
       * @demo demo/index.html
       */
-
-      let memoizedTemplate;
-
       class NumberFieldElement extends Vaadin.TextFieldElement {
         static get is() {
           return 'vaadin-number-field';
@@ -99,13 +98,24 @@ This program is available under Apache License Version 2.0, available at https:/
               type: Number,
               reflectToAttribue: true,
               observer: '_maxChanged'
+            },
+
+            /**
+             * Specifies the allowed number intervals of the field.
+             */
+            step: {
+              reflectToAttribue: true,
+              observer: '_stepChanged',
+              value: 1
             }
+
           };
         }
 
         ready() {
           super.ready();
           this.focusElement.type = 'number';
+          this.focusElement.addEventListener('change', this.__onInputChange.bind(this));
         }
 
         static get template() {
@@ -131,15 +141,24 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _decreaseValue() {
-          this._allowed(-1) && this.value --;
+          this._allowed(-1) && this.__add(-1);
         }
 
         _increaseValue() {
-          this._allowed(1) && this.value ++;
+          this._allowed(1) && this.__add(1);
         }
 
-        _allowed(increment, value, min, max) {
-          return !this.disabled && (increment < 0
+        __add(sign) {
+          const incr = sign * (this.step || 1);
+          // Behave like native number input adjusting to the next exact multiple of step.
+          this.value = (incr + (incr * Math.floor((parseFloat(this.value || 0) / incr).toFixed(1)))).toFixed(this.__decimals);
+          this.dispatchEvent(new CustomEvent('change', {bubbles: true}));
+          this.focusElement.focus();
+        }
+
+        _allowed(sign, value, min, max) {
+          const incr = sign * (this.step || 1);
+          return !this.disabled && (incr < 0
             ? this.min == null || this.value > this.min
             : this.max == null || this.value < this.max);
         }
@@ -153,10 +172,26 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _valueChanged(newVal, oldVal) {
-          // native input does not accept certain values and converts
-          // from number to string.
+          // native input does not accept certain values, and also converts
+          // from number to string, so we need synchronize value
           this.value = this.focusElement.value;
           super._valueChanged(this.value, oldVal);
+        }
+
+        __onInputChange() {
+          this.checkValidity() && this.__adjustDecimals();
+        }
+
+        __adjustDecimals() {
+          // when step is not an integer, adjust decimals.
+          this.focusElement.value && (this.value = parseFloat(this.focusElement.value).toFixed(this.__decimals));
+        }
+
+        _stepChanged(step) {
+          this.focusElement.step = step;
+          // Compute number of dedimals to display in input based on provided step
+          this.__decimals = String(step).replace(/^\d*\.?(.*)?$/, '$1').length;
+          this.__adjustDecimals();
         }
 
         checkValidity() {
