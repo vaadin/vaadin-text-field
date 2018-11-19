@@ -137,6 +137,42 @@
 
     });
 
+    describe('vaadin-text-area-appear', () => {
+      let textArea;
+
+      function repeatStringTimes(str, num) {
+        let combinedString = '';
+        while (num > 0) {
+          combinedString += str;
+          num --;
+        }
+        return combinedString;
+      }
+
+      beforeEach(() => textArea = fixture('default'));
+
+      it('should update height based on the content each time text area changing the display state', done => {
+        let i = 1, savedHeight = 0;
+
+        const updateContentInterval = setInterval(() => {
+          // Should check the saved height with the next interval to be sure `animationend` was already fired.
+          expect(savedHeight).to.be.below(textArea.clientHeight);
+          savedHeight = textArea.clientHeight;
+          textArea.hidden = true;
+          // Three new lines will expand initial height
+          textArea.value = repeatStringTimes('\n\n\n', i);
+          textArea.hidden = false;
+          i ++;
+          // Add content 5 times and check the size
+          if (i === 5) {
+            clearInterval(updateContentInterval);
+            done();
+          }
+        }, 50);
+      });
+
+    });
+
     describe('multi-line', () => {
       let textArea, input, inputField;
 
