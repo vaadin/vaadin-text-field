@@ -1,0 +1,63 @@
+<!doctype html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>vaadin-text-field tests</title>
+
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+  <link rel="import" href="../vaadin-text-field.html">
+  <link rel="import" href="../../iron-form/iron-form.html">
+
+</head>
+
+<body>
+  <test-fixture id="default">
+    <template>
+      <vaadin-text-field>
+        <input>
+      </vaadin-text-field>
+    </template>
+  </test-fixture>
+
+  <script>
+
+    describe('custom input', function() {
+      var textField, input;
+
+      beforeEach(function() {
+        textField = fixture('default');
+        input = textField.firstChild;
+      });
+
+      it('should set focusElement to the slotted input', () => {
+        expect(textField.focusElement).to.equal(input);
+      });
+
+      it('should update value when slotted input value changes', () => {
+        input.value = 'foo';
+        input.dispatchEvent(new Event('input', {bubbles: true, cancelable: true, composed: true}));
+        expect(textField.value).to.be.equal('foo');
+      });
+
+      it('should dispatch change event on slotted input change', done => {
+        const changeEvent = new Event('change');
+        textField.addEventListener('change', e => {
+          expect(e.detail.sourceEvent).to.equal(changeEvent);
+          done();
+        });
+        input.dispatchEvent(changeEvent);
+      });
+
+      /*
+      TODO: trivial tests to add:
+        - readonly
+        - disabled
+        - required
+        - invalid
+        - pattern
+      */
+    });
+  </script>
+</body>

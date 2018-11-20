@@ -48,7 +48,9 @@ This program is available under Apache License Version 2.0, available at https:/
       }
 
       /* Reset the native input styles */
-      [part="value"] {
+      [part="value"],
+      [part="input-field"] ::slotted(input),
+      [part="input-field"] ::slotted(textarea) {
         -webkit-appearance: none;
         -moz-appearance: none;
         outline: none;
@@ -70,8 +72,10 @@ This program is available under Apache License Version 2.0, available at https:/
         flex: none;
       }
 
-      /* Slotted by vaadin-dropdown-menu-text-field */
       [part="value"],
+      [part="input-field"] ::slotted(input),
+      [part="input-field"] ::slotted(textarea),
+      /* Slotted by vaadin-select-text-field */
       [part="input-field"] ::slotted([part="value"]) {
         flex: auto;
         white-space: nowrap;
@@ -80,7 +84,8 @@ This program is available under Apache License Version 2.0, available at https:/
         height: 100%;
       }
 
-      [part="value"]::-ms-clear {
+      [part="value"]::-ms-clear,
+      [part="input-field"] ::slotted(input)::-ms-clear {
         display: none;
       }
 
@@ -200,6 +205,7 @@ This program is available under Apache License Version 2.0, available at https:/
          */
         readonly: {
           type: Boolean,
+          observer: '_readonlyChanged',
           reflectToAttribute: true
         },
 
@@ -208,6 +214,7 @@ This program is available under Apache License Version 2.0, available at https:/
          */
         required: {
           type: Boolean,
+          observer: '_requiredChanged',
           reflectToAttribute: true
         },
 
@@ -228,6 +235,7 @@ This program is available under Apache License Version 2.0, available at https:/
          */
         invalid: {
           type: Boolean,
+          observer: '_invalidChanged',
           reflectToAttribute: true,
           notify: true,
           value: false
@@ -264,7 +272,18 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     get focusElement() {
-      return this.root && this.root.querySelector('[part=value]');
+      if (!this.shadowRoot) {
+        return;
+      }
+      const slotted = this.querySelector(`${this._slottedTagName}[slot="${this._slottedTagName}"]`);
+      if (slotted) { 
+        return slotted;
+      }
+      return this.shadowRoot.querySelector('[part="value"]');
+    }
+
+    get _slottedTagName() {
+      return 'input';
     }
 
     _onInput(e) {
@@ -272,8 +291,11 @@ This program is available under Apache License Version 2.0, available at https:/
         const input = this.focusElement;
         if (input.value.length > 0 && !this.checkValidity()) {
           input.value = this.value || '';
+          return;
         }
       }
+      this.__userInput = true;
+      this.value = e.target.value;
     }
 
     // NOTE(yuriy): Workaround needed for IE11 and Edge for proper displaying
@@ -308,6 +330,12 @@ This program is available under Apache License Version 2.0, available at https:/
       if (newVal === '' && oldVal === undefined) {
         return;
       }
+      if (this.__userInput) {
+        this.__userInput = false;
+        return;
+      } else {
+        this.focusElement.value = newVal;
+      }
       if (this.invalid) {
         this.validate();
       }
@@ -326,12 +354,43 @@ This program is available under Apache License Version 2.0, available at https:/
       }
     }
 
+    _readonlyChanged(readonly, wasReadOnly) {
+      const input = this.focusElement;
+      if (readonly) {
+        input.setAttribute('readonly', '');
+        input.setAttribute('aria-readonly', '');
+      } else if (wasReadOnly) {
+        input.removeAttribute('readonly');
+        input.removeAttribute('aria-readonly');
+      }
+    }
+
+    _requiredChanged(required, wasRequired) {
+      const input = this.focusElement;
+      if (required) {
+        input.setAttribute('required', '');
+        input.setAttribute('aria-required', '');
+      } else if (wasRequired) {
+        input.removeAttribute('required');
+        input.removeAttribute('aria-required');
+      }
+    }
+
+    _invalidChanged(invalid, wasInvalid) {
+      const input = this.focusElement;
+      if (invalid) {
+        input.setAttribute('aria-invalid', '');
+      } else if (wasInvalid) {
+        input.removeAttribute('aria-invalid');
+      }
+    }
+
     /**
      * Returns true if the current input value satisfies all constraints (if any)
      * @returns {boolean}
      */
     checkValidity() {
-      if (this.required || this.pattern || this.maxlength || this.minlength) {
+      if (this.required || this.focusElement.pattern || this.maxlength || this.minlength) {
         return this.focusElement.checkValidity();
       } else {
         return !this.invalid;
@@ -341,6 +400,11 @@ This program is available under Apache License Version 2.0, available at https:/
 
     ready() {
       super.ready();
+
+      this.focusElement.addEventListener('input', this._onInput.bind(this));
+      this.focusElement.addEventListener('change', this._onChange.bind(this));
+      this.focusElement.addEventListener('blur', this.validate.bind(this));
+
       if (!(window.ShadyCSS && window.ShadyCSS.nativeCss)) {
         this.updateStyles();
       }
