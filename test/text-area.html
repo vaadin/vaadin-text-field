@@ -163,12 +163,12 @@
           textArea.value = repeatStringTimes('\n\n\n', i);
           textArea.hidden = false;
           i ++;
-          // Add content 5 times and check the size
-          if (i === 5) {
+          // Add content 3 times and check the size
+          if (i === 3) {
             clearInterval(updateContentInterval);
             done();
           }
-        }, 100);
+        }, 250);
       });
 
     });
