@@ -130,7 +130,7 @@
             expect(textField._valueClearing).to.be.true;
 
             // Emulates native change coming from input.
-            textField.focusElement.dispatchEvent(new Event('change', {bubbles: true}));
+            textField.focusElement.dispatchEvent(new Event('change', {bubbles: !condition}));
 
             textField.$.clearButton.dispatchEvent(new CustomEvent('click'));
             expect(textField._valueClearing).to.be.false;

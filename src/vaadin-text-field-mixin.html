@@ -350,6 +350,13 @@ This program is available under Apache License Version 2.0, available at https:/
       if (newVal === '' && oldVal === undefined) {
         return;
       }
+
+      if (newVal !== '' && newVal != null) {
+        this.hasValue = true;
+      } else {
+        this.hasValue = false;
+      }
+
       if (this.__userInput) {
         this.__userInput = false;
         return;
@@ -361,11 +368,6 @@ This program is available under Apache License Version 2.0, available at https:/
 
       if (this.invalid) {
         this.validate();
-      }
-      if (newVal !== '' && newVal != null) {
-        this.hasValue = true;
-      } else {
-        this.hasValue = false;
       }
     }
 
@@ -526,7 +528,7 @@ This program is available under Apache License Version 2.0, available at https:/
       this.focusElement.focus();
       this.clear();
       this._valueClearing = false;
-      this.focusElement.dispatchEvent(new Event('change', {bubbles: true}));
+      this.focusElement.dispatchEvent(new Event('change', {bubbles: !this._slottedInput}));
     }
 
     _onKeyDown(e) {
