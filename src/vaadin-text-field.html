@@ -22,30 +22,9 @@ This program is available under Apache License Version 2.0, available at https:/
 
         <slot name="prefix"></slot>
 
-        <input part="value"
-          autocomplete$="[[autocomplete]]"
-          autocorrect$="[[autocorrect]]"
-          autocapitalize$="[[autocapitalize]]"
-          autofocus$="[[autofocus]]"
-          disabled$="[[disabled]]"
-          list="[[list]]"
-          maxlength$="[[maxlength]]"
-          minlength$="[[minlength]]"
-          pattern="[[pattern]]"
-          placeholder$="[[placeholder]]"
-          readonly$="[[readonly]]"
-          aria-readonly$="[[readonly]]"
-          required$="[[required]]"
-          aria-required$="[[required]]"
-          value="{{value::input}}"
-          title="[[title]]"
-          on-blur="validate"
-          on-input="_onInput"
-          on-change="_onChange"
-          aria-describedby$="[[_getActiveErrorId(invalid, errorMessage, _errorId)]]"
-          aria-labelledby$="[[_getActiveLabelId(label, _labelId)]]"
-          aria-invalid$="[[invalid]]"
-        >
+        <slot name="input">
+          <input part="value">
+        </slot>
 
         <div part="clear-button" id="clearButton" role="button" aria-label="Clear"></div>
         <slot name="suffix"></slot>
@@ -84,6 +63,22 @@ This program is available under Apache License Version 2.0, available at https:/
        *   <div slot="prefix">Sent to:</div>
        *   <div slot="suffix">@vaadin.com</div>
        * </vaadin-text-area>
+       * ```
+       *
+       * ### Custom input
+       *
+       * It is possible to use custom input within `<vaadin-text-field>`.
+       * In order for an input to be considered as a custom input, it must have the slot
+       * attribute set to `input`.
+       *
+       * **NOTE:** when using custom input: all properties and attributes that the
+       * `<vaadin-text-field>` has should be defined on the host element. They will be
+       * automatically propagated to the custom input.
+       *
+       * ```html
+       * <vaadin-text-field label="Phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Format: 111-222-3333">
+       *   <input type="tel" slot="input">
+       * </vaadin-text-field>
        * ```
        *
        * ### Styling
