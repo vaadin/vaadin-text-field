@@ -460,20 +460,12 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     _addInputListeners(node) {
-      if (!node) {
-        return;
-      }
-
       node.addEventListener('input', this._boundOnInput);
       node.addEventListener('change', this._boundOnChange);
       node.addEventListener('blur', this._boundOnBlur);
     }
 
     _removeInputListeners(node) {
-      if (!node) {
-        return;
-      }
-
       node.removeEventListener('input', this._boundOnInput);
       node.removeEventListener('change', this._boundOnChange);
       node.removeEventListener('blur', this._boundOnBlur);
@@ -489,7 +481,11 @@ This program is available under Apache License Version 2.0, available at https:/
       const defaultInput = this.shadowRoot.querySelector('[part="value"]');
       this._slottedInput = this.querySelector(`${this._slottedTagName}[slot="${this._slottedTagName}"]`);
       this._addInputListeners(defaultInput);
-      this._addInputListeners(this._slottedInput);
+      this._addIEListeners(defaultInput);
+      if (this._slottedInput) {
+        this._addIEListeners(this._slottedInput);
+        this._addInputListeners(this._slottedInput);
+      }
 
       this.shadowRoot.querySelector('[name="input"], [name="textarea"]')
         .addEventListener('slotchange', this._onSlotChange.bind(this));
@@ -505,8 +501,6 @@ This program is available under Apache License Version 2.0, available at https:/
       var uniqueId = Vaadin.TextFieldMixin._uniqueId = 1 + Vaadin.TextFieldMixin._uniqueId || 0;
       this._errorId = `${this.constructor.is}-error-${uniqueId}`;
       this._labelId = `${this.constructor.is}-label-${uniqueId}`;
-
-      this._addIEListeners(defaultInput);
     }
 
     /**
