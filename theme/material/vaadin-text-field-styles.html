@@ -76,13 +76,17 @@
 
       :host([disabled]) [part="label"],
       :host([disabled]) [part="value"],
+      :host([disabled]) [part="input-field"] ::slotted(input),
+      :host([disabled]) [part="input-field"] ::slotted(textarea),
       :host([disabled]) [part="input-field"] ::slotted([part="value"]) {
         color: var(--material-disabled-text-color);
         -webkit-text-fill-color: var(--material-disabled-text-color);
       }
 
       [part="value"],
-      /* For vaadin-dropdown-menu-text-field */
+      :host([disabled]) [part="input-field"] ::slotted(input),
+      :host([disabled]) [part="input-field"] ::slotted(textarea),
+      /* Slotted by vaadin-select-text-field */
       [part="input-field"] ::slotted([part="value"]) {
         outline: none;
         margin: 0;
@@ -102,45 +106,53 @@
 
       /* TODO: the text opacity should be 42%, but the disabled style is 38%.
       Would need to introduce another property for it if we want to be 100% accurate. */
-      [part="value"]::-webkit-input-placeholder {
+      [part="value"]::-webkit-input-placeholder,
+      [part="input-field"] ::slotted(*)::-webkit-input-placeholder {
         color: var(--material-disabled-text-color);
         transition: opacity 0.175s 0.05s;
         opacity: 1;
       }
 
-      [part="value"]:-ms-input-placeholder {
+      [part="value"]:-ms-input-placeholder,
+      [part="input-field"] ::slotted(*):-ms-input-placeholder {
         color: var(--material-disabled-text-color);
       }
 
-      [part="value"]::-moz-placeholder {
+      [part="value"]::-moz-placeholder,
+      [part="input-field"] ::slotted(*)::-moz-placeholder {
         color: var(--material-disabled-text-color);
         transition: opacity 0.175s 0.05s;
         opacity: 1;
       }
 
-      [part="value"]::placeholder {
+      [part="value"]::placeholder,
+      [part="input-field"] ::slotted(*)::placeholder {
         color: var(--material-disabled-text-color);
         transition: opacity 0.175s 0.1s;
         opacity: 1;
       }
 
-      :host([has-label]:not([focused]):not([invalid]):not([theme="always-float-label"])) [part="value"]::-webkit-input-placeholder {
+      :host([has-label]:not([focused]):not([invalid]):not([theme="always-float-label"])) [part="value"]::-webkit-input-placeholder,
+      :host([has-label]:not([focused]):not([invalid]):not([theme="always-float-label"])) ::slotted(*)::-webkit-input-placeholder {
         opacity: 0;
         transition-delay: 0;
       }
 
-      :host([has-label]:not([focused]):not([invalid]):not([theme="always-float-label"])) [part="value"]::-moz-placeholder {
+      :host([has-label]:not([focused]):not([invalid]):not([theme="always-float-label"])) [part="value"]::-moz-placeholder,
+      :host([has-label]:not([focused]):not([invalid]):not([theme="always-float-label"])) ::slotted(*)::-moz-placeholder {
         opacity: 0;
         transition-delay: 0;
       }
 
-      :host([has-label]:not([focused]):not([invalid]):not([theme="always-float-label"])) [part="value"]::placeholder {
+      :host([has-label]:not([focused]):not([invalid]):not([theme="always-float-label"])) [part="value"]::placeholder,
+      :host([has-label]:not([focused]):not([invalid]):not([theme="always-float-label"])) ::slotted(*)::placeholder {
         opacity: 0;
         transition-delay: 0;
       }
 
       /* IE11 doesn’t show the placeholder when the input is focused, so it’s basically useless for this theme */
-      :host([has-label]) [part="value"]:-ms-input-placeholder {
+      :host([has-label]) [part="value"]:-ms-input-placeholder,
+      :host([has-label]) ::slotted(*):-ms-input-placeholder {
         opacity: 0;
       }
 
@@ -209,7 +221,7 @@
 
       /* Slotted content */
 
-      [part="input-field"] ::slotted(*:not([part="value"])) {
+      [part="input-field"] ::slotted(*:not([part="value"]):not(input):not(textarea)) {
         color: var(--material-secondary-text-color);
       }
 
