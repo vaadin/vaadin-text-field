@@ -1,0 +1,67 @@
+<dom-module id="text-field-custom-demos">
+  <template>
+    <style include="vaadin-component-demo-shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+    <h3>Number Input</h3>
+    <p>
+      <b>Note:</b> All properties and attributes that `vaadin-text-field` has should be defined on the host.
+    </p>
+    <vaadin-demo-snippet id="text-field-custom-demos-phone">
+      <template preserve-content>
+        <vaadin-text-field label="Amount" pattern="^[1-9]{1,2}[0]?|100" prevent-invalid-input value="0">
+          <input type="number" slot="input" min="0" max="100" step="2">
+        </vaadin-text-field>
+      </template>
+    </vaadin-demo-snippet>
+
+    <h3>Email Input</h3>
+    <vaadin-demo-snippet id="text-field-custom-demos-email">
+      <template preserve-content>
+        <vaadin-text-field label="Email" required error-message="Please enter valid email"  pattern="^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$">
+          <input type="email" slot="input">
+        </vaadin-text-field>
+      </template>
+    </vaadin-demo-snippet>
+
+    <h3>Phone Input</h3>
+    <vaadin-demo-snippet id="text-field-custom-demos-phone">
+      <template preserve-content>
+        <vaadin-text-field label="Phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="Format: 111-222-3333">
+          <input type="tel" slot="input">
+        </vaadin-text-field>
+      </template>
+    </vaadin-demo-snippet>
+
+    <h3>Password Field</h3>
+    <vaadin-demo-snippet id="text-field-custom-demos-pass">
+      <template preserve-content>
+        <vaadin-password-field label="Password">
+          <input type="password" slot="input">
+        </vaadin-password-field>
+      </template>
+    </vaadin-demo-snippet>
+
+    <h3>Textarea</h3>
+    <vaadin-demo-snippet id="text-field-custom-demos-textarea">
+      <template preserve-content>
+        <vaadin-text-area label="Textarea">
+          <textarea slot="textarea"></textarea>
+        </vaadin-text-area>
+      </template>
+    </vaadin-demo-snippet>
+
+
+  </template>
+  <script>
+    class TextFieldCustomDemos extends DemoReadyEventEmitter(TextFieldDemo(Polymer.Element)) {
+      static get is() {
+        return 'text-field-custom-demos';
+      }
+    }
+    customElements.define(TextFieldCustomDemos.is, TextFieldCustomDemos);
+  </script>
+</dom-module>
