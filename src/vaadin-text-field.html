@@ -81,6 +81,23 @@ This program is available under Apache License Version 2.0, available at https:/
        * </vaadin-text-field>
        * ```
        *
+       * **NOTE:** when using custom input: in order to apply lumo or material theme styles to the placeholder
+       * of the slotted input you should explicitly import a file
+       * `theme/lumo/vaadin-placeholder-styles.html` or `theme/material/vaadin-placeholder-styles.html`
+       * and include styles into the same scope as `vaadin-text-field`:
+       *
+       * ```html
+       * <custom-style>
+       *   <style include="lumo-placeholder-styles"></style>
+       * </custom-style>
+       *
+       * <!--OR-->
+       *
+       * <custom-style>
+       *   <style include="material-placeholder-styles"></style>
+       * </custom-style>
+       * ```
+       *
        * ### Styling
        *
        * The following custom properties are available for styling:

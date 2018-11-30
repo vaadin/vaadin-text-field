@@ -115,6 +115,23 @@ This program is available under Apache License Version 2.0, available at https:/
        * </vaadin-text-area>
        * ```
        *
+       * **NOTE:** when using custom textarea: in order to apply lumo or material theme styles to the placeholder
+       * of the slotted textarea you should explicitly import a file
+       * `theme/lumo/vaadin-placeholder-styles.html` or `theme/material/vaadin-placeholder-styles.html`
+       * and include styles into the same scope as `vaadin-text-area`:
+       *
+       * ```html
+       * <custom-style>
+       *   <style include="lumo-placeholder-styles"></style>
+       * </custom-style>
+       *
+       * <!--OR-->
+       *
+       * <custom-style>
+       *   <style include="material-placeholder-styles"></style>
+       * </custom-style>
+       * ```
+       *
        * ### Styling
        *
        * The following shadow DOM parts are available for styling:
