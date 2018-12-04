@@ -8,9 +8,15 @@
 
     <h3>Custom Input</h3>
     <p>
+      `vaadin-text-field` has major part of the properties and attributes available on the native input.
+    </p>
+    <p>
+      <b>Note:</b> All properties and attributes that `vaadin-text-field` has should be defined on the host.
+    </p>
+    <p>
       <b>Note:</b> In order to apply lumo or material theme styles to the placeholder
       of the slotted input you should explicitly import a file
-      `theme/lumo/vaadin-placeholder-styles.html` or `theme/material/vaadin-placeholder-styles.html`
+      theme/lumo/vaadin-placeholder-styles.html or theme/material/vaadin-placeholder-styles.html
       and include styles into the same scope as `vaadin-text-field`:
       <code>&lt;custom-style&gt;&lt;style include="lumo-placeholder-styles"&gt;&lt;/style&gt;&lt;/custom-style&gt;</code> OR 
       <code>&lt;custom-style&gt;&lt;style include="material-placeholder-styles"&gt;&lt;/style&gt;&lt;/custom-style&gt;</code>
@@ -20,23 +26,12 @@
         <custom-style>
           <style include="lumo-placeholder-styles"></style>
         </custom-style>
-        <vaadin-text-field label="Name">
+        <vaadin-text-field label="Name" placeholder="Name">
           <input type="text" slot="input">
         </vaadin-text-field>
       </template>
     </vaadin-demo-snippet>
 
-    <h3>Number Input</h3>
-    <p>
-      <b>Note:</b> All properties and attributes that `vaadin-text-field` has should be defined on the host.
-    </p>
-    <vaadin-demo-snippet id="text-field-custom-demos-phone">
-      <template preserve-content>
-        <vaadin-text-field label="Amount" pattern="^[1-9]{1,2}[0]?|100" prevent-invalid-input value="0">
-          <input type="number" slot="input" min="0" max="100" step="2">
-        </vaadin-text-field>
-      </template>
-    </vaadin-demo-snippet>
 
     <h3>Email Input</h3>
     <vaadin-demo-snippet id="text-field-custom-demos-email">
