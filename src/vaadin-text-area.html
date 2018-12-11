@@ -99,39 +99,6 @@ This program is available under Apache License Version 2.0, available at https:/
        * </vaadin-text-area>
        * ```
        *
-       * ### Custom textarea
-       *
-       * It is possible to use custom textarea within `<vaadin-text-area>`.
-       * In order for an textarea to be considered as a custom textarea, it must have the slot
-       * attribute set to `textarea`.
-       *
-       * **NOTE:** when using custom textarea: all properties and attributes that the
-       * `<vaadin-text-area>` has should be defined on the host element. They will be
-       * automatically propagated to the custom textarea.
-       *
-       * ```html
-       * <vaadin-text-area label="Textarea">
-       *   <textarea slot="textarea"></textarea>
-       * </vaadin-text-area>
-       * ```
-       *
-       * **NOTE:** when using custom textarea: in order to apply lumo or material theme styles to the placeholder
-       * of the slotted textarea you should explicitly import a file
-       * `theme/lumo/vaadin-placeholder-styles.html` or `theme/material/vaadin-placeholder-styles.html`
-       * and include styles into the same scope as `vaadin-text-area`:
-       *
-       * ```html
-       * <custom-style>
-       *   <style include="lumo-placeholder-styles"></style>
-       * </custom-style>
-       *
-       * <!--OR-->
-       *
-       * <custom-style>
-       *   <style include="material-placeholder-styles"></style>
-       * </custom-style>
-       * ```
-       *
        * ### Styling
        *
        * The following shadow DOM parts are available for styling:

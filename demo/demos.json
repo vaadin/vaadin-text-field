@@ -32,16 +32,6 @@
       }
     },
     {
-      "name": "Custom Input",
-      "url": "text-field-custom-demos",
-      "src": "text-field-custom-demos.html",
-      "meta": {
-        "title": "Vaadin Text Field Custom Input Examples",
-        "description": "",
-        "image": ""
-      }
-    },
-    {
       "name": "RTL",
       "url": "text-field-rtl-demos",
       "src": "text-field-rtl-demos.html",
