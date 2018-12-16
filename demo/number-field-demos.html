@@ -1,4 +1,4 @@
-<dom-module id="text-field-number-demos">
+<dom-module id="number-field-demos">
   <template>
     <style include="vaadin-component-demo-shared-styles">
       :host {
@@ -6,32 +6,32 @@
       }
     </style>
 
-    <p>The <code>&lt;vaadin-number-field&gt;</code> element has all the same features as the <code>&lt;vaadin-text-field&gt;</code> element plus the additional features listed on this page.</p>
+    <p>The <code>&lt;vaadin-number-field&gt;</code> element has all the same features as the <code>&lt;vaadin-text-field&gt;</code> element plus number validation and the additional features listed on this page.</p>
 
 
     <h3>Basic number field</h3>
-    <vaadin-demo-snippet id="text-field-number-demos-basic">
+    <vaadin-demo-snippet id="number-field-demos-basic">
       <template preserve-content>
-        <vaadin-number-field></vaadin-number-field>
+        <vaadin-number-field label="Years of expertise"></vaadin-number-field>
       </template>
     </vaadin-demo-snippet>
 
     <h3>Number field with controls</h3>
-    <vaadin-demo-snippet id="text-field-number-demos-with-controls">
+    <vaadin-demo-snippet id="number-field-demos-with-controls">
       <template preserve-content>
         <vaadin-number-field has-controls></vaadin-number-field>
       </template>
     </vaadin-demo-snippet>
 
     <h3>Number field with value limits</h3>
-    <vaadin-demo-snippet id="text-field-number-demos-with-limits">
+    <vaadin-demo-snippet id="number-field-demos-with-limits">
       <template preserve-content>
         <vaadin-number-field value="1" min="1" max="10" has-controls></vaadin-number-field>
       </template>
     </vaadin-demo-snippet>
 
     <h3>Number field with step</h3>
-    <vaadin-demo-snippet id="text-field-number-demos-with-step">
+    <vaadin-demo-snippet id="number-field-demos-with-step">
       <template preserve-content>
         <vaadin-number-field step="0.2" min="0" max="10" has-controls></vaadin-number-field>
       </template>
@@ -39,11 +39,11 @@
 
   </template>
   <script>
-    class TextFieldNumberDemos extends DemoReadyEventEmitter(TextFieldDemo(Polymer.Element)) {
+    class NumberFieldDemos extends DemoReadyEventEmitter(TextFieldDemo(Polymer.Element)) {
       static get is() {
-        return 'text-field-number-demos';
+        return 'number-field-demos';
       }
     }
-    customElements.define(TextFieldNumberDemos.is, TextFieldNumberDemos);
+    customElements.define(NumberFieldDemos.is, NumberFieldDemos);
   </script>
 </dom-module>
