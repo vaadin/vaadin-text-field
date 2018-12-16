@@ -53,8 +53,8 @@
     },
     {
       "name": "Number Field",
-      "url": "text-field-number-demos",
-      "src": "text-field-number-demos.html",
+      "url": "number-field-demos",
+      "src": "number-field-demos.html",
       "meta": {
         "title": "Vaadin Number Field Examples",
         "description": "",

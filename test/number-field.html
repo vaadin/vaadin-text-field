@@ -70,18 +70,22 @@
           expect(numberField.value).to.be.equal('1');
         });
 
-        it('should focus input and dispatch change event when a button is clicked', () => {
+        it('should dispatch change event when a button is clicked', () => {
           const changeSpy = sinon.spy();
           numberField.addEventListener('change', changeSpy);
 
-          let hasFocus;
+          increaseButton.click();
+          expect(changeSpy.callCount).to.equal(1);
+        });
+
+        it('should not focus input when a button is clicked', () => {
+          let hasFocus = false;
           input.focus = () => {
             hasFocus = true;
           };
 
           increaseButton.click();
-          expect(hasFocus).to.be.true;
-          expect(changeSpy.callCount).to.equal(1);
+          expect(hasFocus).to.be.false;
         });
 
         it('should increase value by 0.2 when step is 0.2 and increaseButton is clicked', () => {
@@ -94,8 +98,8 @@
         });
 
         it('should adjust value to exact step when increaseButton is clicked', () => {
-          numberField.value = 0.5;
           numberField.step = 0.2;
+          numberField.value = 0.5;
 
           increaseButton.click();
 
@@ -144,7 +148,6 @@
           expect(numberField.value).to.be.equal('0');
         });
 
-
         it('should not decrease value when decreaseButton is clicked and min value is reached', () => {
           numberField.value = 0;
           numberField.min = 0;
@@ -186,8 +189,7 @@
       });
 
       describe('input validation', () => {
-
-        it('should be valid with numeric vaules', () => {
+        it('should be valid with numeric values', () => {
           expect(numberField.validate()).to.be.true;
 
           numberField.value = '1';
