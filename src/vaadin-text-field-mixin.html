@@ -307,6 +307,13 @@ This program is available under Apache License Version 2.0, available at https:/
         const input = this.focusElement;
         if (input.value.length > 0 && !this.checkValidity()) {
           input.value = this.value || '';
+          // add input-prevented attribute for 200ms
+          this.setAttribute('input-prevented', '');
+          this._inputDebouncer = Polymer.Debouncer.debounce(
+            this._inputDebouncer,
+            Polymer.Async.timeOut.after(200), () => {
+              this.removeAttribute('input-prevented');
+            });
           return;
         }
       }
