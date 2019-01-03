@@ -221,11 +221,13 @@
           it('default value of autoselect should be false', function() {
             expect(textField.autoselect).to.be.false;
           });
+
           it('should not select content on focus when autoselect is false', function() {
             textField.value = '123';
             textField.focusElement.dispatchEvent(new CustomEvent('focus', {bubbles: false}));
             expect(textField.focusElement.selectionEnd - textField.focusElement.selectionStart).to.equal(0);
           });
+
           it('should select content on focus when autoselect is true', function() {
             textField.value = '123';
             textField.autoselect = true;
