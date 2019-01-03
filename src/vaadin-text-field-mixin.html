@@ -163,6 +163,14 @@ This program is available under Apache License Version 2.0, available at https:/
         },
 
         /**
+         * Specify that the value should be automatically selected when the field gains focus.
+         */
+        autoselect: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
          * Set to true to display the clear icon which clears the input.
          */
         clearButtonVisible: {
@@ -390,10 +398,12 @@ This program is available under Apache License Version 2.0, available at https:/
       if (slotted && !this._slottedInput) {
         this._validateSlottedValue(slotted);
         this._addInputListeners(slotted);
+        this._addAutoselectListener(slotted);
         this._addIEListeners(slotted);
         this._slottedInput = slotted;
       } else if (!this._slottedInput) {
         this._removeInputListeners(this._slottedInput);
+        this._removeAutoselectListener(this._slottedInput);
         this._removeIEListeners(this._slottedInput);
         this._slottedInput = undefined;
       }
@@ -471,20 +481,31 @@ This program is available under Apache License Version 2.0, available at https:/
       node.removeEventListener('blur', this._boundOnBlur);
     }
 
+    _addAutoselectListener(node) {
+      node.addEventListener('focus', this._boundAutoselect);
+    }
+
+    _removeAutoselectListener(node) {
+      node.removeEventListener('focus', this._boundAutoselect);
+    }
+
     ready() {
       super.ready();
 
       this._boundOnInput = this._onInput.bind(this);
       this._boundOnChange = this._onChange.bind(this);
       this._boundOnBlur = this.validate.bind(this);
+      this._boundAutoselect = this._autoselect.bind(this);
 
       const defaultInput = this.shadowRoot.querySelector('[part="value"]');
       this._slottedInput = this.querySelector(`${this._slottedTagName}[slot="${this._slottedTagName}"]`);
       this._addInputListeners(defaultInput);
+      this._addAutoselectListener(defaultInput);
       this._addIEListeners(defaultInput);
       if (this._slottedInput) {
         this._addIEListeners(this._slottedInput);
         this._addInputListeners(this._slottedInput);
+        this._addAutoselectListener(this._slottedInput);
       }
 
       this.shadowRoot.querySelector('[name="input"], [name="textarea"]')
@@ -515,6 +536,12 @@ This program is available under Apache License Version 2.0, available at https:/
 
     clear() {
       this.value = '';
+    }
+
+    _autoselect() {
+      if (this.autoselect) {
+        this.focusElement.select();
+      }
     }
 
     _onClearButtonClick(e) {
