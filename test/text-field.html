@@ -19,6 +19,14 @@
     </template>
   </test-fixture>
 
+  <test-fixture id="wrapped">
+    <template>
+      <div>
+        <vaadin-text-field></vaadin-text-field>
+      </div>
+    </template>
+  </test-fixture>
+
   <script>
 
     describe('properties', function() {
@@ -231,6 +239,23 @@
       it('should not throw an error when using focus() to a newly created element', () => {
         // No expect needed as an error is thrown when focusing undefined element
         document.createElement('vaadin-text-field').focus();
+      });
+    });
+
+    describe('wrapped', () => {
+      var wrapper, textField, inputField;
+
+      beforeEach(() => {
+        wrapper = fixture('wrapped');
+        textField = wrapper.firstElementChild;
+        inputField = textField.shadowRoot.querySelector('[part=input-field]');
+      });
+
+      it('should not grow the input field inside a flex container', () => {
+        const fieldHeight = inputField.clientHeight;
+        wrapper.style.display = 'flex';
+        wrapper.style.height = '100px';
+        expect(inputField.clientHeight).to.equal(fieldHeight);
       });
     });
   </script>
