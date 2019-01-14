@@ -47,6 +47,7 @@ This program is available under Apache License Version 2.0, available at https:/
       disabled$="[[!_allowed(-1, value, min, max)]]"
       part="decrease-button"
       on-click="_decreaseValue"
+      on-touchend="_decreaseButtonTouchend"
       hidden$="[[!hasControls]]">
     </div>
 
@@ -54,6 +55,7 @@ This program is available under Apache License Version 2.0, available at https:/
       disabled$="[[!_allowed(1, value, min, max)]]"
       part="increase-button"
       on-click="_increaseValue"
+      on-touchend="_increaseButtonTouchend"
       hidden$="[[!hasControls]]">
     </div>
   </template>
@@ -125,6 +127,18 @@ This program is available under Apache License Version 2.0, available at https:/
           this.__previousValidInput = this.value || '';
           this.focusElement.type = 'number';
           this.focusElement.addEventListener('change', this.__onInputChange.bind(this));
+        }
+
+        _decreaseButtonTouchend(e) {
+          // Cancel the following click and focus events
+          e.preventDefault();
+          this._decreaseValue();
+        }
+
+        _increaseButtonTouchend(e) {
+          // Cancel the following click and focus events
+          e.preventDefault();
+          this._increaseValue();
         }
 
         static get template() {

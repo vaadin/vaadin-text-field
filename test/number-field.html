@@ -186,6 +186,19 @@
           decreaseButton.click();
           expect(numberField.value).to.be.equal('0');
         });
+
+        it('should prevent touchend event on value control buttons', () => {
+          numberField.value = 0;
+          let e = new CustomEvent('touchend', {cancelable: true});
+          increaseButton.dispatchEvent(e);
+          expect(e.defaultPrevented).to.be.true;
+          expect(numberField.value).to.equal('1');
+
+          e = new CustomEvent('touchend', {cancelable: true});
+          decreaseButton.dispatchEvent(e);
+          expect(e.defaultPrevented).to.be.true;
+          expect(numberField.value).to.equal('0');
+        });
       });
 
       describe('input validation', () => {
