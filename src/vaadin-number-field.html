@@ -39,6 +39,7 @@ This program is available under Apache License Version 2.0, available at https:/
       }
 
       [part="value"] {
+        /* Older Firefox versions (v47.0) requires !important */
         -moz-appearance: textfield !important;
       }
     </style>
@@ -195,11 +196,15 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _valueChanged(newVal, oldVal) {
-          if (!isNaN(newVal) && !isNaN(parseFloat(newVal).toFixed(this.__decimals))) {
-            this.value = parseFloat(newVal).toFixed(this.__decimals).toString();
-          } else {
-            this.value = this.focusElement.value = '';
+          // Validate value to be numeric
+          if (newVal && isNaN(parseFloat(newVal).toFixed(this.__decimals))) {
+            this.value = '';
+          } else if (!isNaN(parseFloat(this.value)) &&
+            parseFloat(this.value) !== parseFloat(parseFloat(this.value).toFixed(this.__decimals))) {
+            // Validate correct decimals
+            this.value = parseFloat(parseFloat(this.value).toFixed(this.__decimals));
           }
+
           super._valueChanged(this.value, oldVal);
         }
 
@@ -225,28 +230,6 @@ This program is available under Apache License Version 2.0, available at https:/
             this.invalid = !this.focusElement.checkValidity();
           }
           return super.checkValidity();
-        }
-
-        _onInput(e) {
-          const input = this.focusElement;
-          if (e.data === '-' && (this.__previousValidInput === '-' || !this.__previousValidInput)) {
-            // Allow minus sign (-) as the first character
-            this.__previousValidInput = '-';
-          } else if (input.validity && input.validity.badInput) {
-            // Browser deems input value as invalid
-            if (this.__previousValidInput.length === 2 && this.__previousValidInput.substring(0, 1) === '-') {
-              // Special case when pressing backspace for example -5 value
-              this.__previousValidInput = '-';
-            } else {
-              // Don't allow inserted value
-              input.value = this.__previousValidInput;
-            }
-          } else {
-            // Allow inserted value
-            this.__previousValidInput = e.target.value;
-          }
-
-          super._onInput(e);
         }
       }
 
