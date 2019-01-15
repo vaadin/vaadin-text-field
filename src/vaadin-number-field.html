@@ -23,6 +23,14 @@ This program is available under Apache License Version 2.0, available at https:/
         content: "+";
       }
 
+      [part="decrease-button"],
+      [part="increase-button"] {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
       /* Hide the native arrow icons */
       [part="value"]::-webkit-outer-spin-button,
       [part="value"]::-webkit-inner-spin-button {
@@ -31,7 +39,8 @@ This program is available under Apache License Version 2.0, available at https:/
       }
 
       [part="value"] {
-        -moz-appearance: textfield;
+        /* Older Firefox versions (v47.0) requires !important */
+        -moz-appearance: textfield !important;
       }
     </style>
 
@@ -39,6 +48,7 @@ This program is available under Apache License Version 2.0, available at https:/
       disabled$="[[!_allowed(-1, value, min, max)]]"
       part="decrease-button"
       on-click="_decreaseValue"
+      on-touchend="_decreaseButtonTouchend"
       hidden$="[[!hasControls]]">
     </div>
 
@@ -46,6 +56,7 @@ This program is available under Apache License Version 2.0, available at https:/
       disabled$="[[!_allowed(1, value, min, max)]]"
       part="increase-button"
       on-click="_increaseValue"
+      on-touchend="_increaseButtonTouchend"
       hidden$="[[!hasControls]]">
     </div>
   </template>
@@ -114,8 +125,21 @@ This program is available under Apache License Version 2.0, available at https:/
 
         ready() {
           super.ready();
+          this.__previousValidInput = this.value || '';
           this.focusElement.type = 'number';
           this.focusElement.addEventListener('change', this.__onInputChange.bind(this));
+        }
+
+        _decreaseButtonTouchend(e) {
+          // Cancel the following click and focus events
+          e.preventDefault();
+          this._decreaseValue();
+        }
+
+        _increaseButtonTouchend(e) {
+          // Cancel the following click and focus events
+          e.preventDefault();
+          this._increaseValue();
         }
 
         static get template() {
@@ -151,9 +175,9 @@ This program is available under Apache License Version 2.0, available at https:/
         __add(sign) {
           const incr = sign * (this.step || 1);
           // Behave like native number input adjusting to the next exact multiple of step.
-          this.value = (incr + (incr * Math.floor((parseFloat(this.value || 0) / incr).toFixed(1)))).toFixed(this.__decimals);
+          this.value = this.focusElement.value =
+            (incr + (incr * Math.floor((parseFloat(this.value || 0) / incr).toFixed(1)))).toFixed(this.__decimals);
           this.dispatchEvent(new CustomEvent('change', {bubbles: true}));
-          this.focusElement.focus();
         }
 
         _allowed(sign, value, min, max) {
@@ -172,9 +196,15 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _valueChanged(newVal, oldVal) {
-          // native input does not accept certain values, and also converts
-          // from number to string, so we need synchronize value
-          this.value = this.focusElement.value;
+          // Validate value to be numeric
+          if (newVal && isNaN(parseFloat(newVal).toFixed(this.__decimals))) {
+            this.value = '';
+          } else if (!isNaN(parseFloat(this.value)) &&
+            parseFloat(this.value) !== parseFloat(parseFloat(this.value).toFixed(this.__decimals))) {
+            // Validate correct decimals
+            this.value = parseFloat(parseFloat(this.value).toFixed(this.__decimals));
+          }
+
           super._valueChanged(this.value, oldVal);
         }
 
