@@ -246,6 +246,20 @@
           numberField.value = '5';
           expect(numberField.validate(), 'value should not be greater than max').to.be.false;
         });
+
+        it('should prevent setting value over max', () => {
+          numberField.max = 2;
+          numberField.value = 5;
+          numberField.focusElement.dispatchEvent(new Event('change'));
+          expect(numberField.value).to.be.equal('2');
+        });
+
+        it('should prevent setting value under min', () => {
+          numberField.min = 2;
+          numberField.value = 1;
+          numberField.focusElement.dispatchEvent(new Event('change'));
+          expect(numberField.value).to.be.equal('2');
+        });
       });
 
     });

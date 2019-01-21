@@ -209,6 +209,12 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         __onInputChange() {
+          if (this.min && this.value < this.min) {
+            this.value = this.min;
+          } else if (this.max && this.value > this.max) {
+            this.value = this.max;
+          }
+
           this.checkValidity() && this.__adjustDecimals();
         }
 
