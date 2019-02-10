@@ -11,6 +11,11 @@
     window.addEventListener('WebComponentsReady', function() {
       setTimeout(function() {
         window.ShadyDOM && window.ShadyDOM.flush(); // Force DOM composition
+
+        // Scroll fixed height text-area to bottom
+        const fixedHeightInputField = document.querySelector('#fixed-height').shadowRoot.querySelector('[part=input-field]');
+        fixedHeightInputField.scrollTop = fixedHeightInputField.scrollHeight;
+
         window.webComponentsAreReady = true; // Checked in gemini before capture callback
       });
     });
@@ -33,8 +38,6 @@
 
   <form>
     <fieldset id="text-area">
-      label and value: <vaadin-text-area label="Foo" value="Bar"></vaadin-text-area>
-      <p>
       prefix and suffix:
         <vaadin-text-area label="Foo" value="Bar">
           <span slot="prefix">prefix</span>
@@ -42,6 +45,15 @@
         </vaadin-text-area>
       <p>
       long: <vaadin-text-area label="Foo" value="Bar" style="width: 300px;"></vaadin-text-area>
+      <p> fixed height: <vaadin-text-area id="fixed-height" class="hidden-scrollbar" style="height: 150px;" value="
+      Go Vaadin
+      Go
+      Go
+      Go
+      Go
+      Go
+      Go
+      Go"></vaadin-text-area>
     </fieldset>
   </form>
 

@@ -5,6 +5,10 @@
         font-size: 0;
         height: 24px;
       }
+
+      :host(.hidden-scrollbar) [part="input-field"]::-webkit-scrollbar {
+        display: none;
+      }
     </style>
   </template>
 </dom-module>
