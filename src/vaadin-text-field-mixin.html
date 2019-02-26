@@ -326,6 +326,7 @@ This program is available under Apache License Version 2.0, available at https:/
     _onInput(e) {
       if (this.__preventInput) {
         e.stopImmediatePropagation();
+        this.__preventInput = false;
         return;
       }
 
