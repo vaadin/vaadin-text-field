@@ -353,7 +353,7 @@
 
           textField.dispatchEvent(new Event('focusin'));
 
-          setTimeout(() => {
+          requestAnimationFrame(() => {
             input.value = 'a';
             const inputEvent = new Event('input');
             input.dispatchEvent(inputEvent);
