@@ -6,6 +6,7 @@
       [part="input-field"] {
         height: auto;
         box-sizing: border-box;
+        position: static;
       }
 
       /* NOTE(platosha): double attribute workarounds specifity for Firefox */
@@ -18,6 +19,11 @@
       [part="input-field"] ::slotted(textarea) {
         white-space: pre-wrap; /* override `nowrap` from <vaadin-text-field> */
         align-self: stretch; /* override `baseline` from <vaadin-text-field> */
+      }
+
+      :host([invalid][error-message]:not([error-message=""])) [part="input-field"]::after,
+      :host([invalid][error-message]:not([error-message=""])) [part="input-field"]::before {
+        bottom: 18px;
       }
     </style>
   </template>
