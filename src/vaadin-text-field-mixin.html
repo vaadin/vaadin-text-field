@@ -472,7 +472,8 @@ This program is available under Apache License Version 2.0, available at https:/
         return;
       }
 
-      if (node.hasAttribute(name) === !value) {
+      if (node.hasAttribute(name) === !value ||
+         (typeof node.getAttribute(name) === 'string' && node.getAttribute(name) !== value)) {
         if (value) {
           node.setAttribute(name, (typeof value === 'boolean') ? '' : value);
         } else {
