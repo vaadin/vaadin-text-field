@@ -220,23 +220,23 @@ This program is available under Apache License Version 2.0, available at https:/
 
           if (initialIncr > 0) {
             const validMin = this.min == null || this._getValue(initialIncr) > this.min;
-            const validMax = this.max == null || this.value < this.max;
+            const validMax = this.max == null || this._getValue(initialIncr) < this.max;
 
             if (validMin && validMax) {
               return sign;
             } else if (!validMax) {
-              return false;
+              return this.max / initialIncr;
             } else if (!validMin) {
               return this.min / initialIncr;
             }
           } else {
-            const validMin = this.min == null || this.value > this.min;
+            const validMin = this.min == null || this._getValue(initialIncr) > this.min;
             const validMax = this.max == null || this._getValue(initialIncr) < this.max;
 
             if (validMin && validMax) {
               return sign;
             } else if (!validMin) {
-              return false;
+              return this.min / initialIncr;
             } else if (!validMax) {
               return this.max / (this.step || 1);
             }

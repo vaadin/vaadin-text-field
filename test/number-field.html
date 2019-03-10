@@ -251,6 +251,26 @@
 
           expect(numberField.value).to.be.equal(numberField.min);
         });
+
+        it('should decrease value to min value when step is over the min value', () => {
+          numberField.value = 2;
+          numberField.min = 1;
+          numberField.step = 10;
+
+          decreaseButton.click();
+
+          expect(numberField.value).to.be.equal('1');
+        });
+
+        it('should increase value to max value when step is over the max value', () => {
+          numberField.value = 1;
+          numberField.max = 2;
+          numberField.step = 10;
+
+          increaseButton.click();
+
+          expect(numberField.value).to.be.equal('2');
+        });
       });
 
       describe('input validation', () => {
