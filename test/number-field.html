@@ -203,6 +203,41 @@
           expect(numberField.value).to.be.equal('0');
         });
 
+        it('should not change value when min limit is reached and minus button is clicked', () => {
+          numberField.min = -1;
+          numberField.value = 0;
+
+          for (var i = 0; i < 5; i ++) {
+            decreaseButton.click();
+            expect(decreaseButton.hasAttribute('disabled')).to.be.true;
+            expect(numberField.value).to.be.equal('-1');
+          }
+        });
+
+        it('should not change value when max limit is reached and plus button is clicked', () => {
+          numberField.max = 1;
+          numberField.value = 0;
+
+          for (var i = 0; i < 5; i ++) {
+            increaseButton.click();
+            expect(increaseButton.hasAttribute('disabled')).to.be.true;
+            expect(numberField.value).to.be.equal('1');
+          }
+        });
+
+        it('should not change value when max limit will be reached with the next step and plus button is clicked', () => {
+          numberField.min = -10;
+          numberField.max = 10;
+          numberField.step = 6;
+          numberField.value = 2;
+
+          for (var i = 0; i < 5; i ++) {
+            increaseButton.click();
+            expect(increaseButton.hasAttribute('disabled')).to.be.true;
+            expect(numberField.value).to.be.equal('8');
+          }
+        });
+
         it('should prevent touchend event on value control buttons', () => {
           numberField.value = 0;
           let e = new CustomEvent('touchend', {cancelable: true});
@@ -259,6 +294,28 @@
           expect(numberField.value).to.be.equal(String(numberField.max));
         });
 
+        it('should decrease value to the closest step value when decreaseButton is clicked', () => {
+          numberField.min = -17;
+          numberField.value = -8;
+          numberField.step = 4;
+
+          decreaseButton.click();
+
+          expect(numberField.value).to.be.equal('-9');
+        });
+
+        it('should correctly decrease value when decreaseButton is clicked', () => {
+          numberField.min = -20;
+          numberField.value = -1;
+          numberField.step = 4;
+
+          const correctSteps = [-4, -8, -12, -16, -20];
+          for (var i = 0; i < correctSteps.length; i ++) {
+            decreaseButton.click();
+            expect(numberField.value).to.be.equal(String(correctSteps[i]));
+          }
+        });
+
         it('should increase value to min value when value is under min and increaseButton is clicked', () => {
           numberField.value = -40;
           numberField.min = -10;
@@ -274,6 +331,29 @@
           increaseButton.click();
 
           expect(numberField.value).to.be.equal(String(numberField.min));
+        });
+
+        it('should increase value to the closest step value when increaseButton is clicked', () => {
+          numberField.min = -17;
+          numberField.value = -8;
+          numberField.step = 4;
+
+          increaseButton.click();
+
+          expect(numberField.value).to.be.equal('-5');
+        });
+
+        it('should correctly increase value when increaseButton is clicked', () => {
+          numberField.min = -3;
+          numberField.max = 18;
+          numberField.value = -1;
+          numberField.step = 4;
+
+          const correctSteps = [1, 5, 9, 13, 17];
+          for (var i = 0; i < correctSteps.length; i ++) {
+            increaseButton.click();
+            expect(numberField.value).to.be.equal(String(correctSteps[i]));
+          }
         });
       });
 
