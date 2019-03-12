@@ -170,36 +170,29 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _decreaseValue() {
-          const currentValueOverMax = this.max != null && this.value != null && this.value != '' && this.value > this.max;
-          if (currentValueOverMax) {
-            this._setValue(this.max);
-          } else {
-            const incrementSign = this._getAllowedIncrementSign(-1);
-
-            if (incrementSign) {
-              this.__add(incrementSign);
-            }
-          }
+          this._incrementValue(-1);
         }
 
         _increaseValue() {
-          const currentValueUnderMin = this.min != null && this.value != null && this.value != '' && this.value < this.min;
-
-          if (currentValueUnderMin) {
-            this._setValue(this.min);
-          } else {
-            const incrementSign = this._getAllowedIncrementSign(1);
-
-            if (incrementSign) {
-              this.__add(incrementSign);
-            }
-          }
+          this._incrementValue(1);
         }
 
-        __add(sign) {
-          const incr = sign * (this.step || 1);
-          // Behave like native number input adjusting to the next exact multiple of step.
-          this._setValue(this._getValue(incr));
+        _incrementValue(incr) {
+          if (this.disabled) {
+            return;
+          }
+
+          const valueExceedsLimits = !this.value || parseFloat(this.value) > this.max || parseFloat(this.value) < this.min;
+
+          if (valueExceedsLimits) {
+            this._setValue(incr > 0 ? this.min : this.max);
+          } else {
+            const newValue = this._getIncrement(incr);
+
+            if (this.min == null && this.max == null || this._incrementIsInsideTheLimits(incr)) {
+              this._setValue(newValue);
+            }
+          }
         }
 
         _setValue(value) {
@@ -207,58 +200,50 @@ This program is available under Apache License Version 2.0, available at https:/
           this.dispatchEvent(new CustomEvent('change', {bubbles: true}));
         }
 
-        _getValue(incr) {
-          let result = this.min || incr;
-          if (this.value) {
-            const number = parseFloat(this.value);
-            let nextMultiple = parseFloat((Math.ceil(number / incr) * incr).toFixed(this.__decimals));
-            if (this.min) {
-              let minOffset = this.min % this.step;
-              minOffset = incr < 0 ? -minOffset : minOffset;
-              nextMultiple = this.min ? nextMultiple + minOffset : nextMultiple;
-            }
-            result = (nextMultiple === number ? nextMultiple + incr : nextMultiple).toFixed(this.__decimals);
+        _getIncrement(incr) {
+          let step = this.step || 1,
+            currentValue = parseFloat(this.value),
+            min = this.min || 0;
+
+          // To avoid problems with decimal math, multiplying to operate with integers.
+          const multiplier = Math.max(this._getMultiplier(currentValue),
+            this._getMultiplier(step),
+            this._getMultiplier(min));
+
+          step *= multiplier;
+          currentValue *= multiplier;
+          min *= multiplier;
+
+          const margin = (currentValue - min) % step;
+
+          if (incr > 0) {
+            return (currentValue - margin + step) / multiplier;
+          } else {
+            return (currentValue - (margin || step)) / multiplier;
           }
-          return result;
         }
 
-        _getAllowedIncrementSign(sign) {
-          if (this.disabled) {
-            return false;
-          }
-
-          const initialIncr = sign * (this.step || 1);
-
-          if (initialIncr > 0) {
-            const validMin = this.min == null || this._getValue(initialIncr) > this.min;
-            const validMax = this.max == null || this.value < this.max;
-
-            if (validMin && validMax) {
-              return sign;
-            } else if (!validMax) {
-              return false;
-            } else if (!validMin) {
-              return this.min / initialIncr;
+        _getMultiplier(number) {
+          if (!isNaN(number)) {
+            let multiplier = 1;
+            // Increase the multiplier until the float point will disappear
+            while (Math.floor(number * multiplier) !== number * multiplier) {
+              multiplier = multiplier * 10;
             }
-          } else {
-            const validMin = this.min == null || this.value > this.min;
-            const validMax = this.max == null || this._getValue(initialIncr) < this.max;
 
-            if (validMin && validMax) {
-              return sign;
-            } else if (!validMin) {
-              return false;
-            } else if (!validMax) {
-              return this.max / (this.step || 1);
-            }
+            return multiplier;
           }
+        }
+
+        _incrementIsInsideTheLimits(incr) {
+          return incr < 0
+            ? this.min == null || this._getIncrement(-1) >= this.min
+            : this.max == null || this._getIncrement(1) <= this.max;
         }
 
         _allowed(sign) {
           const incr = sign * (this.step || 1);
-          return !this.disabled && (incr < 0
-            ? this.min == null || this.value > this.min
-            : this.max == null || this.value < this.max);
+          return !this.disabled && this._incrementIsInsideTheLimits(incr);
         }
 
         _minChanged() {
