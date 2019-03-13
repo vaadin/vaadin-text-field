@@ -366,6 +366,15 @@
             increaseButton.click();
 
             expect(numberField.value).to.be.equal('-24');
+
+            // Check with max that can be equally divided
+            numberField.value = '';
+            numberField.max = -18;
+            numberField.step = 6;
+
+            increaseButton.click();
+
+            expect(numberField.value).to.be.equal('-18');
           });
 
           it('should set value to max when max is below zero and decreaseButton is clicked', () => {
@@ -405,6 +414,15 @@
             increaseButton.click();
 
             expect(numberField.value).to.be.equal('-8');
+
+            // Check with max that can be equally divided
+            numberField.value = '';
+            numberField.min = -24;
+            numberField.step = 6;
+
+            increaseButton.click();
+
+            expect(numberField.value).to.be.equal('-6');
           });
 
           it('should set value to min when min is above zero and max is above zero and increaseButton is clicked', () => {
