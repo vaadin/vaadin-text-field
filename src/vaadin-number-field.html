@@ -182,16 +182,50 @@ This program is available under Apache License Version 2.0, available at https:/
             return;
           }
 
-          const valueExceedsLimits = !this.value || parseFloat(this.value) > this.max || parseFloat(this.value) < this.min;
+          let value = parseFloat(this.value);
 
-          if (valueExceedsLimits) {
-            this._setValue(incr > 0 ? this.min : this.max);
-          } else {
-            const newValue = this._getIncrement(incr);
-
-            if (this.min == null && this.max == null || this._incrementIsInsideTheLimits(incr)) {
-              this._setValue(newValue);
+          if (!this.value) {
+            if (this.max == null && this.min != null && this.min < 0 ||
+                this.max == null && this.min == null ||
+                this.max != null && this.min == null && this.max > 0 ||
+                this.max != null && this.min != null && this.min < 0 && this.max > 0) {
+              value = 0;
+            } else if (this.max == null && this.min != null && this.min > 0 ||
+                       this.max != null && this.min != null && this.min > 0 && this.max > 0) {
+              incr = 0;
+              value = this.min;
+            } else if (this.max != null && this.min != null && this.min > 0 && this.max < 0) {
+              if (incr > 0) {
+                incr = 0;
+                value = this.min;
+              } else {
+                incr = 0;
+                value = this.max;
+              }
+            } else if (this.max != null && this.min == null && this.max < 0 ||
+                       this.max != null && this.min != null && this.min < 0 && this.max < 0) {
+              if (incr < 0) {
+                incr = 0;
+                value = this.max;
+              } else if (incr > 0) {
+                if (this.min) {
+                  value = this.max - this.step;
+                } else {
+                  value = this.max - 2 * this.step;
+                }
+              }
             }
+          } else if (value < this.min) {
+            incr = 0;
+            value = this.min;
+          } else if (value > this.max) {
+            incr = 0;
+            value = this.max;
+          }
+
+          const newValue = this._getIncrement(incr, value);
+          if (!this.value || incr == 0 || this._incrementIsInsideTheLimits(incr, value)) {
+            this._setValue(newValue);
           }
         }
 
@@ -200,9 +234,8 @@ This program is available under Apache License Version 2.0, available at https:/
           this.dispatchEvent(new CustomEvent('change', {bubbles: true}));
         }
 
-        _getIncrement(incr) {
+        _getIncrement(incr, currentValue) {
           let step = this.step || 1,
-            currentValue = parseFloat(this.value),
             min = this.min || 0;
 
           // To avoid problems with decimal math, multiplying to operate with integers.
@@ -218,8 +251,10 @@ This program is available under Apache License Version 2.0, available at https:/
 
           if (incr > 0) {
             return (currentValue - margin + step) / multiplier;
-          } else {
+          } else if (incr < 0) {
             return (currentValue - (margin || step)) / multiplier;
+          } else {
+            return currentValue / multiplier;
           }
         }
 
@@ -235,15 +270,20 @@ This program is available under Apache License Version 2.0, available at https:/
           }
         }
 
-        _incrementIsInsideTheLimits(incr) {
-          return incr < 0
-            ? this.min == null || this._getIncrement(-1) >= this.min
-            : this.max == null || this._getIncrement(1) <= this.max;
+        _incrementIsInsideTheLimits(incr, value) {
+          if (incr < 0) {
+            return this.min == null || this._getIncrement(incr, value) >= this.min;
+          } else if (incr > 0) {
+            return this.max == null || this._getIncrement(incr, value) <= this.max;
+          } else {
+            return this._getIncrement(incr, value) <= this.max && this._getIncrement(incr, value) >= this.min;
+          }
         }
 
         _allowed(sign) {
           const incr = sign * (this.step || 1);
-          return !this.disabled && this._incrementIsInsideTheLimits(incr);
+          const value = parseFloat(this.value);
+          return !this.disabled && this._incrementIsInsideTheLimits(incr, value);
         }
 
         _minChanged() {
