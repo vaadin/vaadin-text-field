@@ -45,7 +45,7 @@ This program is available under Apache License Version 2.0, available at https:/
     </style>
 
     <div
-      disabled$="[[!_allowed(-1, value, min, max)]]"
+      disabled$="[[!_allowed(-1, value, min, max, step)]]"
       part="decrease-button"
       on-click="_decreaseValue"
       on-touchend="_decreaseButtonTouchend"
@@ -53,7 +53,7 @@ This program is available under Apache License Version 2.0, available at https:/
     </div>
 
     <div
-      disabled$="[[!_allowed(1, value, min, max)]]"
+      disabled$="[[!_allowed(1, value, min, max, step)]]"
       part="increase-button"
       on-click="_increaseValue"
       on-touchend="_increaseButtonTouchend"
@@ -222,7 +222,7 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _setValue(value) {
-          this.value = this.inputElement.value = value;
+          this.value = this.inputElement.value = parseFloat(value).toFixed(this.__decimals);
           this.dispatchEvent(new CustomEvent('change', {bubbles: true}));
         }
 
@@ -274,8 +274,8 @@ This program is available under Apache License Version 2.0, available at https:/
 
         _allowed(sign) {
           const incr = sign * (this.step || 1);
-          const value = parseFloat(this.value) || 0;
-          return !this.disabled && this._incrementIsInsideTheLimits(incr, value);
+          const value = parseFloat(this.value);
+          return !this.value || (!this.disabled && this._incrementIsInsideTheLimits(incr, value));
         }
 
         _minChanged() {
