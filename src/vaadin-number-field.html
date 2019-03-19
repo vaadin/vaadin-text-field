@@ -190,8 +190,13 @@ This program is available under Apache License Version 2.0, available at https:/
           let value = parseFloat(this.value);
 
           if (!this.value) {
-            if ((this.max == null || this.max > 0) &&
-                (this.min == null || this.min < 0)) {
+            if (this.min == 0 && incr < 0 ||
+                this.max == 0 && incr > 0 ||
+                this.max == 0 && this.min == 0) {
+              incr = 0;
+              value = 0;
+            } else if ((this.max == null || this.max >= 0) &&
+                       (this.min == null || this.min <= 0)) {
               value = 0;
             } else if (this.min > 0) {
               value = this.min;
