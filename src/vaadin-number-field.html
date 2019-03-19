@@ -317,11 +317,6 @@ This program is available under Apache License Version 2.0, available at https:/
           this.checkValidity();
         }
 
-        __adjustDecimals() {
-          // when step is not an integer, adjust decimals.
-          this.inputElement.value && (this.value = parseFloat(this.inputElement.value).toFixed(this.__decimals));
-        }
-
         _stepOrMinChanged(step, min) {
           this.inputElement.step = step;
           this.inputElement.min = this.min;
@@ -330,7 +325,6 @@ This program is available under Apache License Version 2.0, available at https:/
           };
           // Compute number of dedimals to display in input based on provided step
           this.__decimals = Math.max(countDecimalPlaces(step), countDecimalPlaces(min));
-          this.__adjustDecimals();
         }
 
         checkValidity() {
