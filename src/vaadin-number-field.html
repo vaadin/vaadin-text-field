@@ -304,17 +304,10 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         __onKeyDown(e) {
-          // Ensure standard key value, unified across browsers
-          let key = e.key;
-          if (key === 'Up' || key === 'Down') {
-            // MSIE & Edge
-            key = 'Arrow' + key;
-          }
-
-          if (key === 'ArrowUp') {
+          if (e.keyCode == 38) {
             e.preventDefault();
             this._increaseValue();
-          } else if (key === 'ArrowDown') {
+          } else if (e.keyCode == 40) {
             e.preventDefault();
             this._decreaseValue();
           }
