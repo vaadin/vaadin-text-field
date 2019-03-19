@@ -155,6 +155,14 @@
           expect(numberField.value).to.be.equal('1.000');
         });
 
+        it('should adjust decimals based on the min value', () => {
+          numberField.value = 1;
+          numberField.step = 0.001;
+          numberField.min = 0.0001;
+
+          expect(numberField.value).to.be.equal('1.0000');
+        });
+
         it('should not increase value when increaseButton is clicked and max value is reached', () => {
           numberField.value = 0;
           numberField.max = 0;

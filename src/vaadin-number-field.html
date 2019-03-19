@@ -102,8 +102,7 @@ This program is available under Apache License Version 2.0, available at https:/
             */
             min: {
               type: Number,
-              reflectToAttribue: true,
-              observer: '_minChanged'
+              reflectToAttribue: true
             },
 
             /**
@@ -121,11 +120,16 @@ This program is available under Apache License Version 2.0, available at https:/
             step: {
               type: Number,
               reflectToAttribue: true,
-              observer: '_stepChanged',
               value: 1
             }
 
           };
+        }
+
+        static get observers() {
+          return [
+            '_stepOrMinChanged(step, min)'
+          ];
         }
 
         ready() {
@@ -278,10 +282,6 @@ This program is available under Apache License Version 2.0, available at https:/
           return !this.value || (!this.disabled && this._incrementIsInsideTheLimits(incr, value));
         }
 
-        _minChanged() {
-          this.inputElement.min = this.min;
-        }
-
         _maxChanged() {
           this.inputElement.max = this.max;
         }
@@ -306,10 +306,14 @@ This program is available under Apache License Version 2.0, available at https:/
           this.inputElement.value && (this.value = parseFloat(this.inputElement.value).toFixed(this.__decimals));
         }
 
-        _stepChanged(step) {
+        _stepOrMinChanged(step, min) {
           this.inputElement.step = step;
+          this.inputElement.min = this.min;
+          const countDecimalPlaces = number => {
+            return number ? String(Math.abs(number)).replace(/^\d*\.?(.*)?$/, '$1').length : 0;
+          };
           // Compute number of dedimals to display in input based on provided step
-          this.__decimals = String(step).replace(/^\d*\.?(.*)?$/, '$1').length;
+          this.__decimals = Math.max(countDecimalPlaces(step), countDecimalPlaces(min));
           this.__adjustDecimals();
         }
 
