@@ -182,53 +182,53 @@ This program is available under Apache License Version 2.0, available at https:/
           this._incrementValue(1);
         }
 
-        _incrementValue(incr) {
+        _incrementValue(dir) {
           if (this.disabled) {
             return;
           }
 
-          let value = parseFloat(this.value);
+          const value = parseFloat(this.value) || 0;
 
-          if (!this.value) {
-            if (this.min == 0 && incr < 0 ||
-                this.max == 0 && incr > 0 ||
-                this.max == 0 && this.min == 0) {
-              incr = 0;
-              value = 0;
-            } else if ((this.max == null || this.max >= 0) &&
-                       (this.min == null || this.min <= 0)) {
-              value = 0;
-            } else if (this.min > 0) {
-              value = this.min;
-              if (this.max < 0 && incr < 0) {
-                value = this.max;
-              }
-              incr = 0;
-            } else if (this.max < 0) {
-              value = this.max;
-              if (incr < 0) {
-                incr = 0;
-              } else {
-                // FIXME(yuriy): find a proper solution to make correct step back
-                if (this._getIncrement(1, value - this.step) > this.max) {
-                  value -= 2 * this.step;
-                } else {
-                  value -= this.step;
-                }
-              }
-            }
-          } else if (value < this.min) {
-            incr = 0;
-            value = this.min;
-          } else if (value > this.max) {
-            incr = 0;
-            value = this.max;
+          const step = this.step || 1;
+          const max = this.max == null ? Infinity : this.max;
+
+          if (value > max && dir === -1) {
+            // When going down from above maximum, jump to maximum right away
+            this._setValue(max);
+            return;
           }
 
-          const newValue = this._getIncrement(incr, value);
-          if (!this.value || incr == 0 || this._incrementIsInsideTheLimits(incr, value)) {
-            this._setValue(newValue);
-          }
+          // Relative base where the step zero is
+          const offset = this.min || 0;
+
+          // When minimum is defined, the step number should not be below zero
+          const minN = this.min == null ? -Infinity : 0;
+
+          // Precision factor: max number of decimal digits in step and offset.
+          // Helps to avoid floating point error in divisions.
+          const k = Math.max(
+            this._getMultiplier(step),
+            this._getMultiplier(offset)
+          );
+
+          // Maximum step number
+          const maxN = Math.floor((k * max - k * offset) / (k * step));
+
+          // Current step number, possibly float when not exactly on step
+          let n = (k * value - k * offset) / (k * step);
+
+          // Modify the current step number to closest integer in our direction
+          n = (n % 1 === 0)
+            ? n + dir
+            : dir === 1 ? Math.ceil(n) : Math.floor(n);
+
+          // Apply min and max constrains on the step number
+          n = Math.max(minN, Math.min(n, maxN));
+
+          // Calculate the result from the offset and the number of steps
+          const result = Math.round(k * (offset + n * step)) / k;
+
+          this._setValue(result);
         }
 
         _setValue(value) {
