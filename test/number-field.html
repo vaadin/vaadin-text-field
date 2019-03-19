@@ -8,6 +8,7 @@
   <link rel="import" href="../../test-fixture/test-fixture.html">
   <link rel="import" href="../vaadin-number-field.html">
   <link rel="import" href="../../iron-form/iron-form.html">
+  <script src="../../iron-test-helpers/mock-interactions.js"></script>
 </head>
 
 <body>
@@ -20,6 +21,14 @@
   <script>
     describe('number-field', () => {
       var numberField, input, decreaseButton, increaseButton;
+
+      function up() {
+        MockInteractions.keyDownOn(input, 38, [], 'ArrowUp');
+      }
+
+      function down() {
+        MockInteractions.keyDownOn(input, 40, [], 'ArrowDown');
+      }
 
       beforeEach(() => {
         numberField = fixture('default');
@@ -64,6 +73,22 @@
           increaseButton.click();
 
           expect(numberField.value).equal('7');
+        });
+
+        it('should increment value on arrow up', () => {
+          numberField.step = 3;
+
+          up();
+
+          expect(numberField.value).equal('3');
+        });
+
+        it('should decrement value on arrow down', () => {
+          numberField.step = 3;
+
+          down();
+
+          expect(numberField.value).equal('-3');
         });
       });
 

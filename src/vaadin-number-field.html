@@ -136,6 +136,7 @@ This program is available under Apache License Version 2.0, available at https:/
           super.ready();
           this.__previousValidInput = this.value || '';
           this.inputElement.type = 'number';
+          this.inputElement.addEventListener('keydown', this.__onKeyDown.bind(this));
           this.inputElement.addEventListener('change', this.__onInputChange.bind(this));
         }
 
@@ -295,6 +296,23 @@ This program is available under Apache License Version 2.0, available at https:/
           }
 
           super._valueChanged(this.value, oldVal);
+        }
+
+        __onKeyDown(e) {
+          // Ensure standard key value, unified across browsers
+          let key = e.key;
+          if (key === 'Up' || key === 'Down') {
+            // MSIE & Edge
+            key = 'Arrow' + key;
+          }
+
+          if (key === 'ArrowUp') {
+            e.preventDefault();
+            this._increaseValue();
+          } else if (key === 'ArrowDown') {
+            e.preventDefault();
+            this._decreaseValue();
+          }
         }
 
         __onInputChange() {
