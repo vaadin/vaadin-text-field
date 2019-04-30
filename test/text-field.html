@@ -175,6 +175,20 @@
             expect(getComputedStyle(textField.$.clearButton).getPropertyValue('display')).to.be.equal('none');
           });
 
+          it('should clear the value when clear button is clicked', function() {
+            textField.clearButtonVisible = true;
+            textField.value = 'Foo';
+            textField.$.clearButton.click();
+            expect(textField.value).not.to.be.ok;
+          });
+
+          it('should clear the native input value when clear button is clicked', function() {
+            textField.clearButtonVisible = true;
+            textField.value = 'Foo';
+            textField.$.clearButton.click();
+            expect(textField.inputElement.value).to.equal('');
+          });
+
           it('should dispatch input event when clear button is clicked', function() {
             const inputSpy = sinon.spy();
             textField.addEventListener('input', inputSpy);
@@ -438,6 +452,13 @@
           textField.value = 'Foo';
           textField.clear();
           expect(textField.value).not.to.be.ok;
+        });
+
+        it('should clear the value of native input when clear() is called', () => {
+          const textField = fixture(`default${fixtureName}`);
+          textField.value = 'Foo';
+          textField.clear();
+          expect(textField.inputElement.value).to.equal('');
         });
       });
     });
