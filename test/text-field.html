@@ -232,6 +232,14 @@
             expect(changeSpy).to.be.calledOnce;
           });
 
+          it('should update input value when setting value after clicking clear button', function() {
+            textField.clearButtonVisible = true;
+            textField.value = 'Foo';
+            textField.$.clearButton.click();
+            textField.value = 'Bar';
+            expect(textField.inputElement.value).to.equal('Bar');
+          });
+
           ['disabled', 'readonly'].forEach(state => {
             it(`clear button should not be visible when field is ${state}`, function() {
               textField.clearButtonVisible = true;
