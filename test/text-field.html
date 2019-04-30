@@ -213,7 +213,7 @@
             expect(event.defaultPrevented).to.be.true;
           });
 
-          it('should set _valueClearing flag not to dipatch change event on mousedown and remove it it on click', function() {
+          it('should set _valueClearing flag not to dispatch change event on mousedown and remove it on click', function() {
             // Testing internal implementation as it impossible to test native change event.
             // For case when the field is focused, value is changed, clear button is pressed.
             // Should not fire two change events.
