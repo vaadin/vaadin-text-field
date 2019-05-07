@@ -100,6 +100,16 @@
         "description": "",
         "image": ""
       }
+    },
+    {
+      "name": "Label",
+      "url": "text-field-label-demos",
+      "src": "text-field-label-demos.html",
+      "meta": {
+        "title": "Vaadin Text Field Label Examples",
+        "description": "",
+        "image": ""
+      }
     }
   ]
 }

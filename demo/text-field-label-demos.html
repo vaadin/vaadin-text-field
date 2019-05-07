@@ -1,0 +1,39 @@
+<dom-module id="text-field-label-demos">
+  <template>
+    <style include="vaadin-component-demo-shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+
+    <h3>Label suffix</h3>
+    <vaadin-demo-snippet id="text-field-label-demos-label-suffix">
+      <template preserve-content>
+        <vaadin-password-field id="password" label="New password">
+          <vaadin-button id="suggest" slot="label-suffix" theme="tertiary-inline">suggest</vaadin-button>
+        </vaadin-password-field>
+        <script>
+          window.addDemoReadyListener('#text-field-label-demos-label-suffix', function(document) {
+            const field = document.getElementById('password');
+            const button = document.getElementById('suggest');
+            button.addEventListener('click', function(event) {
+              field.value = Math.random().toString(36).substring(7);
+              field._setPasswordVisible(true);
+            });
+          });
+        </script>
+      </template>
+    </vaadin-demo-snippet>
+
+
+  </template>
+  <script>
+    class TextFieldLabelDemos extends DemoReadyEventEmitter(TextFieldDemo(Polymer.Element)) {
+      static get is() {
+        return 'text-field-label-demos';
+      }
+    }
+    customElements.define(TextFieldLabelDemos.is, TextFieldLabelDemos);
+  </script>
+</dom-module>

@@ -28,6 +28,13 @@
         align-items: center;
       }
 
+      [part="label-container"] {
+        display: flex;
+        justify-content: space-between;
+        line-height: 1;
+        font-size: var(--lumo-font-size-s);
+      }
+
       :host([focused]:not([readonly])) [part="label"] {
         color: var(--lumo-primary-text-color);
       }
