@@ -10,8 +10,8 @@
         "description": "",
         "image": ""
       }
-    },
-    {
+      },
+      {
       "name": "Prefix and Suffix",
       "url": "text-field-prefix-suffix-demos",
       "src": "text-field-prefix-suffix-demos.html",
@@ -27,16 +27,6 @@
       "src": "text-field-validators-demos.html",
       "meta": {
         "title": "Vaadin Text Field Validation Examples",
-        "description": "",
-        "image": ""
-      }
-    },
-    {
-      "name": "RTL",
-      "url": "text-field-rtl-demos",
-      "src": "text-field-rtl-demos.html",
-      "meta": {
-        "title": "Vaadin Text Field RTL Examples",
         "description": "",
         "image": ""
       }
