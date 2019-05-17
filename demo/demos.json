@@ -10,8 +10,8 @@
         "description": "",
         "image": ""
       }
-      },
-      {
+    },
+    {
       "name": "Prefix and Suffix",
       "url": "text-field-prefix-suffix-demos",
       "src": "text-field-prefix-suffix-demos.html",

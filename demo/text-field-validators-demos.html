@@ -5,10 +5,9 @@
         display: block;
       }
     </style>
-    <p>Fields are validated on blur. If a field is already invalid, its validity is
-      checked on
-      each key input so that the user gets immediate feedback when the field is again
-      valid.</p>
+
+    <p>Fields are validated on blur. If a field is already invalid, its validity is checked on
+      each key input so that the user gets immediate feedback when the field is again valid.</p>
 
     <h3>Required</h3>
     <p>A required field cannot be left empty.</p>
@@ -29,12 +28,11 @@
 
 
     <h3>Pattern</h3>
-    <p>The <code>pattern</code> property specifies a regular expression that the element’s
-      value is
+    <p>The <code>pattern</code> property specifies a regular expression that the element’s value is
       checked against.</p>
     <vaadin-demo-snippet id="text-field-basic-demos-pattern-validation">
       <template preserve-content>
-        <vaadin-text-field pattern="[A-Z]{2}\d{3,4}$" label="Flight number"></vaadin-text-field>
+        <vaadin-text-field pattern="[A-Z]{2}\d{3,4}" label="Flight number"></vaadin-text-field>
         <p>Valid flight number: 2 uppercase letters followed by 3 or 4 numbers. For
           example:
           SA1234</p>
@@ -43,7 +41,7 @@
 
 
     <h3>Prevent Invalid Input</h3>
-    <P>Username contains alphanumeric characters, underscores and dots.</P>
+    <p>Username contains alphanumeric characters, underscores and dots.</p>
     <vaadin-demo-snippet id="text-field-basic-demos-preventing-invalid-input">
       <template preserve-content>
         <vaadin-text-field prevent-invalid-input pattern="[a-zA-Z0-9_.]{0,20}"
@@ -62,7 +60,7 @@
       ignore-ie when-defined="vaadin-text-field">
       <template preserve-content>
         <employee-role-text-field label="ID" minlength="10" maxlength="10"></employee-role-text-field>
-        <p>Valid ID: A 10 digit number that sum of the digits are dividable to 10. For
+        <p>Valid ID: Use a 10 digit number. The sum of digits must be dividable by 10. For
           example 1111111111.</p>
 
         <script>
@@ -118,13 +116,13 @@
     <vaadin-demo-snippet id="text-field-validators-demos-asynchronous-custom-validator"
       ignore-ie when-defined="vaadin-text-field">
       <template preserve-content>
-        <chemical-element-text-field label="Username"></chemical-element-text-field>
+        <username-field label="Username"></username-field>
         <p>Valid username: Must be unique. For example, the username "Kamren" is taken.</p>
         <script>
           window.addDemoReadyListener('#text-field-validators-demos-asynchronous-custom-validator', function(document) {
-            class ChemicalElement extends Vaadin.TextFieldElement {
+            class UsernameField extends Vaadin.TextFieldElement {
               static get is() {
-                return 'chemical-element-text-field';
+                return 'username-field';
               }
 
               ready() {
@@ -151,31 +149,13 @@
               }
             }
 
-            if (!customElements.get(ChemicalElement.is)) {
-              customElements.define(ChemicalElement.is, ChemicalElement);
+            if (!customElements.get(UsernameField.is)) {
+              customElements.define(UsernameField.is, UsernameField);
             }
           });
         </script>
       </template>
     </vaadin-demo-snippet>
-
-    <dom-module id="my-ajax">
-      <template>
-      </template>
-      <script>
-        Polymer({
-          is: 'my-ajax',
-
-          generateRequest: function() {
-            setTimeout(function() {
-              this.dispatchEvent(new CustomEvent('response'));
-            }.bind(this), 1000);
-          },
-
-        });
-
-    </script>
-    </dom-module>
 
   </template>
   <script>
