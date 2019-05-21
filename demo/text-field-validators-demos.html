@@ -55,51 +55,42 @@
     <p>Extend <code>Vaadin.TextFieldElement</code> to create your own custom element,
       then override the <code>checkValidity()</code> method to validate the user’s input.</p>
     <vaadin-demo-snippet id="text-field-validators-demos-synchronous-custom-validator"
-      ignore-ie when-defined="vaadin-text-field">
+      when-defined="vaadin-text-field">
       <template preserve-content>
-        <employee-role-text-field label="ID" minlength="10" maxlength="10"></employee-role-text-field>
+        <vaadin-text-field label="ID" minlength="10" maxlength="10"></vaadin-text-field>
         <p>Valid ID: Use a 10 digit number. The sum of digits must be dividable by 10. For
           example 1111111111.</p>
 
         <script>
           window.addDemoReadyListener('#text-field-validators-demos-synchronous-custom-validator', function(document) {
-            class EmployeeRole extends Vaadin.TextFieldElement {
-              static get is() {
-                return 'employee-role-text-field';
+            document.querySelector('vaadin-text-field').checkValidity = function() {
+              const textField = this;
+
+              if (isNaN(textField.value)) {
+                textField.errorMessage = 'Must enter digits';
+                return false;
               }
 
-              checkValidity() {
-                var value = this.value;
-                var sum = 0;
-                var field = this;
-
-                if (isNaN(value)) {
-                  field.errorMessage = 'Must enter digits';
-                  return false;
-                }
-
-                if (this.value.length < 10) {
-                  field.errorMessage = 'Length must be 10 digits';
-                  return false;
-                }
-
-                while (value > 0) {
-                  sum += value % 10;
-                  value = Math.floor(value / 10);
-                }
-          
-                if (sum % 10 != 0) {
-                  field.errorMessage = 'ID is not correct';
-                  return false;
-                }
-                field.errorMessage = '';
-                return true;
+              if (textField.value.length !== 10) {
+                textField.errorMessage = 'Length must be 10 digits';
+                return false;
               }
-            }
 
-            if (!customElements.get(EmployeeRole.is)) {
-              customElements.define(EmployeeRole.is, EmployeeRole);
-            }
+              const sumOfDigits = textField.value.toString().split('')
+                .map(function(s) {
+                  return parseInt(s);
+                })
+                .reduce(function(a, b) {
+                  return a + b;
+                });
+
+              if (sumOfDigits % 10 !== 0) {
+                textField.errorMessage = 'ID is not correct';
+                return false;
+              }
+              textField.errorMessage = '';
+              return true;
+            };
           });
         </script>
       </template>
@@ -112,44 +103,30 @@
       then override the <code>checkValidity()</code> to make your asynchronous validation,
       and finally set the <code>invalid</code> flag appropriately in the callback.</p>
     <vaadin-demo-snippet id="text-field-validators-demos-asynchronous-custom-validator"
-      ignore-ie when-defined="vaadin-text-field">
+      when-defined="vaadin-text-field">
       <template preserve-content>
-        <username-field label="Username"></username-field>
+        <vaadin-text-field label="Username"></vaadin-text-field>
         <p>Valid username: Must be unique. For example, the username "Kamren" is taken.</p>
         <script>
           window.addDemoReadyListener('#text-field-validators-demos-asynchronous-custom-validator', function(document) {
-            class UsernameField extends Vaadin.TextFieldElement {
-              static get is() {
-                return 'username-field';
-              }
-
-              ready() {
-                super.ready();
-              }
-
-              checkValidity() {
-                var xhr = new XMLHttpRequest();
-                var field = this;
-                const url = 'https://jsonplaceholder.typicode.com/users?username=' + this.value;
-                xhr.open('GET', url, true);
-                xhr.addEventListener('load', function() {
-                  const response = JSON.parse(xhr.responseText);
-                  if (response && response.length > 0) {
-                    field.invalid = true;
-                    field.errorMessage = 'Username is already taken';
-                  } else {
-                    field.invalid = false;
-                    field.errorMessage = '';
-                  }
-                });
-                xhr.send();
-                return true;
-              }
-            }
-
-            if (!customElements.get(UsernameField.is)) {
-              customElements.define(UsernameField.is, UsernameField);
-            }
+            document.querySelector('vaadin-text-field').checkValidity = function() {
+              const xhr = new XMLHttpRequest();
+              const textField = this;
+              const url = 'https://jsonplaceholder.typicode.com/users?username=' + textField.value;
+              xhr.open('GET', url, true);
+              xhr.addEventListener('load', function() {
+                const response = JSON.parse(xhr.responseText);
+                if (response && response.length > 0) {
+                  textField.invalid = true;
+                  textField.errorMessage = 'Username is already taken';
+                } else {
+                  textField.invalid = false;
+                  textField.errorMessage = '';
+                }
+              });
+              xhr.send();
+              return true;
+            };
           });
         </script>
       </template>
