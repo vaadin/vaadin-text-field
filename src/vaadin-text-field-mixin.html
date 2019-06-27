@@ -655,7 +655,7 @@ This program is available under Apache License Version 2.0, available at https:/
     _getActiveErrorId(invalid, errorMessage, errorId) {
       this._setOrToggleAttribute('aria-describedby',
         (errorMessage && invalid ? errorId : undefined),
-        this.inputElement);
+        this.focusElement);
     }
 
     _getActiveLabelId(label, _labelId, _inputId) {
@@ -663,7 +663,7 @@ This program is available under Apache License Version 2.0, available at https:/
       if (label) {
         ids = `${_labelId} ${_inputId}`;
       }
-      this.inputElement.setAttribute('aria-labelledby', ids);
+      this.focusElement.setAttribute('aria-labelledby', ids);
     }
 
     _getErrorMessageAriaHidden(invalid, errorMessage, errorId) {
