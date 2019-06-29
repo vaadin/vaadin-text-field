@@ -132,5 +132,26 @@ gemini.suite('vaadin-text-field', function(rootSuite) {
         .setCaptureElements('#text-area-clear-button')
         .capture('text-area-clear-button');
     });
+
+    gemini.suite(`text-area-rows-${theme}`, function(suite) {
+      suite
+        .setUrl(`vaadin-text-area/rows-cols.html?theme=${theme}`)
+        .setCaptureElements('#rows')
+        .capture('rows');
+    });
+
+    gemini.suite(`text-area-cols-${theme}`, function(suite) {
+      suite
+        .setUrl(`vaadin-text-area/rows-cols.html?theme=${theme}`)
+        .setCaptureElements('#cols')
+        .capture('cols');
+    });
+
+    gemini.suite(`text-area-rows-cols-${theme}`, function(suite) {
+      suite
+        .setUrl(`vaadin-text-area/rows-cols.html?theme=${theme}`)
+        .setCaptureElements('#rows-cols')
+        .capture('rows-cols');
+    });
   });
 });

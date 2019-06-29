@@ -27,6 +27,8 @@
   </test-fixture>
 
   <script>
+    const isIe = /\bTrident\b/.test(navigator.userAgent);
+
     ['', 'with slotted input'].forEach(condition => {
       let fixtureName = '';
       if (condition !== '') {
@@ -339,8 +341,37 @@
         });
       });
 
+      describe(`rows-cols ${condition}`, () => {
+        let textArea, input, container;
+
+        beforeEach(() => {
+          textArea = fixture(`default${fixtureName}`);
+          input = textArea.inputElement;
+          container = textArea.root.querySelector('.vaadin-text-area-container');
+        });
+
+        it('should propagate rows property to native textarea', () => {
+          textArea.rows = 7;
+          expect(input.rows).to.equal(7);
+        });
+
+        it('should propagate cols property to native textarea', () => {
+          textArea.cols = 40;
+          expect(input.cols).to.equal(40);
+        });
+
+        it('should set input height initial with rows property', () => {
+          textArea.rows = 7;
+          expect(input.style.height).to.be.equal(isIe ? 'auto' : 'initial');
+        });
+
+        it('should set container width 100% with cols property', () => {
+          textArea.cols = 40;
+          expect(container.style.width).to.be.equal('100%');
+        });
+      });
+
       // FIXME(platosha): Flacky with P2 in IE 11, fails with undefined `spy`.
-      const isIe = /\bTrident\b/.test(navigator.userAgent);
       (isIe ? describe.skip : describe)(`resize ${condition}`, () => {
         let textArea, spy;
 

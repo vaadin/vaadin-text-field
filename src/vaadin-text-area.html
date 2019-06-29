@@ -138,9 +138,23 @@ This program is available under Apache License Version 2.0, available at https:/
           return '2.4.7';
         }
 
+        static get properties() {
+          return {
+            rows: {
+              type: Number,
+              reflectToAttribute: true
+            },
+            cols: {
+              type: Number,
+              reflectToAttribute: true
+            }
+          };
+        }
+
         static get observers() {
           return [
-            '_textAreaValueChanged(value)'
+            '_textAreaValueChanged(value)',
+            '_rowsColsChanged(rows, cols)'
           ];
         }
 
@@ -168,6 +182,13 @@ This program is available under Apache License Version 2.0, available at https:/
           const inputField = this.root.querySelector('[part=input-field]');
           const scrollTop = inputField.scrollTop;
           const input = this.inputElement;
+          const container = this.root.querySelector('.vaadin-text-area-container');
+
+          if (this.cols) {
+            container.style.width = '100%';
+          } else {
+            container.style.removeProperty('width');
+          }
 
           const inputWidth = getComputedStyle(input).width;
 
@@ -183,8 +204,10 @@ This program is available under Apache License Version 2.0, available at https:/
           this._oldValueLength = valueLength;
 
           const inputHeight = input.scrollHeight;
-          if (inputHeight > input.clientHeight) {
+          if (inputHeight > input.clientHeight && !this.rows) {
             input.style.height = inputHeight + 'px';
+          } else if (this.rows) {
+            input.style.height = 'initial';
           }
 
           // Restore
@@ -193,6 +216,22 @@ This program is available under Apache License Version 2.0, available at https:/
           inputField.scrollTop = scrollTop;
 
           this._dispatchIronResizeEventIfNeeded('InputHeight', inputHeight);
+        }
+
+        _rowsColsChanged(rows, cols) {
+          if (rows) {
+            this.inputElement.setAttribute('rows', rows);
+          } else {
+            this.inputElement.removeAttribute('rows');
+          }
+
+          if (cols) {
+            this.inputElement.setAttribute('cols', cols);
+          } else {
+            this.inputElement.removeAttribute('cols');
+          }
+
+          this._updateHeight();
         }
 
         /**
