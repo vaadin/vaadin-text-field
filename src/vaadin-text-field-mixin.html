@@ -317,7 +317,8 @@ This program is available under Apache License Version 2.0, available at https:/
         '_hostAccessiblePropsChanged(' + HOST_PROPS.accessible.join(', ') + ')',
         '_getActiveErrorId(invalid, errorMessage, _errorId)',
         '_getActiveLabelId(label, _labelId, _inputId)',
-        '__observeOffsetHeight(errorMessage, invalid, label)'
+        '__observeOffsetHeight(errorMessage, invalid, label)',
+        '__constraintsChanged(required, minlength, maxlength, pattern, min, max, step)'
       ];
     }
 
@@ -502,6 +503,18 @@ This program is available under Apache License Version 2.0, available at https:/
       }
     }
 
+    __constraintsChanged(required, minlength, maxlength, pattern, min, max, step) {
+      if (!this.invalid) {
+        return;
+      }
+
+      if (!required && !minlength && !maxlength && !pattern && !min && !max) {
+        this.invalid = false;
+      } else {
+        this.validate();
+      }
+    }
+
     /**
      * Returns true if the current input value satisfies all constraints (if any)
      * @returns {boolean}
@@ -572,7 +585,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
     /**
      * Returns true if `value` is valid.
-     * `<iron-form>` uses this to check the validity or all its elements.
+     * `<iron-form>` uses this to check the validity for all its elements.
      *
      * @return {boolean} True if the value is valid.
      */
