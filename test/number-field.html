@@ -768,6 +768,26 @@
             numberField.step = '';
             expect(numberField.invalid).to.be.false;
           });
+
+          it('should not set "invalid" to false when "min" is set to 0', () => {
+            numberField.value = '-5';
+            numberField.min = -1;
+            numberField.validate();
+            expect(numberField.invalid).to.be.true;
+
+            numberField.min = 0;
+            expect(numberField.invalid).to.be.true;
+          });
+
+          it('should not set "invalid" to false when "max" is set to 0', () => {
+            numberField.value = '5';
+            numberField.max = 1;
+            numberField.validate();
+            expect(numberField.invalid).to.be.true;
+
+            numberField.max = 0;
+            expect(numberField.invalid).to.be.true;
+          });
         });
       });
 

@@ -317,9 +317,17 @@ This program is available under Apache License Version 2.0, available at https:/
         '_hostAccessiblePropsChanged(' + HOST_PROPS.accessible.join(', ') + ')',
         '_getActiveErrorId(invalid, errorMessage, _errorId)',
         '_getActiveLabelId(label, _labelId, _inputId)',
-        '__observeOffsetHeight(errorMessage, invalid, label)',
-        '__constraintsChanged(required, minlength, maxlength, pattern, min, max, step)'
+        '__observeOffsetHeight(errorMessage, invalid, label)'
       ];
+    }
+
+    constructor() {
+      super();
+      // This complex observer needs to be added dynamically here (instead of defining it above in the `get observers()`)
+      // so that it runs after complex observers of inheriting classes. Otherwise e.g. `_stepOrMinChanged()` observer of
+      // vaadin-number-field would run after this and the `min` and `step` properties would not yet be propagated to
+      // the `inputElement` when this runs.
+      this._createMethodObserver('__constraintsChanged(required, minlength, maxlength, pattern, min, max, step)');
     }
 
     get focusElement() {
@@ -508,7 +516,9 @@ This program is available under Apache License Version 2.0, available at https:/
         return;
       }
 
-      if (!required && !minlength && !maxlength && !pattern && !min && !max) {
+      const isNumUnset = n => (!n && n !== 0);
+
+      if (!required && !minlength && !maxlength && !pattern && isNumUnset(min) && isNumUnset(max)) {
         this.invalid = false;
       } else {
         this.validate();
