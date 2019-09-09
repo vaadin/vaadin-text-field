@@ -33,7 +33,7 @@
       }
 
       [part="hint"] {
-        color: var(--lumo-tertiary-text-color);
+        color: var(--lumo-secondary-text-color);
         font-size: var(--lumo-font-size-xs);
         line-height: var(--lumo-line-height-xs);
         padding-bottom: 0.4em;
@@ -125,12 +125,9 @@
 
       /* Hover */
 
-      :host(:hover:not([readonly]):not([focused])) [part="label"] {
-        color: var(--lumo-body-text-color);
-      }
-      
+      :host(:hover:not([readonly]):not([focused])) [part="label"],
       :host(:hover:not([readonly])) [part="hint"] {
-        color: var(--lumo-secondary-text-color);
+        color: var(--lumo-body-text-color);
       }
 
       :host(:hover:not([readonly]):not([focused])) [part="input-field"]::after {
@@ -267,6 +264,14 @@
         :host([theme~="align-right"]) [part="value"] {
           --_lumo-text-field-overflow-mask-image: linear-gradient(to right, transparent 0.25em, #000 1.5em);
         }
+      }
+
+      /* Hint position */
+
+      :host([theme~="hint-below"]) [part="hint"] {
+        order: 2;
+        padding-bottom: 0;
+        padding-top: 0.4em;
       }
 
       /* Slotted content */
