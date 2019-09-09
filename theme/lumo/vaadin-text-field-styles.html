@@ -32,6 +32,15 @@
         color: var(--lumo-primary-text-color);
       }
 
+      [part="hint"] {
+        color: var(--lumo-tertiary-text-color);
+        font-size: var(--lumo-font-size-xs);
+        line-height: var(--lumo-line-height-xs);
+        padding-bottom: 0.4em;
+        margin-left: calc(var(--lumo-border-radius-m) / 4);
+        transition: color 0.2s;
+      }
+
       [part="value"],
       [part="input-field"] ::slotted(input),
       [part="input-field"] ::slotted(textarea),
@@ -119,6 +128,10 @@
       :host(:hover:not([readonly]):not([focused])) [part="label"] {
         color: var(--lumo-body-text-color);
       }
+      
+      :host(:hover:not([readonly])) [part="hint"] {
+        color: var(--lumo-secondary-text-color);
+      }
 
       :host(:hover:not([readonly]):not([focused])) [part="input-field"]::after {
         opacity: 0.1;
@@ -197,6 +210,7 @@
       }
 
       :host([disabled]) [part="label"],
+      :host([disabled]) [part="hint"],
       :host([disabled]) [part="value"],
       :host([disabled]) [part="input-field"] ::slotted(*) {
         color: var(--lumo-disabled-text-color);

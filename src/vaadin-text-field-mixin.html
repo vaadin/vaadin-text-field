@@ -38,7 +38,8 @@ This program is available under Apache License Version 2.0, available at https:/
         width: var(--vaadin-text-field-default-width, 12em);
       }
 
-      [part="label"]:empty {
+      [part="label"]:empty,
+      [part="hint"]:empty {
         display: none;
       }
 
@@ -220,6 +221,15 @@ This program is available under Apache License Version 2.0, available at https:/
           value: '',
           observer: '_labelChanged'
         },
+        
+        /**
+         * String used for the hint text.
+         */
+        hint: {
+          type: String,
+          value: '',
+          observer: '_hintChanged'
+        },
 
         /**
          * Maximum number of characters (in Unicode code points) that the user can enter.
@@ -305,6 +315,8 @@ This program is available under Apache License Version 2.0, available at https:/
 
         _labelId: String,
 
+        _hintId: String,
+
         _errorId: String,
 
         _inputId: String
@@ -316,7 +328,7 @@ This program is available under Apache License Version 2.0, available at https:/
         '_hostPropsChanged(' + HOST_PROPS.default.join(', ') + ')',
         '_hostAccessiblePropsChanged(' + HOST_PROPS.accessible.join(', ') + ')',
         '_getActiveErrorId(invalid, errorMessage, _errorId)',
-        '_getActiveLabelId(label, _labelId, _inputId)',
+        '_getActiveLabelId(label, hint, _labelId, _hintId, _inputId)',
         '__observeOffsetHeight(errorMessage, invalid, label)'
       ];
     }
@@ -442,6 +454,14 @@ This program is available under Apache License Version 2.0, available at https:/
         this.setAttribute('has-label', '');
       } else {
         this.removeAttribute('has-label');
+      }
+    }
+    
+    _hintChanged(hint) {
+      if (hint) {
+        this.setAttribute('has-hint', '');
+      } else {
+        this.removeAttribute('has-hint');
       }
     }
 
@@ -583,6 +603,7 @@ This program is available under Apache License Version 2.0, available at https:/
       var uniqueId = Vaadin.TextFieldMixin._uniqueId = 1 + Vaadin.TextFieldMixin._uniqueId || 0;
       this._errorId = `${this.constructor.is}-error-${uniqueId}`;
       this._labelId = `${this.constructor.is}-label-${uniqueId}`;
+      this._hintId = `${this.constructor.is}-hint-${uniqueId}`;
       this._inputId = `${this.constructor.is}-input-${uniqueId}`;
 
       // Lumo theme defines a max-height transition for the "error-message"
@@ -686,10 +707,13 @@ This program is available under Apache License Version 2.0, available at https:/
         this.focusElement);
     }
 
-    _getActiveLabelId(label, _labelId, _inputId) {
+    _getActiveLabelId(label, hint, _labelId, _hintId, _inputId) {
       let ids = _inputId;
       if (label) {
-        ids = `${_labelId} ${_inputId}`;
+        ids = `${_labelId} ${ids}`;
+      }
+      if (hint) {
+        ids = `${_hintId} ${ids}`
       }
       this.focusElement.setAttribute('aria-labelledby', ids);
     }
