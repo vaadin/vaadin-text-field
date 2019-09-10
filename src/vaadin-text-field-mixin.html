@@ -701,19 +701,21 @@ This program is available under Apache License Version 2.0, available at https:/
       }
     }
 
-    _getActiveErrorId(invalid, errorMessage, errorId) {
-      this._setOrToggleAttribute('aria-describedby',
-        (errorMessage && invalid ? errorId : undefined),
-        this.focusElement);
+    _getActiveErrorId(invalid, errorMessage, errorId, hint, hintId) {
+      let ids = '';
+      if (hint) {
+        ids += hintId;
+      }
+      if (errorMessage && invalid) {
+        ids += ' ' + errorId;
+      }
+      this._setOrToggleAttribute('aria-describedby', ids, this.focusElement);
     }
 
-    _getActiveLabelId(label, hint, _labelId, _hintId, _inputId) {
+    _getActiveLabelId(label, _labelId, _inputId) {
       let ids = _inputId;
       if (label) {
-        ids = `${_labelId} ${ids}`;
-      }
-      if (hint) {
-        ids = `${_hintId} ${ids}`
+        ids = `${_labelId} ${_inputId}`;
       }
       this.focusElement.setAttribute('aria-labelledby', ids);
     }
