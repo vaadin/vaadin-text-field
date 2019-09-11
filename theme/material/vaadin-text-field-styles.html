@@ -145,11 +145,29 @@
       :host([has-label]) [part="value"]:-ms-input-placeholder {
         opacity: 0;
       }
+      
+      /* According to matrial theme guidelines, hint should be hidden when error message is set and input is invalid */
+      :host([has-hint][invalid][has-error-message]) [part="hint"] {
+        display: none;
+      }
 
       [part="label"] {
         width: 133%;
         transition: transform 0.175s, color 0.175s, width 0.175s;
         transition-timing-function: ease, ease, step-end;
+      }
+      
+      [part="hint"] {
+        order: 2;
+        font-size: .75em;
+        line-height: 1;
+        color: var(--material-secondary-text-color);
+      }
+      
+      [part="hint"]:not(:empty)::before {
+        content: "";
+        display: block;
+        height: 6px;
       }
 
       /* TODO: using unsupported selector to fix IE11 (even thought the label element is scaled down,

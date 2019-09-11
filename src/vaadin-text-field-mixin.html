@@ -190,7 +190,8 @@ This program is available under Apache License Version 2.0, available at https:/
          */
         errorMessage: {
           type: String,
-          value: ''
+          value: '',
+          observer: '_errorMessageChanged'
         },
 
         /**
@@ -327,9 +328,9 @@ This program is available under Apache License Version 2.0, available at https:/
       return ['_stateChanged(disabled, readonly, clearButtonVisible, hasValue)',
         '_hostPropsChanged(' + HOST_PROPS.default.join(', ') + ')',
         '_hostAccessiblePropsChanged(' + HOST_PROPS.accessible.join(', ') + ')',
-        '_getActiveErrorId(invalid, errorMessage, _errorId)',
-        '_getActiveLabelId(label, hint, _labelId, _hintId, _inputId)',
-        '__observeOffsetHeight(errorMessage, invalid, label)'
+        '_getActiveErrorId(invalid, errorMessage, _errorId, hint, _hintId)',
+        '_getActiveLabelId(label, _labelId, _inputId)',
+        '__observeOffsetHeight(errorMessage, invalid, label, hint)'
       ];
     }
 
@@ -458,10 +459,18 @@ This program is available under Apache License Version 2.0, available at https:/
     }
     
     _hintChanged(hint) {
-      if (hint) {
+      if (hint !== '' && hint !== null) {
         this.setAttribute('has-hint', '');
       } else {
         this.removeAttribute('has-hint');
+      }
+    }
+    
+    _errorMessageChanged(errorMessage) {
+      if (errorMessage !== '' && errorMessage !== null) {
+        this.setAttribute('has-error-message', '');
+      } else {
+        this.removeAttribute('has-error-message');
       }
     }
 
@@ -707,7 +716,8 @@ This program is available under Apache License Version 2.0, available at https:/
         ids += hintId;
       }
       if (errorMessage && invalid) {
-        ids += ' ' + errorId;
+        ids += hint ? ' ' : '';
+        ids += errorId;
       }
       this._setOrToggleAttribute('aria-describedby', ids, this.focusElement);
     }
