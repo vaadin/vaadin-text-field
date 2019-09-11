@@ -222,7 +222,7 @@ This program is available under Apache License Version 2.0, available at https:/
           value: '',
           observer: '_labelChanged'
         },
-        
+
         /**
          * String used for the hint text.
          */
@@ -457,7 +457,7 @@ This program is available under Apache License Version 2.0, available at https:/
         this.removeAttribute('has-label');
       }
     }
-    
+
     _hintChanged(hint) {
       if (hint !== '' && hint !== null) {
         this.setAttribute('has-hint', '');
@@ -465,7 +465,7 @@ This program is available under Apache License Version 2.0, available at https:/
         this.removeAttribute('has-hint');
       }
     }
-    
+
     _errorMessageChanged(errorMessage) {
       if (errorMessage !== '' && errorMessage !== null) {
         this.setAttribute('has-error-message', '');

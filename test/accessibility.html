@@ -259,7 +259,7 @@
           });
 
           describe(`error ${condition}`, function() {
-            let tf, err, input;
+            let tf, err, input, hint;
 
             beforeEach(function() {
               tf = fixture(`${el}-error-fixture${fixtureName}`);
@@ -296,18 +296,18 @@
               tf.validate();
               expect(input.getAttribute('aria-describedby')).to.equal(err.id);
             });
-            
-            it('should have aria-describedby attribute with hint text when hint is set', function () {
+
+            it('should have aria-describedby attribute with hint text when hint is set', function() {
               tf.hint = 'hint';
               expect(input.getAttribute('aria-describedby')).to.equal(hint.id);
             });
 
-            it('should have aria-describedby attribute with both hint text and error message when hint is set and input is invalid', function () {
+            it('should have aria-describedby attribute with hint text and error message when hint is set and input invalid', function() {
               tf.hint = 'hint';
               tf.validate();
               expect(input.getAttribute('aria-describedby')).to.equal(`${hint.id} ${err.id}`);
             });
-            
+
             it('should have appropriate aria-live attribute', function() {
               expect(err.getAttribute('aria-live')).to.equal('assertive');
             });

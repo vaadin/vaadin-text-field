@@ -326,23 +326,23 @@
             textField.label = 0;
             expect(textField.hasAttribute('has-label')).to.be.true;
           });
-          
-          it('setting hint updates has-hint attribute', function () {
+
+          it('setting hint updates has-hint attribute', function() {
             textField.hint = 'foo';
             expect(textField.hasAttribute('has-hint')).to.be.true;
           });
 
-          it('setting hint to empty string does not update has-hint attribute', function () {
+          it('setting hint to empty string does not update has-hint attribute', function() {
             textField.hint = '';
             expect(textField.hasAttribute('has-hint')).to.be.false;
           });
 
-          it('setting hint to null does not update has-hint attribute', function () {
+          it('setting hint to null does not update has-hint attribute', function() {
             textField.hint = null;
             expect(textField.hasAttribute('has-hint')).to.be.false;
           });
 
-          it('setting number hint updates has-hint attribute', function () {
+          it('setting number hint updates has-hint attribute', function() {
             textField.hint = 0;
             expect(textField.hasAttribute('has-hint')).to.be.true;
           });
@@ -357,9 +357,9 @@
               expect(textField.getAttribute('focused')).to.be.null;
             });
           });
-          
-          describe(`hint ${condition}`, function () {
-            it('should not update focused property on click if disabled', function () {
+
+          describe(`hint ${condition}`, function() {
+            it('should not update focused property on click if disabled', function() {
               textField.disabled = true;
               const hint = textField.root.querySelector('[part="hint"]');
               hint.click();
@@ -636,9 +636,9 @@
             textField.label = 'Label';
             expect(spy).to.be.calledOnce;
           });
-          
+
           it('should dispatch `iron-resize` event on hint height change', () => {
-            textField.hint = "Hint"
+            textField.hint = 'Hint';
             expect(spy).to.be.calledOnce;
           });
         });
