@@ -36,10 +36,15 @@
         color: var(--lumo-secondary-text-color);
         font-size: var(--lumo-font-size-xs);
         line-height: var(--lumo-line-height-xs);
-        padding-bottom: 0.4em;
         margin-left: calc(var(--lumo-border-radius-m) / 4);
         transition: color 0.2s;
         order: 0;
+      }
+
+      [part="hint"] slot:not(:empty)::after {
+        content: "";
+        display: block;
+        height: 0.4em;
       }
 
       [part="value"],
@@ -269,10 +274,22 @@
 
       /* Hint position */
 
-      :host([theme~="hint-below"]) [part="hint"] {
+      :host([has-hint][theme~="hint-below"]) [part="hint"] slot:not(:empty)::after {
+        display: none;
+      }
+
+      :host([has-hint][theme~="hint-below"]) [part="hint"] slot:not(:empty)::before {
+        content: "";
+        display: block;
+        height: 0.4em;
+      }
+
+      :host([has-hint][theme~="hint-below"]) [part="hint"] {
+        order: 1;
+      }
+
+      :host([has-hint][theme~="hint-below"]) [part="error-message"] {
         order: 2;
-        padding-bottom: 0;
-        padding-top: 0.4em;
       }
 
       /* Slotted content */
