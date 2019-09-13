@@ -346,6 +346,30 @@
             textField.hint = 0;
             expect(textField.hasAttribute('has-hint')).to.be.true;
           });
+
+          it('setting hint with slot updates has-hint attribute', function() {
+            const hint = document.createElement('div');
+            hint.setAttribute('slot', 'hint');
+            hint.textContent = 'foo';
+            textField.appendChild(hint);
+            expect(textField.hasAttribute('has-hint')).to.be.true;
+          });
+
+          it('setting hint with empty slotted content does not update has-hint attribute', function() {
+            const hint = document.createElement('div');
+            hint.setAttribute('slot', 'hint');
+            textField.appendChild(hint);
+            expect(textField.hasAttribute('has-hint')).to.be.false;
+          });
+
+          it('removing slotted hint removes has-hint attribute', function() {
+            const hint = document.createElement('div');
+            hint.setAttribute('slot', 'hint');
+            hint.textContent = 'foo';
+            textField.appendChild(hint);
+            textField.removeChild(hint);
+            expect(textField.hasAttribute('has-hint')).to.be.false;
+          });
         });
 
         if (!window.ShadyDOM) {
