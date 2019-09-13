@@ -38,8 +38,7 @@ This program is available under Apache License Version 2.0, available at https:/
         width: var(--vaadin-text-field-default-width, 12em);
       }
 
-      [part="label"]:empty,
-      [part="hint"] slot:empty {
+      [part="label"]:empty {
         display: none;
       }
 
@@ -471,6 +470,16 @@ This program is available under Apache License Version 2.0, available at https:/
         this.setAttribute('has-error-message', '');
       } else {
         this.removeAttribute('has-error-message');
+      }
+    }
+
+    _hintSlotChange() {
+      const slotted = this.querySelector(`[slot="hint"]`);
+
+      if (slotted && slotted.childNodes.length > 0) {
+        this.setAttribute('has-hint', '');
+      } else if (this.hint !== '' && this.hint !== null) {
+        this.removeAttribute('has-hint');
       }
     }
 
