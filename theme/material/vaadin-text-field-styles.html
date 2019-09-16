@@ -165,8 +165,12 @@
       }
 
       [part="hint"] {
-        order: 2;
-        font-size: .75em;
+        order: 1;
+      }
+
+      [part="hint"],
+      [part="hint"] ::slotted(*) {
+        font-size: .75rem;
         line-height: 1;
         color: var(--material-secondary-text-color);
       }

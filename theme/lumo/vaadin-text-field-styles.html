@@ -39,7 +39,9 @@
         height: 0.4em;
       }
 
-      [part="hint"] {
+      [part="hint"],
+      [part="hint"] ::slotted(*) {
+        display: block;
         color: var(--lumo-secondary-text-color);
         font-size: var(--lumo-font-size-xs);
         line-height: var(--lumo-line-height-xs);
@@ -132,7 +134,8 @@
       /* Hover */
 
       :host(:hover:not([readonly]):not([focused])) [part="label"],
-      :host(:hover:not([readonly])) [part="hint"] {
+      :host(:hover:not([readonly])) [part="hint"],
+      :host(:hover:not([readonly])) [part="hint"] ::slotted(*) {
         color: var(--lumo-body-text-color);
       }
 
