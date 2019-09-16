@@ -474,11 +474,11 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     _hintSlotChange() {
-      const slotted = this.querySelector(`[slot="hint"]`);
+      const slottedNodes = this.root.querySelector(`slot[name="hint"]`).assignedNodes();
 
-      if (slotted && slotted.childNodes.length > 0) {
+      if (slottedNodes.length) {
         this.setAttribute('has-hint', '');
-      } else if (this.hint !== '' && this.hint !== null) {
+      } else if (this.hint === '' || this.hint === null) {
         this.removeAttribute('has-hint');
       }
     }
