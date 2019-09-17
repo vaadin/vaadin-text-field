@@ -32,8 +32,8 @@
         color: var(--lumo-primary-text-color);
       }
 
-      :host([has-hint]) [part="hint"] slot:not(:empty)::after,
-      :host([has-hint]) [part="hint"] ::slotted(*)::after {
+      :host([has-hint]:not([has-hint="slotted"])) [part="hint"]::after,
+      :host([has-hint="slotted"]) [part="hint"] ::slotted(*)::after {
         content: "";
         display: block;
         height: 0.4em;
@@ -277,13 +277,13 @@
 
       /* Hint position */
 
-      :host([has-hint][theme~="hint-below"]) [part="hint"] slot:not(:empty)::after,
-      :host([has-hint][theme~="hint-below"]) [part="hint"] ::slotted(*)::after {
+      :host([has-hint][theme~="hint-below"]:not([has-hint="slotted"])) [part="hint"]::after,
+      :host([has-hint="slotted"][theme~="hint-below"]) [part="hint"] ::slotted(*)::after {
         display: none;
       }
 
-      :host([has-hint][theme~="hint-below"]) [part="hint"] slot:not(:empty)::before,
-      :host([has-hint][theme~="hint-below"]) [part="hint"] ::slotted(*)::before {
+      :host([has-hint][theme~="hint-below"]:not([has-hint="slotted"])) [part="hint"]::before,
+      :host([has-hint="slotted"][theme~="hint-below"]) [part="hint"] ::slotted(*)::before {
         content: "";
         display: block;
         height: 0.4em;

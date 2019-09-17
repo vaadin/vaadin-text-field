@@ -157,8 +157,8 @@
         transition-timing-function: ease, ease, step-end;
       }
 
-      :host([has-hint]) [part="hint"] slot:not(:empty)::before,
-      :host([has-hint]) [part="hint"] ::slotted(*)::before {
+      :host([has-hint]:not([has-hint="slotted"])) [part="hint"]::before,
+      :host([has-hint="slotted"]) [part="hint"] ::slotted(*)::before {
         content: "";
         display: block;
         height: 6px;
