@@ -450,32 +450,20 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     _labelChanged(label) {
-      if (label !== '' && label != null) {
-        this.setAttribute('has-label', '');
-      } else {
-        this.removeAttribute('has-label');
-      }
+      this._setOrToggleAttribute('has-label', label === 0 ? true : !!label, this);
     }
 
     _hintChanged(hint) {
-      if (hint !== '' && hint !== null) {
-        this.setAttribute('has-hint', '');
-      } else {
-        this.removeAttribute('has-hint');
-      }
+      this._setOrToggleAttribute('has-hint', hint === 0 ? true : !!hint, this);
     }
 
     _errorMessageChanged(errorMessage) {
-      if (errorMessage !== '' && errorMessage !== null) {
-        this.setAttribute('has-error-message', '');
-      } else {
-        this.removeAttribute('has-error-message');
-      }
+      this._setOrToggleAttribute('has-error-message', errorMessage === 0 ? true : !!errorMessage, this);
     }
 
     _hintSlotChange() {
       this._slottedHint = this.querySelector(`[slot="hint"]`);
-      const slottedNodes = this.root.querySelector(`slot[name="hint"]`).assignedNodes();
+      const slottedNodes = this.root.querySelector(`[name="hint"]`).assignedNodes();
 
       if (slottedNodes.length) {
         this.setAttribute('has-hint', 'slotted');
@@ -610,10 +598,7 @@ This program is available under Apache License Version 2.0, available at https:/
       this.shadowRoot.querySelector('[name="input"], [name="textarea"]')
         .addEventListener('slotchange', this._onSlotChange.bind(this));
 
-      this._slottedHint = this.querySelector(`[slot="hint"]`);
-      if (this._slottedHint) {
-        this.setAttribute('has-hint', 'slotted');
-      }
+      this._hintSlotChange();
       this.shadowRoot.querySelector('[name="hint"]').addEventListener('slotchange', this._hintSlotChange.bind(this));
 
       if (!(window.ShadyCSS && window.ShadyCSS.nativeCss)) {
