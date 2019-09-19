@@ -146,8 +146,8 @@
         opacity: 0;
       }
 
-      /* According to matrial theme guidelines, hint should be hidden when error message is set and input is invalid */
-      :host([has-hint][invalid][has-error-message]) [part="hint"] {
+      /* According to matrial theme guidelines, helper text should be hidden when error message is set and input is invalid */
+      :host([has-helper][invalid][has-error-message]) [part="helper-text"] {
         display: none;
       }
 
@@ -157,19 +157,14 @@
         transition-timing-function: ease, ease, step-end;
       }
 
-      :host([has-hint]:not([has-hint="slotted"])) [part="hint"]::before,
-      :host([has-hint="slotted"]) [part="hint"] ::slotted(*)::before {
+      :host([has-helper]) [part="helper-text"]::before {
         content: "";
         display: block;
         height: 6px;
       }
 
-      [part="hint"] {
-        order: 1;
-      }
-
-      [part="hint"],
-      [part="hint"] ::slotted(*) {
+      [part="helper-text"],
+      [part="helper-text"] ::slotted(*) {
         font-size: .75rem;
         line-height: 1;
         color: var(--material-secondary-text-color);

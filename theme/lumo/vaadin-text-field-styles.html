@@ -32,15 +32,14 @@
         color: var(--lumo-primary-text-color);
       }
 
-      :host([has-hint]:not([has-hint="slotted"])) [part="hint"]::after,
-      :host([has-hint="slotted"]) [part="hint"] ::slotted(*)::after {
+      :host([has-helper]) [part="helper-text"]::before {
         content: "";
         display: block;
         height: 0.4em;
       }
 
-      [part="hint"],
-      [part="hint"] ::slotted(*) {
+      [part="helper-text"],
+      [part="helper-text"] ::slotted(*) {
         display: block;
         color: var(--lumo-secondary-text-color);
         font-size: var(--lumo-font-size-xs);
@@ -134,8 +133,8 @@
       /* Hover */
 
       :host(:hover:not([readonly]):not([focused])) [part="label"],
-      :host(:hover:not([readonly])) [part="hint"],
-      :host(:hover:not([readonly])) [part="hint"] ::slotted(*) {
+      :host(:hover:not([readonly])) [part="helper-text"],
+      :host(:hover:not([readonly])) [part="helper-text"] ::slotted(*) {
         color: var(--lumo-body-text-color);
       }
 
@@ -216,7 +215,7 @@
       }
 
       :host([disabled]) [part="label"],
-      :host([disabled]) [part="hint"],
+      :host([disabled]) [part="helper-text"],
       :host([disabled]) [part="value"],
       :host([disabled]) [part="input-field"] ::slotted(*) {
         color: var(--lumo-disabled-text-color);
@@ -275,25 +274,27 @@
         }
       }
 
-      /* Hint position */
+      /* helper-text position */
 
-      :host([has-hint][theme~="hint-below"]:not([has-hint="slotted"])) [part="hint"]::after,
-      :host([has-hint="slotted"][theme~="hint-below"]) [part="hint"] ::slotted(*)::after {
+      :host([has-helper][theme~="helper-above-field"]) [part="helper-text"]::before {
         display: none;
       }
 
-      :host([has-hint][theme~="hint-below"]:not([has-hint="slotted"])) [part="hint"]::before,
-      :host([has-hint="slotted"][theme~="hint-below"]) [part="hint"] ::slotted(*)::before {
+      :host([has-helper][theme~="helper-above-field"]) [part="helper-text"]::after {
         content: "";
         display: block;
         height: 0.4em;
       }
 
-      :host([has-hint][theme~="hint-below"]) [part="hint"] {
+      :host([has-helper][theme~="helper-above-field"]) [part="label"] {
+        order: 0;
+      }
+
+      :host([has-helper][theme~="helper-above-field"]) [part="helper-text"] {
         order: 1;
       }
 
-      :host([has-hint][theme~="hint-below"]) [part="error-message"] {
+      :host([has-helper][theme~="helper-above-field"]) [part="input-field"] {
         order: 2;
       }
 

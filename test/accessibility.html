@@ -259,13 +259,13 @@
           });
 
           describe(`error ${condition}`, function() {
-            let tf, err, input, hint;
+            let tf, err, input, helperText;
 
             beforeEach(function() {
               tf = fixture(`${el}-error-fixture${fixtureName}`);
               input = tf.inputElement;
               err = tf.root.querySelector('[part=error-message]');
-              hint = tf.root.querySelector('[part=hint]');
+              helperText = tf.root.querySelector('[part=helper-text]');
             });
 
             it('should have an error element', function() {
@@ -288,7 +288,7 @@
               expect(err.getAttribute('aria-hidden')).to.equal('true');
             });
 
-            it('should not have aria-describedby attribute if valid and no hint text', function() {
+            it('should not have aria-describedby attribute if valid and no helper text', function() {
               expect(input.hasAttribute('aria-describedby')).to.be.false;
             });
 
@@ -297,15 +297,15 @@
               expect(input.getAttribute('aria-describedby')).to.equal(err.id);
             });
 
-            it('should have aria-describedby attribute with hint text when hint is set', function() {
-              tf.hint = 'hint';
-              expect(input.getAttribute('aria-describedby')).to.equal(hint.id);
+            it('should have aria-describedby attribute with helper text when helper property is set', function() {
+              tf.helperText = 'foo';
+              expect(input.getAttribute('aria-describedby')).to.equal(helperText.id);
             });
 
-            it('should have aria-describedby attribute with hint text and error message when hint is set and input invalid', function() {
-              tf.hint = 'hint';
+            it('should have aria-describedby with helper text and error message when helper property is set and input invalid', function() {
+              tf.helperText = 'foo';
               tf.validate();
-              expect(input.getAttribute('aria-describedby')).to.equal(`${hint.id} ${err.id}`);
+              expect(input.getAttribute('aria-describedby')).to.equal(`${helperText.id} ${err.id}`);
             });
 
             it('should have appropriate aria-live attribute', function() {
