@@ -450,15 +450,15 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     _labelChanged(label) {
-      this._setOrToggleAttribute('has-label', label === 0 ? true : !!label, this);
+      this._setOrToggleAttribute('has-label', label === 0 || !!label, this);
     }
 
     _helperTextChanged(helperText) {
-      this._setOrToggleAttribute('has-helper', helperText === 0 ? true : !!helperText, this);
+      this._setOrToggleAttribute('has-helper', helperText === 0 || !!helperText, this);
     }
 
     _errorMessageChanged(errorMessage) {
-      this._setOrToggleAttribute('has-error-message', errorMessage === 0 ? true : !!errorMessage, this);
+      this._setOrToggleAttribute('has-error-message', errorMessage === 0 || !!errorMessage, this);
     }
 
     _onHelperSlotChange() {
