@@ -319,7 +319,9 @@ This program is available under Apache License Version 2.0, available at https:/
 
         _errorId: String,
 
-        _inputId: String
+        _inputId: String,
+
+        _hasSlottedHelper: Boolean
       };
     }
 
@@ -327,7 +329,7 @@ This program is available under Apache License Version 2.0, available at https:/
       return ['_stateChanged(disabled, readonly, clearButtonVisible, hasValue)',
         '_hostPropsChanged(' + HOST_PROPS.default.join(', ') + ')',
         '_hostAccessiblePropsChanged(' + HOST_PROPS.accessible.join(', ') + ')',
-        '_getActiveErrorId(invalid, errorMessage, _errorId, helperText, _helperTextId)',
+        '_getActiveErrorId(invalid, errorMessage, _errorId, helperText, _helperTextId, _hasSlottedHelper)',
         '_getActiveLabelId(label, _labelId, _inputId)',
         '__observeOffsetHeight(errorMessage, invalid, label, helperText)'
       ];
@@ -464,11 +466,12 @@ This program is available under Apache License Version 2.0, available at https:/
     _onHelperSlotChange() {
       this._slottedHelper = this.querySelector(`[slot="helper"]`);
       const slottedNodes = this.root.querySelector(`[name="helper"]`).assignedNodes();
-
-      // Only not empty if not a text node
+      // Only has slotted helper if not a text node
       // Text nodes are added by the helperText prop and not the helper slot
       // The filter is added due to shady DOM triggering this slotchange event on helperText prop change
-      if (slottedNodes.filter(node => node.nodeType !== 3).length) {
+      this._hasSlottedHelper = slottedNodes.filter(node => node.nodeType !== 3).length;
+
+      if (this._hasSlottedHelper) {
         this.setAttribute('has-helper', 'slotted');
       } else if (this.helperText === '' || this.helperText === null) {
         this.removeAttribute('has-helper');
@@ -714,13 +717,14 @@ This program is available under Apache License Version 2.0, available at https:/
       }
     }
 
-    _getActiveErrorId(invalid, errorMessage, errorId, helperText, helperTextId) {
+    _getActiveErrorId(invalid, errorMessage, errorId, helperText, helperTextId, hasSlottedHelper) {
       let ids = '';
-      if (helperText) {
+      const hasHelper = helperText || hasSlottedHelper;
+      if (hasHelper) {
         ids += helperTextId;
       }
       if (errorMessage && invalid) {
-        ids += helperText ? ' ' : '';
+        ids += hasHelper ? ' ' : '';
         ids += errorId;
       }
       this._setOrToggleAttribute('aria-describedby', ids, this.focusElement);
