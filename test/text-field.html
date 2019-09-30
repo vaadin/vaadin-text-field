@@ -35,6 +35,14 @@
       </vaadin-text-field>
     </template>
   </test-fixture>
+  
+  <test-fixture id="default-with-slotted-helper">
+    <template>
+      <vaadin-text-field>
+        <div slot="helper">foo</div>
+      </vaadin-text-field>
+    </template>
+  </test-fixture>
 
   <script>
 
@@ -347,6 +355,14 @@
             expect(textField.hasAttribute('has-helper')).to.be.true;
           });
 
+          it('text-field with slotted helper updates has-helper attribute', function(done) {
+            const textFieldSlottedHelper = fixture('default-with-slotted-helper');
+            setTimeout(() => {
+              expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.true;
+              done();
+            }, 1);
+          });
+
           it('setting helper with slot updates has-helper attribute', function(done) {
             const helper = document.createElement('div');
             helper.setAttribute('slot', 'helper');
@@ -359,15 +375,28 @@
           });
 
           it('removing slotted helper removes has-helper attribute', function(done) {
-            const helper = document.createElement('div');
-            helper.setAttribute('slot', 'helper');
-            helper.textContent = 'foo';
-            textField.appendChild(helper);
-            textField.removeChild(helper);
+            const textFieldSlottedHelper = fixture('default-with-slotted-helper');
+            const helper = textFieldSlottedHelper.querySelector('[slot="helper"]');
+            textFieldSlottedHelper.removeChild(helper);
             setTimeout(() => {
-              expect(textField.hasAttribute('has-helper')).to.be.false;
+              expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.false;
               done();
             }, 1);
+          });
+
+          it('setting errorMessage updates has-error-message attribute', function() {
+            textField.errorMessage = 'foo';
+            expect(textField.hasAttribute('has-error-message')).to.be.true;
+          });
+
+          it('setting errorMessage to empty string does not update has-error-message attribute', function() {
+            textField.errorMessage = '';
+            expect(textField.hasAttribute('has-error-message')).to.be.false;
+          });
+
+          it('setting errorMessage to null does not update has-error-message attribute', function() {
+            textField.errorMessage = null;
+            expect(textField.hasAttribute('has-error-message')).to.be.false;
           });
         });
 

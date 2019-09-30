@@ -73,6 +73,14 @@
     </template>
   </test-fixture>
 
+  <test-fixture id="vaadin-text-field-with-slotted-helper">
+    <template>
+      <vaadin-text-field required error-message="ERR">
+        <div slot="helper">foo</div>
+      </vaadin-text-field>
+    </template>
+  </test-fixture>
+  
   <test-fixture id="vaadin-text-area-default">
     <template>
       <vaadin-text-area></vaadin-text-area>
@@ -130,6 +138,14 @@
       <vaadin-text-area>
         <textarea slot="textarea"></textarea>
       </vaadin-text-field>
+    </template>
+  </test-fixture>
+  
+  <test-fixture id="vaadin-text-area-with-slotted-helper">
+    <template>
+      <vaadin-text-area required error-message="ERR">
+        <div slot="helper">foo</div>
+      </vaadin-text-area>
     </template>
   </test-fixture>
   
@@ -306,6 +322,18 @@
               tf.helperText = 'foo';
               tf.validate();
               expect(input.getAttribute('aria-describedby')).to.equal(`${helperText.id} ${err.id}`);
+            });
+
+            it('should have aria-describedby with helper text and error message if slotted helper is set and input invalid', function(done) {
+              const tf = fixture(`${el}-with-slotted-helper`);
+              const input = tf.inputElement;
+              const err = tf.root.querySelector('[part=error-message]');
+              const helperText = tf.root.querySelector('[part=helper-text]');
+              tf.validate();
+              setTimeout(() => {
+                expect(input.getAttribute('aria-describedby')).to.equal(`${helperText.id} ${err.id}`);
+                done();
+              }, 1);
             });
 
             it('should have appropriate aria-live attribute', function() {
