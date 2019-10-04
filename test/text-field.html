@@ -273,6 +273,12 @@
         });
 
         describe(`binding ${condition}`, function() {
+          function dispatchHelperSlotChange() {
+            // Workaround not to use timeouts
+            const evt = new CustomEvent('slotchange');
+            textField.shadowRoot.querySelector('[name="helper"]').dispatchEvent(evt);
+          }
+
           it('default value should be empty string', function() {
             expect(textField.value).to.be.equal('');
           });
@@ -355,29 +361,26 @@
             expect(textField.hasAttribute('has-helper')).to.be.true;
           });
 
-          it('text-field with slotted helper updates has-helper attribute', function(done) {
+          it('text-field with slotted helper updates has-helper attribute', function() {
             const textFieldSlottedHelper = fixture('default-with-slotted-helper');
-            setTimeout(() => {
-              expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.true;
-              done();
-            }, 1);
+            dispatchHelperSlotChange();
+            expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.true;
           });
 
-          it('setting helper with slot updates has-helper attribute', function(done) {
+          it('setting helper with slot updates has-helper attribute', function() {
             const helper = document.createElement('div');
             helper.setAttribute('slot', 'helper');
             helper.textContent = 'foo';
             textField.appendChild(helper);
-            setTimeout(() => {
-              expect(textField.hasAttribute('has-helper')).to.be.true;
-              done();
-            }, 1);
+            dispatchHelperSlotChange();
+            expect(textField.hasAttribute('has-helper')).to.be.true;
           });
 
           it('removing slotted helper removes has-helper attribute', function(done) {
             const textFieldSlottedHelper = fixture('default-with-slotted-helper');
             const helper = textFieldSlottedHelper.querySelector('[slot="helper"]');
             textFieldSlottedHelper.removeChild(helper);
+            // dispatchHelperSlotChange does not work with this test
             setTimeout(() => {
               expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.false;
               done();
