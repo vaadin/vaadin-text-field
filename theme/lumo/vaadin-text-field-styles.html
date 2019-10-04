@@ -288,6 +288,7 @@
 
       :host([has-helper][theme~="helper-above-field"]) [part="label"] {
         order: 0;
+        padding-bottom: 0.4em;
       }
 
       :host([has-helper][theme~="helper-above-field"]) [part="helper-text"] {
@@ -296,6 +297,10 @@
 
       :host([has-helper][theme~="helper-above-field"]) [part="input-field"] {
         order: 2;
+      }
+
+      :host([has-helper][theme~="helper-above-field"]) [part="error-message"] {
+        order: 3;
       }
 
       /* Slotted content */
