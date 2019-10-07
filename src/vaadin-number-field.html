@@ -303,7 +303,13 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _stepChanged(step) {
-          this.inputElement.step = step;
+          if (!this.__stepChangedCalled) {
+            // Setting the initial value, avoid using it in validation.
+            this.inputElement.step = 'any';
+            this.__stepChangedCalled = true;
+          } else {
+            this.inputElement.step = step;
+          }
         }
 
         _minChanged(min) {
