@@ -464,7 +464,6 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     _onHelperSlotChange() {
-      this._slottedHelper = this.querySelector(`[slot="helper"]`);
       const slottedNodes = this.root.querySelector(`[name="helper"]`).assignedNodes();
       // Only has slotted helper if not a text node
       // Text nodes are added by the helperText prop and not the helper slot
@@ -718,16 +717,14 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     _getActiveErrorId(invalid, errorMessage, errorId, helperText, helperTextId, hasSlottedHelper) {
-      let ids = '';
-      const hasHelper = helperText || hasSlottedHelper;
-      if (hasHelper) {
-        ids += helperTextId;
+      const ids = [];
+      if (helperText || hasSlottedHelper) {
+        ids.push(helperTextId);
       }
       if (errorMessage && invalid) {
-        ids += hasHelper ? ' ' : '';
-        ids += errorId;
+        ids.push(errorId);
       }
-      this._setOrToggleAttribute('aria-describedby', ids, this.focusElement);
+      this._setOrToggleAttribute('aria-describedby', ids.join(' '), this.focusElement);
     }
 
     _getActiveLabelId(label, _labelId, _inputId) {
