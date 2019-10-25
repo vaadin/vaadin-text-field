@@ -17,6 +17,11 @@
       <vaadin-number-field></vaadin-number-field>
     </template>
   </test-fixture>
+  <test-fixture id="step">
+    <template>
+      <vaadin-number-field step="1.5"></vaadin-number-field>
+    </template>
+  </test-fixture>
 
   <script>
     describe('number-field', () => {
@@ -772,6 +777,14 @@
             numberField.value = invalidValue;
             expect(numberField.validate()).to.be.false;
           });
+        });
+
+        it('should validate by step when defined as attribute', () => {
+          const numberField = fixture('step');
+          numberField.value = 1;
+          expect(numberField.validate()).to.be.false;
+          numberField.value = 1.5;
+          expect(numberField.validate()).to.be.true;
         });
 
         it('should use min as step basis in validation when both are defined', () => {
