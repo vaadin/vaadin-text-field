@@ -303,8 +303,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
         _stepChanged(step) {
           // Avoid using initial value in validation
-          this.__validateByStep = this.__stepChangedCalled
-            || (!this.__stepChangedCalled && this.getAttribute('step') !== null);
+          this.__validateByStep = this.__stepChangedCalled || this.getAttribute('step') !== null;
           this.inputElement.step = this.__validateByStep ? step : 'any';
 
           this.__stepChangedCalled = true;
