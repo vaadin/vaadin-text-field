@@ -17,9 +17,14 @@
       <vaadin-number-field></vaadin-number-field>
     </template>
   </test-fixture>
-  <test-fixture id="step">
+  <test-fixture id="step-as-attribute">
     <template>
       <vaadin-number-field step="1.5"></vaadin-number-field>
+    </template>
+  </test-fixture>
+  <test-fixture id="default-step-as-attribute">
+    <template>
+      <vaadin-number-field step="1"></vaadin-number-field>
     </template>
   </test-fixture>
 
@@ -780,10 +785,18 @@
         });
 
         it('should validate by step when defined as attribute', () => {
-          const numberField = fixture('step');
+          const numberField = fixture('step-as-attribute');
           numberField.value = 1;
           expect(numberField.validate()).to.be.false;
           numberField.value = 1.5;
+          expect(numberField.validate()).to.be.true;
+        });
+
+        it('should validate by step when default value defined as attribute', () => {
+          const numberField = fixture('default-step-as-attribute');
+          numberField.value = 1.5;
+          expect(numberField.validate()).to.be.false;
+          numberField.value = 1;
           expect(numberField.validate()).to.be.true;
         });
 
