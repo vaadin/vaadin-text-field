@@ -303,9 +303,9 @@ This program is available under Apache License Version 2.0, available at https:/
 
         _stepChanged(step) {
           // Avoid using initial value in validation
-          const validateByStep = this.__stepChangedCalled
+          this.__validateByStep = this.__stepChangedCalled
             || (!this.__stepChangedCalled && this.getAttribute('step') !== null);
-          this.inputElement.step = validateByStep ? step : 'any';
+          this.inputElement.step = this.__validateByStep ? step : 'any';
 
           this.__stepChangedCalled = true;
           this.setAttribute('step', step);
@@ -347,7 +347,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
         checkValidity() {
           // text-field mixin does not check against `min`, `max` and `step`
-          if (this.min !== undefined || this.max !== undefined || this.inputElement.step !== 'any') {
+          if (this.min !== undefined || this.max !== undefined || this.__validateByStep) {
             this.invalid = !this.inputElement.checkValidity();
           }
           return super.checkValidity();
