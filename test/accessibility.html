@@ -226,7 +226,7 @@
 
             it('should be marked required', function() {
               tf.required = true;
-              expect(input.hasAttribute('aria-required')).to.be.true;
+              expect(input.getAttribute('aria-required')).to.equal('true');
             });
 
             it('should not be marked readonly', function() {
@@ -235,7 +235,7 @@
 
             it('should be marked readonly', function() {
               tf.readonly = true;
-              expect(input.hasAttribute('aria-readonly')).to.be.true;
+              expect(input.getAttribute('aria-readonly')).to.equal('true');
             });
 
             describe('clear icon button', function() {
@@ -316,7 +316,7 @@
             });
 
             it('should be marked invalid', function() {
-              expect(input.hasAttribute('aria-invalid')).to.be.true;
+              expect(input.getAttribute('aria-invalid')).to.equal('true');
             });
 
             it('should not be marked invalid', function() {

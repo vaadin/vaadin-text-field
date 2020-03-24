@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+  <title>Debug</title>
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="../../polymer/polymer.html">
+  <link rel="import" href="../vaadin-text-field.html">
+  <!--<link rel="import" href="../vaadin-password-field.html">
+  <link rel="import" href="../vaadin-email-field.html">
+  <link rel="import" href="../vaadin-text-area.html">
+  <link rel="import" href="../vaadin-number-field.html">
+  <link rel="import" href="../vaadin-integer-field.html">
+  <link rel="import" href="../../iron-form/iron-form.html">
+  <link rel="import" href="../../vaadin-lumo-styles/icons.html">-->
+</head>
+
+<body>
+  <main>
+    <h1>Test</h1>
+    <h2>With ARIA</h2>
+    <vaadin-text-field label="Foo" disabled></vaadin-text-field>
+    <vaadin-text-field label="Foo" readonly></vaadin-text-field>
+    <vaadin-text-field label="Foo" required></vaadin-text-field>
+    <vaadin-text-field label="Foo" invalid></vaadin-text-field>
+    <h2>Without ARIA</h2>
+    <vaadin-text-field no-aria label="Foo" disabled></vaadin-text-field>
+    <vaadin-text-field no-aria label="Foo" readonly></vaadin-text-field>
+    <vaadin-text-field no-aria label="Foo" required></vaadin-text-field>
+    <vaadin-text-field no-aria label="Foo" invalid></vaadin-text-field>
+    <h2>Side by side (with and without ARIA)</h2>
+    <vaadin-text-field label="Foo" disabled></vaadin-text-field> <vaadin-text-field no-aria label="Foo" disabled></vaadin-text-field><br>
+    <vaadin-text-field label="Foo" readonly></vaadin-text-field> <vaadin-text-field no-aria label="Foo" readonly></vaadin-text-field><br>
+    <vaadin-text-field label="Foo" required></vaadin-text-field> <vaadin-text-field no-aria label="Foo" required></vaadin-text-field><br>
+    <vaadin-text-field label="Foo" invalid></vaadin-text-field> <vaadin-text-field no-aria label="Foo" invalid></vaadin-text-field><br>
+    <h2>Native input best practice</h2>
+    <label>Foo <input type="text" disabled></label>
+    <label>Foo <input type="text" readonly></label>
+    <label>Foo <input type="text" required></label>
+    <label>Foo <input type="text" aria-invalid="true"></label>
+  </main>
+</body>
+</html>
