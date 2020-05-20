@@ -9,7 +9,6 @@
   "autoImport": {
     "./@types/interfaces": [
       "TextFieldAutoCapitalize",
-      "TextFieldAutoComplete",
       "TextFieldAutoCorrect"
     ]
   }

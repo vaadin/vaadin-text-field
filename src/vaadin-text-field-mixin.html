@@ -136,7 +136,6 @@ This program is available under Apache License Version 2.0, available at https:/
          * Whether the value of the control can be automatically completed by the browser.
          * List of available options at:
          * https://developer.mozilla.org/en/docs/Web/HTML/Element/input#attr-autocomplete
-         * @type {!TextFieldAutoComplete | undefined}
          */
         autocomplete: {
           type: String
@@ -360,7 +359,10 @@ This program is available under Apache License Version 2.0, available at https:/
       return this.shadowRoot.querySelector('[part="value"]');
     }
 
-    /** @protected */
+    /**
+     * @return {HTMLElement | undefined}}
+     * @protected
+     */
     get inputElement() {
       return this.focusElement;
     }
