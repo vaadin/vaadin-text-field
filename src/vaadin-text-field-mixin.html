@@ -136,6 +136,7 @@ This program is available under Apache License Version 2.0, available at https:/
          * Whether the value of the control can be automatically completed by the browser.
          * List of available options at:
          * https://developer.mozilla.org/en/docs/Web/HTML/Element/input#attr-autocomplete
+         * @type {!TextFieldAutoComplete | undefined}
          */
         autocomplete: {
           type: String
@@ -147,6 +148,7 @@ This program is available under Apache License Version 2.0, available at https:/
          * Possible values are:
          * on: Enable autocorrection.
          * off: Disable autocorrection.
+         * @type {!TextFieldAutoCorrect | undefined}
          */
         autocorrect: {
           type: String
@@ -160,6 +162,7 @@ This program is available under Apache License Version 2.0, available at https:/
          * words: Words capitalization.
          * sentences: Sentences capitalization.
          * none: No capitalization.
+         * @type {!TextFieldAutoCapitalize | undefined}
          */
         autocapitalize: {
           type: String
@@ -167,6 +170,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
         /**
          * Specify that the value should be automatically selected when the field gains focus.
+         * @type {boolean}
          */
         autoselect: {
           type: Boolean,
@@ -342,7 +346,7 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     /**
-     * @return {HTMLElement}
+     * @return {HTMLElement | undefined}
      * @protected
      */
     get focusElement() {
@@ -356,7 +360,7 @@ This program is available under Apache License Version 2.0, available at https:/
       return this.shadowRoot.querySelector('[part="value"]');
     }
 
-    /** @private */
+    /** @protected */
     get inputElement() {
       return this.focusElement;
     }
@@ -556,10 +560,11 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     /**
-     * @param {boolean?} required
-     * @param {number?} minlength
-     * @param {number?} maxlength
-     * @param {string?} maxlength
+     * @param {boolean | undefined} required
+     * @param {number | undefined} minlength
+     * @param {number | undefined} maxlength
+     * @param {string | undefined} maxlength
+     * @protected
      */
     _constraintsChanged(required, minlength, maxlength, pattern) {
       if (!this.invalid) {
@@ -842,8 +847,8 @@ This program is available under Apache License Version 2.0, available at https:/
 
     /**
      * @param {string} prop
-     * @param {unknown} oldVal
-     * @param {unknown} newVal
+     * @param {string} oldVal
+     * @param {string} newVal
      * @protected
      */
     attributeChangedCallback(prop, oldVal, newVal) {
