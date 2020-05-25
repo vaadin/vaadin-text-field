@@ -228,6 +228,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
         /**
          * String used for the helper text.
+         * @type {string | null}
          */
         helperText: {
           type: String,
@@ -501,14 +502,17 @@ This program is available under Apache License Version 2.0, available at https:/
       this._setOrToggleAttribute('has-label', label === 0 || !!label, this);
     }
 
+    /** @private */
     _helperTextChanged(helperText) {
       this._setOrToggleAttribute('has-helper', helperText === 0 || !!helperText, this);
     }
 
+    /** @private */
     _errorMessageChanged(errorMessage) {
       this._setOrToggleAttribute('has-error-message', errorMessage === 0 || !!errorMessage, this);
     }
 
+    /** @private */
     _onHelperSlotChange() {
       const slottedNodes = this.root.querySelector(`[name="helper"]`).assignedNodes();
       // Only has slotted helper if not a text node
@@ -846,6 +850,7 @@ This program is available under Apache License Version 2.0, available at https:/
       }
     }
 
+    /** @private */
     _getActiveErrorId(invalid, errorMessage, errorId, helperText, helperTextId, hasSlottedHelper) {
       const ids = [];
       if (helperText || hasSlottedHelper) {
