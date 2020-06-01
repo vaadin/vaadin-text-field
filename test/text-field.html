@@ -303,6 +303,12 @@
         });
 
         describe(`binding ${condition}`, function() {
+          function dispatchHelperSlotChange(node) {
+            // Workaround not to use timeouts
+            const evt = new CustomEvent('slotchange');
+            node.shadowRoot.querySelector('[name="helper"]').dispatchEvent(evt);
+          }
+
           it('default value should be empty string', function() {
             expect(textField.value).to.be.equal('');
           });
@@ -377,7 +383,7 @@
 
           it('text-field with slotted helper updates has-helper attribute', function() {
             const textFieldSlottedHelper = fixture('default-with-slotted-helper');
-            textFieldSlottedHelper._helperObserver.flush();
+            dispatchHelperSlotChange(textFieldSlottedHelper);
             expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.true;
           });
 
@@ -386,20 +392,17 @@
             helper.setAttribute('slot', 'helper');
             helper.textContent = 'foo';
             textField.appendChild(helper);
-            textField._helperObserver.flush();
+            dispatchHelperSlotChange(textField);
 
             expect(textField.hasAttribute('has-helper')).to.be.true;
           });
 
-          it('removing slotted helper removes has-helper attribute', function(done) {
+          it('removing slotted helper removes has-helper attribute', function() {
             const textFieldSlottedHelper = fixture('default-with-slotted-helper');
             const helper = textFieldSlottedHelper.querySelector('[slot="helper"]');
             textFieldSlottedHelper.removeChild(helper);
-            // dispatchHelperSlotChange does not work with this test
-            setTimeout(() => {
-              expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.false;
-              done();
-            }, 1);
+            dispatchHelperSlotChange(textFieldSlottedHelper);
+            expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.false;
           });
 
           it('should not add "has-helper" with a slotted "slot" element', function() {
@@ -422,7 +425,7 @@
             span.textContent = 'helper text';
             span.setAttribute('slot', 'helper');
             xElement.appendChild(span);
-            textField._helperObserver.flush();
+            dispatchHelperSlotChange(textField);
 
             expect(textField.hasAttribute('has-helper')).to.be.true;
             expect(textField.getAttribute('has-helper')).to.be.equal('slotted');

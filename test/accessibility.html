@@ -338,8 +338,9 @@
               const input = tf.inputElement;
               const err = tf.root.querySelector('[part=error-message]');
               const helperText = tf.root.querySelector('[part=helper-text]');
+              const evt = new CustomEvent('slotchange');
               tf.validate();
-              tf._helperObserver.flush();
+              tf.shadowRoot.querySelector('[name="helper"]').dispatchEvent(evt);
               expect(input.getAttribute('aria-describedby')).to.equal(`${helperText.id} ${err.id}`);
             });
 

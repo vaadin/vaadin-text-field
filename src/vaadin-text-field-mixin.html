@@ -6,7 +6,6 @@ This program is available under Apache License Version 2.0, available at https:/
 
 <link rel="import" href="../../polymer/lib/utils/async.html">
 <link rel="import" href="../../polymer/lib/utils/debounce.html">
-<link rel="import" href="../../polymer/lib/utils/flattened-nodes-observer.html">
 
 <dom-module id="vaadin-text-field-shared-styles">
   <template>
@@ -514,8 +513,8 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     /** @private */
-    _helperSlotObserverCallback(info) {
-      const slottedNodes = Polymer.FlattenedNodesObserver.getFlattenedNodes(info.target);
+    _onHelperSlotChange() {
+      const slottedNodes = this.shadowRoot.querySelector(`[name="helper"]`).assignedNodes({flatten: true});
       // Only has slotted helper if not a text node
       // Text nodes are added by the helperText prop and not the helper slot
       // The filter is added due to shady DOM triggering this callback on helperText prop change
@@ -681,8 +680,8 @@ This program is available under Apache License Version 2.0, available at https:/
       this.shadowRoot.querySelector('[name="input"], [name="textarea"]')
         .addEventListener('slotchange', this._onSlotChange.bind(this));
 
-      this._helperObserver = new Polymer.FlattenedNodesObserver(
-        this.shadowRoot.querySelector('[name="helper"]'), this._helperSlotObserverCallback.bind(this));
+      this._onHelperSlotChange();
+      this.shadowRoot.querySelector('[name="helper"]').addEventListener('slotchange', this._onHelperSlotChange.bind(this));
 
       if (!(window.ShadyCSS && window.ShadyCSS.nativeCss)) {
         this.updateStyles();
@@ -705,18 +704,6 @@ This program is available under Apache License Version 2.0, available at https:/
         .addEventListener('transitionend', () => {
           this.__observeOffsetHeight();
         });
-    }
-
-    /** @protected */
-    connectedCallback() {
-      super.connectedCallback();
-      this._helperObserver && this._helperObserver.connect();
-    }
-
-    /** @protected */
-    disconnectedCallback() {
-      super.disconnectedCallback();
-      this.__helperObserver && this.__helperObserver.disconnect();
     }
 
     /**
