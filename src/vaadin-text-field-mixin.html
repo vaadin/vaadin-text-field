@@ -424,7 +424,8 @@ This program is available under Apache License Version 2.0, available at https:/
         }
       }
 
-      if (!e.__fromClearButton) {
+      // Value can remain the same on input when pasting
+      if (!e.__fromClearButton && this.value !== e.target.value) {
         this.__userInput = true;
       }
       this.value = e.target.value;
