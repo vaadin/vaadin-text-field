@@ -923,6 +923,11 @@ This program is available under Apache License Version 2.0, available at https:/
       }
     }
 
+    // Workaround for https://github.com/Polymer/polymer/issues/5259
+    _getProperty(property) {
+      return this.__data ? this.__data[property] : undefined;
+    }
+
     /**
      * Fired when the user commits a value change.
      *
