@@ -924,8 +924,12 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     // Workaround for https://github.com/Polymer/polymer/issues/5259
-    _getProperty(property) {
-      return this.__data ? this.__data[property] : undefined;
+    get __data() {
+      return this.__dataValue || {};
+    }
+
+    set __data(value) {
+      this.__dataValue = value;
     }
 
     /**
