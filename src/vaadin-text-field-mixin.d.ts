@@ -166,7 +166,6 @@ interface TextFieldMixin {
   validate(): boolean;
   clear(): void;
   _onKeyDown(e: KeyboardEvent): void;
-  attributeChangedCallback(prop: string, oldVal: string, newVal: string): void;
 }
 
 import {TextFieldAutoCorrect} from '../@types/interfaces';

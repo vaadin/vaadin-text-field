@@ -396,12 +396,6 @@ export const TextFieldMixin = subclass => class VaadinTextFieldMixin extends sub
 
   /** @private */
   _onInput(e) {
-    if (this.__preventInput) {
-      e.stopImmediatePropagation();
-      this.__preventInput = false;
-      return;
-    }
-
     if (this.preventInvalidInput) {
       const input = this.inputElement;
       if (input.value.length > 0 && !this.checkValidity()) {
@@ -673,10 +667,6 @@ export const TextFieldMixin = subclass => class VaadinTextFieldMixin extends sub
     this._onHelperSlotChange();
     this.shadowRoot.querySelector('[name="helper"]').addEventListener('slotchange', this._onHelperSlotChange.bind(this));
 
-    if (!(window.ShadyCSS && window.ShadyCSS.nativeCss)) {
-      this.updateStyles();
-    }
-
     this.$.clearButton.addEventListener('mousedown', () => this._valueClearing = true);
     this.$.clearButton.addEventListener('mouseleave', () => this._valueClearing = false);
     this.$.clearButton.addEventListener('click', this._onClearButtonClick.bind(this));
@@ -738,11 +728,6 @@ export const TextFieldMixin = subclass => class VaadinTextFieldMixin extends sub
     this.inputElement.focus();
     this.clear();
     this._valueClearing = false;
-    if (navigator.userAgent.match(/Trident/)) {
-      // Disable IE input" event prevention here, we want the input event from
-      // below to propagate normally.
-      this.__preventInput = false;
-    }
     const inputEvent = new Event('input', {bubbles: true, composed: true});
     inputEvent.__fromClearButton = true;
     const changeEvent = new Event('change', {bubbles: !this._slottedInput});
@@ -857,34 +842,6 @@ export const TextFieldMixin = subclass => class VaadinTextFieldMixin extends sub
       animationFrame, () => {
         this._dispatchIronResizeEventIfNeeded('Height', this.offsetHeight);
       });
-  }
-
-  /**
-   * @param {string} prop
-   * @param {string} oldVal
-   * @param {string} newVal
-   * @protected
-   */
-  attributeChangedCallback(prop, oldVal, newVal) {
-    super.attributeChangedCallback(prop, oldVal, newVal);
-    // Needed until Edge has CSS Custom Properties (present in Edge Preview)
-    /* istanbul ignore if */
-    if (!(window.ShadyCSS && window.ShadyCSS.nativeCss) &&
-      /^(focused|focus-ring|invalid|disabled|placeholder|has-value)$/.test(prop)) {
-      this.updateStyles();
-    }
-
-    // Safari has an issue with repainting shadow root element styles when a host attribute changes.
-    // Need this workaround (toggle any inline css property on and off) until the issue gets fixed.
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    /* istanbul ignore if */
-    if (isSafari && this.root) {
-      const WEBKIT_PROPERTY = '-webkit-backface-visibility';
-      this.root.querySelectorAll('*').forEach(el => {
-        el.style[WEBKIT_PROPERTY] = 'visible';
-        el.style[WEBKIT_PROPERTY] = '';
-      });
-    }
   }
 
   // Workaround for https://github.com/Polymer/polymer/issues/5259

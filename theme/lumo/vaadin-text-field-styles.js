@@ -49,16 +49,16 @@ registerStyles(
       transition: color 0.2s;
     }
 
-    [part="value"],
-      [part="input-field"] ::slotted(input),
-      [part="input-field"] ::slotted(textarea),
-      /* Slotted by vaadin-select-text-field */
-      [part="input-field"] ::slotted([part="value"]) {
+    [part='value'],
+    [part='input-field'] ::slotted(input),
+    [part='input-field'] ::slotted(textarea),
+    [part='input-field'] ::slotted([part='value']) {
       cursor: inherit;
       min-height: var(--lumo-text-field-size);
       padding: 0 0.25em;
       --_lumo-text-field-overflow-mask-image: linear-gradient(to left, transparent, #000 1.25em);
       -webkit-mask-image: var(--_lumo-text-field-overflow-mask-image);
+      mask-image: var(--_lumo-text-field-overflow-mask-image);
     }
 
     [part='value']:focus,
@@ -66,19 +66,6 @@ registerStyles(
     :host([focused]) [part='input-field'] ::slotted(textarea) {
       -webkit-mask-image: none;
       mask-image: none;
-    }
-
-    /*
-        TODO: CSS custom property in \`mask-image\` causes crash in Edge
-        see https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/15415089/
-      */
-    @-moz-document url-prefix() {
-      [part='value'],
-      [part='input-field'] ::slotted(input),
-      [part='input-field'] ::slotted(textarea),
-      [part='input-field'] ::slotted([part='value']) {
-        mask-image: var(--_lumo-text-field-overflow-mask-image);
-      }
     }
 
     [part='value']::placeholder {
