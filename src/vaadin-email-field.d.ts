@@ -1,9 +1,5 @@
 import {TextFieldElement} from './vaadin-text-field.js';
 
-import {DomModule} from '@polymer/polymer/lib/elements/dom-module.js';
-
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-
 /**
  * `<vaadin-email-field>` is a Web Component for email field control in forms.
  *
@@ -24,7 +20,6 @@ declare class EmailFieldElement extends TextFieldElement {
 }
 
 declare global {
-
   interface HTMLElementTagNameMap {
     "vaadin-email-field": EmailFieldElement;
   }

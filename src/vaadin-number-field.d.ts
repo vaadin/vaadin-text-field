@@ -1,9 +1,5 @@
 import {TextFieldElement} from './vaadin-text-field.js';
 
-import {DomModule} from '@polymer/polymer/lib/elements/dom-module.js';
-
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-
 /**
  * `<vaadin-number-field>` is a Web Component for number field control in forms.
  *
@@ -43,7 +39,6 @@ declare class NumberFieldElement extends TextFieldElement {
 }
 
 declare global {
-
   interface HTMLElementTagNameMap {
     "vaadin-number-field": NumberFieldElement;
   }

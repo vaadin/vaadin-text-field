@@ -1,5 +1,3 @@
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-
 import {TextFieldMixin} from './vaadin-text-field-mixin.js';
 
 import {ControlStateMixin} from '@vaadin/vaadin-control-state-mixin/vaadin-control-state-mixin.js';
@@ -7,8 +5,6 @@ import {ControlStateMixin} from '@vaadin/vaadin-control-state-mixin/vaadin-contr
 import {ThemableMixin} from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 
 import {ElementMixin} from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
-
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
 
 /**
  * `<vaadin-text-field>` is a Web Component for text field control in forms.
@@ -71,7 +67,7 @@ declare class TextFieldElement extends
   ControlStateMixin(
   ThemableMixin(
   ElementMixin(
-  PolymerElement)))) {
+  HTMLElement)))) {
 
   /**
    * Identifies a list of pre-defined options to suggest to the user.
@@ -92,7 +88,6 @@ declare class TextFieldElement extends
 }
 
 declare global {
-
   interface HTMLElementTagNameMap {
     "vaadin-text-field": TextFieldElement;
   }

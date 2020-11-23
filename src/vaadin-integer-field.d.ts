@@ -1,7 +1,5 @@
 import {NumberFieldElement} from './vaadin-number-field.js';
 
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-
 /**
  * `<vaadin-integer-field>` is a Web Component for integer field control in forms.
  *
@@ -17,7 +15,6 @@ declare class IntegerFieldElement extends NumberFieldElement {
 }
 
 declare global {
-
   interface HTMLElementTagNameMap {
     "vaadin-integer-field": IntegerFieldElement;
   }

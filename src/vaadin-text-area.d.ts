@@ -1,5 +1,3 @@
-import {PolymerElement} from '@polymer/polymer/polymer-element.js';
-
 import {TextFieldMixin} from './vaadin-text-field-mixin.js';
 
 import {ControlStateMixin} from '@vaadin/vaadin-control-state-mixin/vaadin-control-state-mixin.js';
@@ -7,8 +5,6 @@ import {ControlStateMixin} from '@vaadin/vaadin-control-state-mixin/vaadin-contr
 import {ThemableMixin} from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 
 import {ElementMixin} from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
-
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
 
 /**
  * `<vaadin-text-area>` is a Web Component for text area control in forms.
@@ -64,13 +60,12 @@ declare class TextAreaElement extends
   ControlStateMixin(
   ElementMixin(
   ThemableMixin(
-  PolymerElement)))) {
+  HTMLElement)))) {
   readonly _slottedTagName: string;
   ready(): void;
 }
 
 declare global {
-
   interface HTMLElementTagNameMap {
     "vaadin-text-area": TextAreaElement;
   }

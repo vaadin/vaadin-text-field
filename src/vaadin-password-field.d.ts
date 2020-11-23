@@ -1,9 +1,5 @@
 import {TextFieldElement} from './vaadin-text-field.js';
 
-import {DomModule} from '@polymer/polymer/lib/elements/dom-module.js';
-
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-
 /**
  * `<vaadin-password-field>` is a Web Component for password field control in forms.
  *
@@ -48,7 +44,6 @@ declare class PasswordFieldElement extends TextFieldElement {
 }
 
 declare global {
-
   interface HTMLElementTagNameMap {
     "vaadin-password-field": PasswordFieldElement;
   }

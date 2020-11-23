@@ -1,9 +1,3 @@
-import {timeOut, animationFrame} from '@polymer/polymer/lib/utils/async.js';
-
-import {Debouncer} from '@polymer/polymer/lib/utils/debounce.js';
-
-import {html} from '@polymer/polymer/lib/utils/html-tag.js';
-
 export {TextFieldMixin};
 
 declare function TextFieldMixin<T extends new (...args: any[]) => {}>(base: T): T & TextFieldMixinConstructor;
