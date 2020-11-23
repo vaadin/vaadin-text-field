@@ -3,12 +3,9 @@
 Copyright (c) 2017 Vaadin Ltd.
 This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
 */
-import '@polymer/polymer/polymer-element.js';
-
-import '@polymer/polymer/lib/elements/custom-style.js';
-import { TextFieldElement } from './vaadin-text-field.js';
 import { DomModule } from '@polymer/polymer/lib/elements/dom-module.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { TextFieldElement } from './vaadin-text-field.js';
 
 const $_documentContainer = html`<dom-module id="vaadin-number-field-template">
   <template>

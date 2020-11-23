@@ -3,14 +3,11 @@
 Copyright (c) 2017 Vaadin Ltd.
 This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
 */
-import '@polymer/polymer/polymer-element.js';
-
-import '@polymer/polymer/lib/elements/custom-style.js';
-import { TextFieldElement } from './vaadin-text-field.js';
 import { DomModule } from '@polymer/polymer/lib/elements/dom-module.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { TextFieldElement } from './vaadin-text-field.js';
 
-const $_documentContainer = html`<custom-style>
+const $_documentContainer = html`
   <style>
     @font-face {
       font-family: 'vaadin-password-field-icons';
@@ -19,7 +16,7 @@ const $_documentContainer = html`<custom-style>
       font-style: normal;
     }
   </style>
-</custom-style><dom-module id="vaadin-password-field-template">
+<dom-module id="vaadin-password-field-template">
   <template>
     <style>
       [part="reveal-button"][hidden] {
@@ -30,7 +27,6 @@ const $_documentContainer = html`<custom-style>
     <div part="reveal-button" on-mousedown="_revealButtonMouseDown" on-touchend="_togglePasswordVisibilityTouchend" on-click="_togglePasswordVisibility" hidden\$="[[revealButtonHidden]]">
     </div>
   </template>
-
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
