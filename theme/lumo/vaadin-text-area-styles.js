@@ -2,6 +2,7 @@ import { registerStyles, css } from '@vaadin/vaadin-themable-mixin/register-styl
 import '@vaadin/vaadin-lumo-styles/color.js';
 import '@vaadin/vaadin-lumo-styles/sizing.js';
 import '@vaadin/vaadin-lumo-styles/typography.js';
+import './vaadin-text-field-styles.js';
 
 registerStyles(
   'vaadin-text-area',
@@ -60,5 +61,5 @@ registerStyles(
       align-self: stretch; /* override "baseline" from <vaadin-text-field> */
     }
   `,
-  { moduleId: 'lumo-text-area', include: ['vaadin-text-field'] }
+  { moduleId: 'lumo-text-area', include: ['lumo-text-field'] }
 );
