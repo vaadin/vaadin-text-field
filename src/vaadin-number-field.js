@@ -10,20 +10,20 @@ import { TextFieldElement } from './vaadin-text-field.js';
 const $_documentContainer = html`<dom-module id="vaadin-number-field-template">
   <template>
     <style>
-      :host([readonly]) [part\$="button"] {
+      :host([readonly]) [part$='button'] {
         pointer-events: none;
       }
 
-      [part="decrease-button"]::before {
-        content: "−";
+      [part='decrease-button']::before {
+        content: '−';
       }
 
-      [part="increase-button"]::before {
-        content: "+";
+      [part='increase-button']::before {
+        content: '+';
       }
 
-      [part="decrease-button"],
-      [part="increase-button"] {
+      [part='decrease-button'],
+      [part='increase-button'] {
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
@@ -31,45 +31,54 @@ const $_documentContainer = html`<dom-module id="vaadin-number-field-template">
       }
 
       /* Hide the native arrow icons */
-      [part="value"]::-webkit-outer-spin-button,
-      [part="value"]::-webkit-inner-spin-button {
+      [part='value']::-webkit-outer-spin-button,
+      [part='value']::-webkit-inner-spin-button {
         -webkit-appearance: none;
         margin: 0;
       }
 
-      [part="value"] {
+      [part='value'] {
         /* Older Firefox versions (v47.0) requires !important */
         -moz-appearance: textfield !important;
       }
 
-      :host([dir="rtl"]) [part="input-field"] {
+      :host([dir='rtl']) [part='input-field'] {
         direction: ltr;
       }
 
-      :host([dir="rtl"]) [part="value"]::placeholder {
+      :host([dir='rtl']) [part='value']::placeholder {
         direction: rtl;
       }
 
-      :host([dir="rtl"]) [part="input-field"] ::slotted(input)::placeholder {
+      :host([dir='rtl']) [part='input-field'] ::slotted(input)::placeholder {
         direction: rtl;
       }
 
-      :host([dir="rtl"]:not([has-controls])) [part="value"]::placeholder {
+      :host([dir='rtl']:not([has-controls])) [part='value']::placeholder {
         text-align: left;
       }
 
-      :host([dir="rtl"]:not([has-controls])) [part="input-field"] ::slotted(input)::placeholder {
+      :host([dir='rtl']:not([has-controls])) [part='input-field'] ::slotted(input)::placeholder {
         text-align: left;
       }
     </style>
 
-    <div disabled\$="[[!_allowed(-1, value, min, max, step)]]" part="decrease-button" on-click="_decreaseValue" on-touchend="_decreaseButtonTouchend" hidden\$="[[!hasControls]]">
-    </div>
+    <div
+      disabled$="[[!_allowed(-1, value, min, max, step)]]"
+      part="decrease-button"
+      on-click="_decreaseValue"
+      on-touchend="_decreaseButtonTouchend"
+      hidden$="[[!hasControls]]"
+    ></div>
 
-    <div disabled\$="[[!_allowed(1, value, min, max, step)]]" part="increase-button" on-click="_increaseValue" on-touchend="_increaseButtonTouchend" hidden\$="[[!hasControls]]">
-    </div>
+    <div
+      disabled$="[[!_allowed(1, value, min, max, step)]]"
+      part="increase-button"
+      on-click="_increaseValue"
+      on-touchend="_increaseButtonTouchend"
+      hidden$="[[!hasControls]]"
+    ></div>
   </template>
-
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
@@ -133,7 +142,6 @@ class NumberFieldElement extends TextFieldElement {
         value: 1,
         observer: '_stepChanged'
       }
-
     };
   }
 
@@ -188,12 +196,12 @@ class NumberFieldElement extends TextFieldElement {
   }
 
   /** @private */
-  _constraintsChanged(required, minlength, maxlength, pattern, min, max, step) {
+  _constraintsChanged(required, minlength, maxlength, pattern, min, max) {
     if (!this.invalid) {
       return;
     }
 
-    const isNumUnset = n => (!n && n !== 0);
+    const isNumUnset = (n) => !n && n !== 0;
 
     if (!isNumUnset(min) || !isNumUnset(max)) {
       this.validate();
@@ -221,13 +229,10 @@ class NumberFieldElement extends TextFieldElement {
     let value = parseFloat(this.value);
 
     if (!this.value) {
-      if (this.min == 0 && incr < 0 ||
-          this.max == 0 && incr > 0 ||
-          this.max == 0 && this.min == 0) {
+      if ((this.min == 0 && incr < 0) || (this.max == 0 && incr > 0) || (this.max == 0 && this.min == 0)) {
         incr = 0;
         value = 0;
-      } else if ((this.max == null || this.max >= 0) &&
-                 (this.min == null || this.min <= 0)) {
+      } else if ((this.max == null || this.max >= 0) && (this.min == null || this.min <= 0)) {
         value = 0;
       } else if (this.min > 0) {
         value = this.min;
@@ -265,7 +270,7 @@ class NumberFieldElement extends TextFieldElement {
   /** @private */
   _setValue(value) {
     this.value = this.inputElement.value = String(parseFloat(value));
-    this.dispatchEvent(new CustomEvent('change', {bubbles: true}));
+    this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
   }
 
   /** @private */
@@ -274,9 +279,7 @@ class NumberFieldElement extends TextFieldElement {
       min = this.min || 0;
 
     // To avoid problems with decimal math, multiplying to operate with integers.
-    const multiplier = Math.max(this._getMultiplier(currentValue),
-      this._getMultiplier(step),
-      this._getMultiplier(min));
+    const multiplier = Math.max(this._getMultiplier(currentValue), this._getMultiplier(step), this._getMultiplier(min));
 
     step *= multiplier;
     currentValue = Math.round(currentValue * multiplier);
@@ -330,7 +333,7 @@ class NumberFieldElement extends TextFieldElement {
    * @param {number | undefined} oldVal
    * @protected
    */
-  _stepChanged(newVal, oldVal) {
+  _stepChanged(newVal) {
     // Avoid using initial value in validation
     this.__validateByStep = this.__stepChangedCalled || this.getAttribute('step') !== null;
     this.inputElement.step = this.__validateByStep ? newVal : 'any';

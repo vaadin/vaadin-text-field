@@ -1,4 +1,4 @@
-import {TextFieldElement} from './vaadin-text-field.js';
+import { TextFieldElement } from './vaadin-text-field.js';
 
 /**
  * `<vaadin-number-field>` is a Web Component for number field control in forms.
@@ -9,7 +9,6 @@ import {TextFieldElement} from './vaadin-text-field.js';
  * ```
  */
 declare class NumberFieldElement extends TextFieldElement {
-
   /**
    * Set to true to display value increase/decrease controls.
    * @attr {boolean} has-controls
@@ -19,29 +18,33 @@ declare class NumberFieldElement extends TextFieldElement {
   /**
    * The minimum value of the field.
    */
-  min: number|null|undefined;
+  min: number | null | undefined;
 
   /**
    * The maximum value of the field.
    */
-  max: number|null|undefined;
+  max: number | null | undefined;
 
   /**
    * Specifies the allowed number intervals of the field.
    */
   step: number;
-  ready(): void;
+
   _createConstraintsObserver(): void;
-  _valueChanged(newVal: unknown|null, oldVal: unknown|null): void;
+
+  _valueChanged(newVal: unknown | null, oldVal: unknown | null): void;
+
   checkValidity(): boolean;
+
   _onKeyDown(e: KeyboardEvent): void;
-  _stepChanged(newVal: number, oldVal: number|undefined): void;
+
+  _stepChanged(newVal: number, oldVal: number | undefined): void;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "vaadin-number-field": NumberFieldElement;
+    'vaadin-number-field': NumberFieldElement;
   }
 }
 
-export {NumberFieldElement};
+export { NumberFieldElement };

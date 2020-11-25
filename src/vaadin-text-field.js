@@ -71,42 +71,38 @@ import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.
  * @mixes ThemableMixin
  * @mixes ElementMixin
  */
-class TextFieldElement extends
-  ElementMixin(
-    TextFieldMixin(
-      ControlStateMixin(
-        ThemableMixin(PolymerElement)))) {
+class TextFieldElement extends ElementMixin(TextFieldMixin(ControlStateMixin(ThemableMixin(PolymerElement)))) {
   static get template() {
     return html`
-    <style include="vaadin-text-field-shared-styles">
-      /* polymer-cli linter breaks with empty line */
-    </style>
+      <style include="vaadin-text-field-shared-styles"></style>
 
-    <div class="vaadin-text-field-container">
+      <div class="vaadin-text-field-container">
+        <label part="label" on-click="focus" id="[[_labelId]]">[[label]]</label>
 
-      <label part="label" on-click="focus" id="[[_labelId]]">[[label]]</label>
+        <div part="input-field" id="[[_inputId]]">
+          <slot name="prefix"></slot>
 
-      <div part="input-field" id="[[_inputId]]">
+          <slot name="input">
+            <input part="value" />
+          </slot>
 
-        <slot name="prefix"></slot>
+          <div part="clear-button" id="clearButton" role="button" aria-label$="[[i18n.clear]]"></div>
+          <slot name="suffix"></slot>
+        </div>
 
-        <slot name="input">
-          <input part="value">
-        </slot>
+        <div part="helper-text" on-click="focus" id="[[_helperTextId]]">
+          <slot name="helper">[[helperText]]</slot>
+        </div>
 
-        <div part="clear-button" id="clearButton" role="button" aria-label\$="[[i18n.clear]]"></div>
-        <slot name="suffix"></slot>
-
+        <div
+          part="error-message"
+          id="[[_errorId]]"
+          aria-live="assertive"
+          aria-hidden$="[[_getErrorMessageAriaHidden(invalid, errorMessage, _errorId)]]"
+          >[[errorMessage]]</div
+        >
       </div>
-
-      <div part="helper-text" on-click="focus" id="[[_helperTextId]]">
-        <slot name="helper">[[helperText]]</slot>
-      </div>
-
-      <div part="error-message" id="[[_errorId]]" aria-live="assertive" aria-hidden\$="[[_getErrorMessageAriaHidden(invalid, errorMessage, _errorId)]]">[[errorMessage]]</div>
-
-    </div>
-`;
+    `;
   }
 
   static get is() {

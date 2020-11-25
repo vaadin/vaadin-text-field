@@ -1,10 +1,10 @@
-import {TextFieldMixin} from './vaadin-text-field-mixin.js';
+import { TextFieldMixin } from './vaadin-text-field-mixin.js';
 
-import {ControlStateMixin} from '@vaadin/vaadin-control-state-mixin/vaadin-control-state-mixin.js';
+import { ControlStateMixin } from '@vaadin/vaadin-control-state-mixin/vaadin-control-state-mixin.js';
 
-import {ThemableMixin} from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
+import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 
-import {ElementMixin} from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
+import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
 
 /**
  * `<vaadin-text-field>` is a Web Component for text field control in forms.
@@ -62,24 +62,18 @@ import {ElementMixin} from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js
  *
  * See [ThemableMixin – how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
  */
-declare class TextFieldElement extends
-  TextFieldMixin(
-  ControlStateMixin(
-  ThemableMixin(
-  ElementMixin(
-  HTMLElement)))) {
-
+declare class TextFieldElement extends TextFieldMixin(ControlStateMixin(ThemableMixin(ElementMixin(HTMLElement)))) {
   /**
    * Identifies a list of pre-defined options to suggest to the user.
    * The value must be the id of a <datalist> element in the same document.
    */
-  list: string|null|undefined;
+  list: string | null | undefined;
 
   /**
    * A regular expression that the value is checked against.
    * The pattern must match the entire value, not just some subset.
    */
-  pattern: string|null|undefined;
+  pattern: string | null | undefined;
 
   /**
    * The text usually displayed in a tooltip popup when the mouse is over the field.
@@ -89,8 +83,8 @@ declare class TextFieldElement extends
 
 declare global {
   interface HTMLElementTagNameMap {
-    "vaadin-text-field": TextFieldElement;
+    'vaadin-text-field': TextFieldElement;
   }
 }
 
-export {TextFieldElement};
+export { TextFieldElement };

@@ -64,75 +64,73 @@ import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.
  * @mixes ElementMixin
  * @mixes ThemableMixin
  */
-class TextAreaElement extends
-  ElementMixin(
-    TextFieldMixin(
-      ControlStateMixin(
-        ThemableMixin(PolymerElement)))) {
+class TextAreaElement extends ElementMixin(TextFieldMixin(ControlStateMixin(ThemableMixin(PolymerElement)))) {
   static get template() {
     return html`
-    <style include="vaadin-text-field-shared-styles">
-      .vaadin-text-area-container {
-        flex: auto;
-      }
-
-      /* The label, helper text and the error message should neither grow nor shrink. */
-      [part="label"],
-      [part="helper-text"],
-      [part="error-message"] {
-        flex: none;
-      }
-
-      [part="input-field"] {
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      [part="value"] {
-        resize: none;
-      }
-
-      [part="value"],
-      [part="input-field"] ::slotted(*) {
-        align-self: flex-start;
-      }
-
-      @keyframes vaadin-text-area-appear {
-        to {
-          opacity: 1;
+      <style include="vaadin-text-field-shared-styles">
+        .vaadin-text-area-container {
+          flex: auto;
         }
-      }
 
-      :host {
-        animation: 1ms vaadin-text-area-appear;
-      }
-    </style>
+        /* The label, helper text and the error message should neither grow nor shrink. */
+        [part='label'],
+        [part='helper-text'],
+        [part='error-message'] {
+          flex: none;
+        }
 
-    <div class="vaadin-text-area-container">
+        [part='input-field'] {
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+        }
 
-      <label part="label" on-click="focus" id="[[_labelId]]">[[label]]</label>
+        [part='value'] {
+          resize: none;
+        }
 
-      <div part="input-field" id="[[_inputId]]">
+        [part='value'],
+        [part='input-field'] ::slotted(*) {
+          align-self: flex-start;
+        }
 
-        <slot name="prefix"></slot>
+        @keyframes vaadin-text-area-appear {
+          to {
+            opacity: 1;
+          }
+        }
 
-        <slot name="textarea">
-          <textarea part="value"></textarea>
-        </slot>
+        :host {
+          animation: 1ms vaadin-text-area-appear;
+        }
+      </style>
 
-        <div part="clear-button" id="clearButton" role="button" aria-label\$="[[i18n.clear]]"></div>
-        <slot name="suffix"></slot>
+      <div class="vaadin-text-area-container">
+        <label part="label" on-click="focus" id="[[_labelId]]">[[label]]</label>
 
+        <div part="input-field" id="[[_inputId]]">
+          <slot name="prefix"></slot>
+
+          <slot name="textarea">
+            <textarea part="value"></textarea>
+          </slot>
+
+          <div part="clear-button" id="clearButton" role="button" aria-label$="[[i18n.clear]]"></div>
+          <slot name="suffix"></slot>
+        </div>
+
+        <div part="helper-text" on-click="focus" id="[[_helperTextId]]">
+          <slot name="helper">[[helperText]]</slot>
+        </div>
+
+        <div
+          part="error-message"
+          id="[[_errorId]]"
+          aria-live="assertive"
+          aria-hidden$="[[_getErrorMessageAriaHidden(invalid, errorMessage, _errorId)]]"
+          >[[errorMessage]]</div
+        >
       </div>
-
-      <div part="helper-text" on-click="focus" id="[[_helperTextId]]">
-        <slot name="helper">[[helperText]]</slot>
-      </div>
-
-      <div part="error-message" id="[[_errorId]]" aria-live="assertive" aria-hidden\$="[[_getErrorMessageAriaHidden(invalid, errorMessage, _errorId)]]">[[errorMessage]]</div>
-
-    </div>
-`;
+    `;
   }
 
   static get is() {
@@ -144,9 +142,7 @@ class TextAreaElement extends
   }
 
   static get observers() {
-    return [
-      '_textAreaValueChanged(value)'
-    ];
+    return ['_textAreaValueChanged(value)'];
   }
 
   /** @protected */
@@ -172,7 +168,7 @@ class TextAreaElement extends
   }
 
   /** @private */
-  _textAreaValueChanged(value) {
+  _textAreaValueChanged() {
     this._updateHeight();
   }
 

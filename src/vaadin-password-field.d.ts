@@ -1,4 +1,4 @@
-import {TextFieldElement} from './vaadin-text-field.js';
+import { TextFieldElement } from './vaadin-text-field.js';
 
 /**
  * `<vaadin-password-field>` is a Web Component for password field control in forms.
@@ -27,7 +27,6 @@ import {TextFieldElement} from './vaadin-text-field.js';
  * See [ThemableMixin – how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
  */
 declare class PasswordFieldElement extends TextFieldElement {
-
   /**
    * Set to true to hide the eye icon which toggles the password visibility.
    * @attr {boolean} reveal-button-hidden
@@ -39,14 +38,14 @@ declare class PasswordFieldElement extends TextFieldElement {
    * @attr {boolean} password-visible
    */
   readonly passwordVisible: boolean;
-  ready(): void;
+
   _onChange(e: Event): void;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "vaadin-password-field": PasswordFieldElement;
+    'vaadin-password-field': PasswordFieldElement;
   }
 }
 
-export {PasswordFieldElement};
+export { PasswordFieldElement };

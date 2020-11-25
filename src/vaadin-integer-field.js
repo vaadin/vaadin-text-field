@@ -53,8 +53,7 @@ class IntegerFieldElement extends NumberFieldElement {
    */
   _valueChanged(newVal, oldVal) {
     if (newVal !== '' && !this.__isInteger(newVal)) {
-      console.warn(`Trying to set non-integer value "${newVal}" to <vaadin-integer-field>.`
-        + ` Clearing the value.`);
+      console.warn(`Trying to set non-integer value "${newVal}" to <vaadin-integer-field>.` + ` Clearing the value.`);
       this.value = '';
       return;
     }
@@ -68,9 +67,11 @@ class IntegerFieldElement extends NumberFieldElement {
    */
   _stepChanged(newVal, oldVal) {
     if (!this.__hasOnlyDigits(newVal)) {
-      console.warn(`Trying to set invalid step size "${newVal}",`
-        + ` which is not a positive integer, to <vaadin-integer-field>.`
-        + ` Resetting the default value 1.`);
+      console.warn(
+        `Trying to set invalid step size "${newVal}",` +
+          ` which is not a positive integer, to <vaadin-integer-field>.` +
+          ` Resetting the default value 1.`
+      );
       this.step = 1;
       return;
     }

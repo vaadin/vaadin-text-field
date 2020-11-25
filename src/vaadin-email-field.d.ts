@@ -1,4 +1,4 @@
-import {TextFieldElement} from './vaadin-text-field.js';
+import { TextFieldElement } from './vaadin-text-field.js';
 
 /**
  * `<vaadin-email-field>` is a Web Component for email field control in forms.
@@ -15,14 +15,13 @@ import {TextFieldElement} from './vaadin-text-field.js';
  * See [ThemableMixin – how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
  */
 declare class EmailFieldElement extends TextFieldElement {
-  ready(): void;
   _createConstraintsObserver(): void;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "vaadin-email-field": EmailFieldElement;
+    'vaadin-email-field': EmailFieldElement;
   }
 }
 
-export {EmailFieldElement};
+export { EmailFieldElement };

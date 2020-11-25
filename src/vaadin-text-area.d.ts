@@ -1,10 +1,10 @@
-import {TextFieldMixin} from './vaadin-text-field-mixin.js';
+import { TextFieldMixin } from './vaadin-text-field-mixin.js';
 
-import {ControlStateMixin} from '@vaadin/vaadin-control-state-mixin/vaadin-control-state-mixin.js';
+import { ControlStateMixin } from '@vaadin/vaadin-control-state-mixin/vaadin-control-state-mixin.js';
 
-import {ThemableMixin} from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
+import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 
-import {ElementMixin} from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
+import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
 
 /**
  * `<vaadin-text-area>` is a Web Component for text area control in forms.
@@ -55,20 +55,14 @@ import {ElementMixin} from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js
  *
  * See [ThemableMixin – how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
  */
-declare class TextAreaElement extends
-  TextFieldMixin(
-  ControlStateMixin(
-  ElementMixin(
-  ThemableMixin(
-  HTMLElement)))) {
+declare class TextAreaElement extends TextFieldMixin(ControlStateMixin(ElementMixin(ThemableMixin(HTMLElement)))) {
   readonly _slottedTagName: string;
-  ready(): void;
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    "vaadin-text-area": TextAreaElement;
+    'vaadin-text-area': TextAreaElement;
   }
 }
 
-export {TextAreaElement};
+export { TextAreaElement };

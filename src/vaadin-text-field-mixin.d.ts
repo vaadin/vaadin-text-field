@@ -1,16 +1,16 @@
-export {TextFieldMixin};
+import { TextFieldAutoCorrect, TextFieldAutoCapitalize } from '../@types/interfaces';
 
 declare function TextFieldMixin<T extends new (...args: any[]) => {}>(base: T): T & TextFieldMixinConstructor;
 
 interface TextFieldMixinConstructor {
-  new(...args: any[]): TextFieldMixin;
+  new (...args: any[]): TextFieldMixin;
 }
 
-export {TextFieldMixinConstructor};
-
 interface TextFieldMixin {
-  readonly focusElement: HTMLElement|null|undefined;
-  readonly inputElement: HTMLElement|null|undefined;
+  readonly focusElement: HTMLElement | null | undefined;
+
+  readonly inputElement: HTMLElement | null | undefined;
+
   readonly _slottedTagName: string;
 
   /**
@@ -18,7 +18,7 @@ interface TextFieldMixin {
    * List of available options at:
    * https://developer.mozilla.org/en/docs/Web/HTML/Element/input#attr-autocomplete
    */
-  autocomplete: string|null|undefined;
+  autocomplete: string | null | undefined;
 
   /**
    * This is a property supported by Safari that is used to control whether
@@ -27,7 +27,7 @@ interface TextFieldMixin {
    * on: Enable autocorrection.
    * off: Disable autocorrection.
    */
-  autocorrect: TextFieldAutoCorrect|undefined;
+  autocorrect: TextFieldAutoCorrect | undefined;
 
   /**
    * This is a property supported by Safari and Chrome that is used to control whether
@@ -38,7 +38,7 @@ interface TextFieldMixin {
    * sentences: Sentences capitalization.
    * none: No capitalization.
    */
-  autocapitalize: TextFieldAutoCapitalize|undefined;
+  autocapitalize: TextFieldAutoCapitalize | undefined;
 
   /**
    * Specify that the value should be automatically selected when the field gains focus.
@@ -68,7 +68,7 @@ interface TextFieldMixin {
    * }
    * ```
    */
-  i18n: {clear: string};
+  i18n: { clear: string };
 
   /**
    * String used for the label element.
@@ -79,37 +79,37 @@ interface TextFieldMixin {
    * String used for the helper text.
    * @attr {string} helper-text
    */
-  helperText: string|null;
+  helperText: string | null;
 
   /**
    * Maximum number of characters (in Unicode code points) that the user can enter.
    */
-  maxlength: number|null|undefined;
+  maxlength: number | null | undefined;
 
   /**
    * Minimum number of characters (in Unicode code points) that the user can enter.
    */
-  minlength: number|null|undefined;
+  minlength: number | null | undefined;
 
   /**
    * The name of the control, which is submitted with the form data.
    */
-  name: string|null|undefined;
+  name: string | null | undefined;
 
   /**
    * A hint to the user of what can be entered in the control.
    */
-  placeholder: string|null|undefined;
+  placeholder: string | null | undefined;
 
   /**
    * This attribute indicates that the user cannot modify the value of the control.
    */
-  readonly: boolean|null|undefined;
+  readonly: boolean | null | undefined;
 
   /**
    * Specifies that the user must fill in a value.
    */
-  required: boolean|null|undefined;
+  required: boolean | null | undefined;
 
   /**
    * The initial value of the control.
@@ -126,14 +126,14 @@ interface TextFieldMixin {
    * Specifies that the text field has value.
    * @attr {boolean} has-value
    */
-  hasValue: boolean|null|undefined;
+  hasValue: boolean | null | undefined;
 
   /**
    * When set to true, user is prevented from typing a value that
    * conflicts with the given `pattern`.
    * @attr {boolean} prevent-invalid-input
    */
-  preventInvalidInput: boolean|null|undefined;
+  preventInvalidInput: boolean | null | undefined;
 
   /**
    * A pattern matched against individual characters the user inputs.
@@ -145,17 +145,25 @@ interface TextFieldMixin {
    * For example, to enable entering only numbers and minus signs,
    * `_enabledCharPattern = "[\\d-]"`
    */
-  _enabledCharPattern: string|null|undefined;
+  _enabledCharPattern: string | null | undefined;
+
   _createConstraintsObserver(): void;
+
   _onChange(e: Event): void;
-  _valueChanged(newVal: unknown|null, oldVal: unknown|null): void;
-  _constraintsChanged(required: boolean|undefined, minlength: number|undefined, maxlength: string|undefined, pattern: any): void;
+
+  _valueChanged(newVal: unknown | null, oldVal: unknown | null): void;
+
+  _constraintsChanged(
+    required: boolean | undefined,
+    minlength: number | undefined,
+    maxlength: string | undefined,
+    pattern: any
+  ): void;
 
   /**
    * Returns true if the current input value satisfies all constraints (if any)
    */
   checkValidity(): boolean;
-  ready(): void;
 
   /**
    * Returns true if `value` is valid.
@@ -164,10 +172,10 @@ interface TextFieldMixin {
    * @returns True if the value is valid.
    */
   validate(): boolean;
+
   clear(): void;
+
   _onKeyDown(e: KeyboardEvent): void;
 }
 
-import {TextFieldAutoCorrect} from '../@types/interfaces';
-
-import {TextFieldAutoCapitalize} from '../@types/interfaces';
+export { TextFieldMixin, TextFieldMixinConstructor };
