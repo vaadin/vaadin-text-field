@@ -6,6 +6,8 @@ import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mix
 
 import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
 
+import { TextFieldEventMap } from './interfaces';
+
 /**
  * `<vaadin-text-field>` is a Web Component for text field control in forms.
  *
@@ -79,6 +81,18 @@ declare class TextFieldElement extends TextFieldMixin(ControlStateMixin(Themable
    * The text usually displayed in a tooltip popup when the mouse is over the field.
    */
   title: string;
+
+  addEventListener<K extends keyof TextFieldEventMap>(
+    type: K,
+    listener: (this: TextFieldElement, ev: TextFieldEventMap[K]) => void,
+    options?: boolean | AddEventListenerOptions
+  ): void;
+
+  removeEventListener<K extends keyof TextFieldEventMap>(
+    type: K,
+    listener: (this: TextFieldElement, ev: TextFieldEventMap[K]) => void,
+    options?: boolean | EventListenerOptions
+  ): void;
 }
 
 declare global {

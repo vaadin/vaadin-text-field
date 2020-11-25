@@ -6,6 +6,8 @@ import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mix
 
 import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
 
+import { TextFieldEventMap } from './interfaces';
+
 /**
  * `<vaadin-text-area>` is a Web Component for text area control in forms.
  *
@@ -57,6 +59,18 @@ import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.
  */
 declare class TextAreaElement extends TextFieldMixin(ControlStateMixin(ElementMixin(ThemableMixin(HTMLElement)))) {
   readonly _slottedTagName: string;
+
+  addEventListener<K extends keyof TextFieldEventMap>(
+    type: K,
+    listener: (this: TextAreaElement, ev: TextFieldEventMap[K]) => void,
+    options?: boolean | AddEventListenerOptions
+  ): void;
+
+  removeEventListener<K extends keyof TextFieldEventMap>(
+    type: K,
+    listener: (this: TextAreaElement, ev: TextFieldEventMap[K]) => void,
+    options?: boolean | EventListenerOptions
+  ): void;
 }
 
 declare global {
