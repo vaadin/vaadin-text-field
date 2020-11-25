@@ -704,7 +704,6 @@ export const TextFieldMixin = (subclass) =>
 
     /**
      * Returns true if `value` is valid.
-     * `<iron-form>` uses this to check the validity for all its elements.
      *
      * @return {boolean} True if the value is valid.
      */
