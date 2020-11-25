@@ -7,38 +7,27 @@ import '@polymer/polymer/polymer-element.js';
 
 import '@polymer/polymer/lib/elements/custom-style.js';
 import { TextFieldElement } from './vaadin-text-field.js';
-import { DomModule } from '@polymer/polymer/lib/elements/dom-module.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { registerStyles, css } from '@vaadin/vaadin-themable-mixin/register-styles.js';
 
-const $_documentContainer = html`<dom-module id="vaadin-email-field-template">
-  <template>
-    <style>
-      :host([dir="rtl"]) [part="input-field"] {
-        direction: ltr;
-      }
+registerStyles(
+  'vaadin-email-field',
+  css`
+    :host([dir='rtl']) [part='input-field'] {
+      direction: ltr;
+    }
 
-      :host([dir="rtl"]) [part="value"]::placeholder {
-        direction: rtl;
-        text-align: left;
-      }
+    :host([dir='rtl']) [part='value']::placeholder {
+      direction: rtl;
+      text-align: left;
+    }
 
-      :host([dir="rtl"]) [part="input-field"] ::slotted(input)::placeholder {
-        direction: rtl;
-        text-align: left;
-      }
-
-      :host([dir="rtl"]) [part="value"]:-ms-input-placeholder,
-      :host([dir="rtl"]) [part="input-field"] ::slotted(input):-ms-input-placeholder {
-        direction: rtl;
-        text-align: left;
-      }
-    </style>
-  </template>
-
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
-let memoizedTemplate;
+    :host([dir='rtl']) [part='input-field'] ::slotted(input)::placeholder {
+      direction: rtl;
+      text-align: left;
+    }
+  `,
+  { moduleId: 'vaadin-email-field-styles' }
+);
 
 /**
  * `<vaadin-email-field>` is a Web Component for email field control in forms.
@@ -63,22 +52,6 @@ class EmailFieldElement extends TextFieldElement {
 
   static get version() {
     return '2.8.2';
-  }
-
-  static get template() {
-    if (!memoizedTemplate) {
-      // Clone the superclass template
-      memoizedTemplate = super.template.cloneNode(true);
-
-      // Retrieve this element's dom-module template
-      const thisTemplate = DomModule.import(this.is + '-template', 'template');
-      const styles = thisTemplate.content.querySelector('style');
-
-      // Add the and styles to the text-field template
-      memoizedTemplate.content.appendChild(styles);
-    }
-
-    return memoizedTemplate;
   }
 
   /** @protected */

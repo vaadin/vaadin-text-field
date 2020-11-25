@@ -1,20 +1,17 @@
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { registerStyles, css } from '@vaadin/vaadin-themable-mixin/register-styles.js';
 
-const $_documentContainer = html`<dom-module id="lumo-email-field" theme-for="vaadin-email-field">
-  <template>
-    <style>
-      :not(*):placeholder-shown, /* to prevent broken styles on IE */
-      :host([dir="rtl"]) [part="value"]:placeholder-shown,
-      :host([dir="rtl"]) [part="input-field"] ::slotted(input:placeholder-shown) {
-        --_lumo-text-field-overflow-mask-image: none;
-      }
+registerStyles(
+  'vaadin-email-field',
+  css`
+    :host([dir='rtl']) [part='value']:placeholder-shown,
+    :host([dir='rtl']) [part='input-field'] ::slotted(input:placeholder-shown) {
+      --_lumo-text-field-overflow-mask-image: none;
+    }
 
-      :host([dir="rtl"]) [part="value"],
-      :host([dir="rtl"]) [part="input-field"] ::slotted(input) {
-        --_lumo-text-field-overflow-mask-image: linear-gradient(to left, transparent, #000 1.25em);
-      }
-    </style>
-  </template>
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
+    :host([dir='rtl']) [part='value'],
+    :host([dir='rtl']) [part='input-field'] ::slotted(input) {
+      --_lumo-text-field-overflow-mask-image: linear-gradient(to left, transparent, #000 1.25em);
+    }
+  `,
+  { moduleId: 'lumo-email-field' }
+);

@@ -1,32 +1,27 @@
-import './vaadin-text-field-styles.js';
+import { registerStyles, css } from '@vaadin/vaadin-themable-mixin/register-styles.js';
 import '@vaadin/vaadin-material-styles/font-icons.js';
 import '@vaadin/vaadin-material-styles/mixins/field-button.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
-const $_documentContainer = html`<dom-module id="material-number-field" theme-for="vaadin-number-field">
-  <template>
-    <style include="material-field-button">
-      :host {
-        width: 8em;
-      }
+registerStyles(
+  'vaadin-number-field',
+  css`
+    :host {
+      width: 8em;
+    }
 
-      :host([has-controls]) [part="value"] {
-        text-align: center;
-      }
+    :host([has-controls]) [part='value'] {
+      text-align: center;
+    }
 
-      [part="decrease-button"][disabled],
-      [part="increase-button"][disabled] {
-        opacity: 0.2;
-      }
+    [part\$='button'][disabled] {
+      opacity: 0.2;
+    }
 
-      [part="decrease-button"],
-      [part="increase-button"] {
-        cursor: pointer;
-        font-size: var(--material-body-font-size);
-        padding-bottom: 0.21em;
-      }
-    </style>
-  </template>
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
+    [part\$='decrease-button'] {
+      cursor: pointer;
+      font-size: var(--material-body-font-size);
+      padding-bottom: 0.21em;
+    }
+  `,
+  { moduleId: 'material-number-field', include: ['material-field-button'] }
+);

@@ -1,29 +1,22 @@
+import { registerStyles, css } from '@vaadin/vaadin-themable-mixin/register-styles.js';
 import '@vaadin/vaadin-lumo-styles/font-icons.js';
 import '@vaadin/vaadin-lumo-styles/sizing.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
-const $_documentContainer = html`<dom-module id="lumo-password-field" theme-for="vaadin-password-field">
-  <template>
-    <style>
-      [part="reveal-button"]::before {
-        content: var(--lumo-icons-eye);
-      }
+registerStyles(
+  'vaadin-password-field',
+  css`
+    [part='reveal-button']::before {
+      content: var(--lumo-icons-eye);
+    }
 
-      :host([password-visible]) [part="reveal-button"]::before {
-        content: var(--lumo-icons-eye-disabled);
-      }
+    :host([password-visible]) [part='reveal-button']::before {
+      content: var(--lumo-icons-eye-disabled);
+    }
 
-      /* Make it easy to hide the button across the whole app */
-      [part="reveal-button"] {
-        display: var(--lumo-password-field-reveal-button-display, block);
-      }
-
-      /* FIXME: ShadyCSS workaround for slotted input in Edge */
-      [part="input-field"] ::slotted(input)::-ms-reveal {
-        display: none;
-      }
-    </style>
-  </template>
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
+    /* Make it easy to hide the button across the whole app */
+    [part='reveal-button'] {
+      display: var(--lumo-password-field-reveal-button-display, block);
+    }
+  `,
+  { moduleId: 'lumo-password-field' }
+);

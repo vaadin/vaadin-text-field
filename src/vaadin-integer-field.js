@@ -7,14 +7,6 @@ import '@polymer/polymer/polymer-element.js';
 
 import '@polymer/polymer/lib/elements/custom-style.js';
 import { NumberFieldElement } from './vaadin-number-field.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-
-const $_documentContainer = html`<dom-module id="vaadin-integer-field-template">
-
-
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
 
 /**
  * `<vaadin-integer-field>` is a Web Component for integer field control in forms.

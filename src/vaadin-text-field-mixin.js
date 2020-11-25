@@ -6,109 +6,102 @@ This program is available under Apache License Version 2.0, available at https:/
 import { timeOut, animationFrame } from '@polymer/polymer/lib/utils/async.js';
 
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { registerStyles, css } from '@vaadin/vaadin-themable-mixin/register-styles.js';
 
-const $_documentContainer = html`<dom-module id="vaadin-text-field-shared-styles">
-  <template>
-    <style>
-      :host {
-        display: inline-flex;
-        outline: none;
-      }
+registerStyles(
+  '',
+  css`
+    :host {
+      display: inline-flex;
+      outline: none;
+    }
 
-      :host::before {
-        content: "\\2003";
-        width: 0;
-        display: inline-block;
-        /* Size and position this element on the same vertical position as the input-field element
-           to make vertical align for the host element work as expected */
-      }
+    :host::before {
+      content: '\\2003';
+      width: 0;
+      display: inline-block;
+      /* Size and position this element on the same vertical position as the input-field element
+          to make vertical align for the host element work as expected */
+    }
 
-      :host([hidden]) {
-        display: none !important;
-      }
+    :host([hidden]) {
+      display: none !important;
+    }
 
-      .vaadin-text-field-container,
-      .vaadin-text-area-container {
-        display: flex;
-        flex-direction: column;
-        min-width: 100%;
-        max-width: 100%;
-        width: var(--vaadin-text-field-default-width, 12em);
-      }
+    .vaadin-text-field-container,
+    .vaadin-text-area-container {
+      display: flex;
+      flex-direction: column;
+      min-width: 100%;
+      max-width: 100%;
+      width: var(--vaadin-text-field-default-width, 12em);
+    }
 
-      [part="label"]:empty {
-        display: none;
-      }
+    [part='label']:empty {
+      display: none;
+    }
 
-      [part="input-field"] {
-        display: flex;
-        align-items: center;
-        flex: auto;
-      }
+    [part="input-field"] {
+      display: flex;
+      align-items: center;
+      flex: auto;
+    }
 
-      .vaadin-text-field-container [part="input-field"] {
-        flex-grow: 0;
-      }
+    .vaadin-text-field-container [part="input-field"] {
+      flex-grow: 0;
+    }
 
-      /* Reset the native input styles */
-      [part="value"],
-      [part="input-field"] ::slotted(input),
-      [part="input-field"] ::slotted(textarea) {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        outline: none;
-        margin: 0;
-        padding: 0;
-        border: 0;
-        border-radius: 0;
-        min-width: 0;
-        font: inherit;
-        font-size: 1em;
-        line-height: normal;
-        color: inherit;
-        background-color: transparent;
-        /* Disable default invalid style in Firefox */
-        box-shadow: none;
-      }
+    /* Reset the native input styles */
+    [part='value'],
+    [part='input-field'] ::slotted(input),
+    [part='input-field'] ::slotted(textarea) {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      outline: none;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      min-width: 0;
+      font: inherit;
+      font-size: 1em;
+      line-height: normal;
+      color: inherit;
+      background-color: transparent;
+      /* Disable default invalid style in Firefox */
+      box-shadow: none;
+    }
 
-      [part="input-field"] ::slotted(*) {
-        flex: none;
-      }
+    [part='input-field'] ::slotted(*) {
+      flex: none;
+    }
 
-      [part="value"],
-      [part="input-field"] ::slotted(input),
-      [part="input-field"] ::slotted(textarea),
-      /* Slotted by vaadin-select-text-field */
-      [part="input-field"] ::slotted([part="value"]) {
-        flex: auto;
-        white-space: nowrap;
-        overflow: hidden;
-        width: 100%;
-        height: 100%;
-      }
+    [part='value'],
+    [part='input-field'] ::slotted(input),
+    [part='input-field'] ::slotted(textarea),
+    /* Slotted by vaadin-select-text-field */
+    [part='input-field'] ::slotted([part="value"]) {
+      flex: auto;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+    }
 
-      [part="input-field"] ::slotted(textarea) {
-        resize: none;
-      }
+    [part='input-field'] ::slotted(textarea) {
+      resize: none;
+    }
 
-      [part="value"]::-ms-clear,
-      [part="input-field"] ::slotted(input)::-ms-clear {
-        display: none;
-      }
+    [part='clear-button'] {
+      cursor: default;
+    }
 
-      [part="clear-button"] {
-        cursor: default;
-      }
-
-      [part="clear-button"]::before {
-        content: "✕";
-      }
-    </style>
-  </template>
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
+    [part='clear-button']::before {
+      content: "✕";
+    }
+  `,
+  { moduleId: 'vaadin-text-field-shared-styles' }
+);
 
 const HOST_PROPS = {
   default: ['list', 'autofocus', 'pattern', 'autocapitalize', 'autocorrect', 'maxlength',

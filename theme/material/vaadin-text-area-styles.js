@@ -1,27 +1,24 @@
+import { registerStyles, css } from '@vaadin/vaadin-themable-mixin/register-styles.js';
 import './vaadin-text-field-styles.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
-const $_documentContainer = html`<dom-module id="material-text-area" theme-for="vaadin-text-area">
-  <template>
-    <style include="material-text-field">
-      [part="input-field"] {
-        height: auto;
-        box-sizing: border-box;
-      }
+registerStyles(
+  'vaadin-text-area',
+  css`
+    [part='input-field'] {
+      height: auto;
+      box-sizing: border-box;
+    }
 
-      /* NOTE(platosha): double attribute workarounds specifity for Firefox */
-      [part="value"][part="value"] {
-        padding-top: 0;
-        margin-top: 4px;
-      }
+    [part='input-field'] [part='value'] {
+      padding-top: 0;
+      margin-top: 4px;
+    }
 
-      [part="input-field"] [part="value"],
-      [part="input-field"] ::slotted(textarea) {
-        white-space: pre-wrap; /* override \`nowrap\` from <vaadin-text-field> */
-        align-self: stretch; /* override \`baseline\` from <vaadin-text-field> */
-      }
-    </style>
-  </template>
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
+    [part='input-field'] [part='value'],
+    [part='input-field'] ::slotted(textarea) {
+      white-space: pre-wrap; /* override "nowrap" from <vaadin-text-field> */
+      align-self: stretch; /* override "baseline" from <vaadin-text-field> */
+    }
+  `,
+  { moduleId: 'material-text-area', include: ['material-text-field'] }
+);
