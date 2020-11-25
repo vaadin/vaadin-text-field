@@ -47,12 +47,6 @@ const $_documentContainer = html`<dom-module id="material-placeholder-styles">
         opacity: 0;
         transition-delay: 0;
       }
-
-      /* IE11 doesn’t show the placeholder when the input is focused, so it’s basically useless for this theme */
-      [has-label] > input[slot="input"]:-ms-input-placeholder,
-      [has-label] > input[slot="textarea"]:-ms-input-placeholder {
-        opacity: 0;
-      }
     </style>
   </template>
 </dom-module>`;

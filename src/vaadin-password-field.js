@@ -22,11 +22,6 @@ const $_documentContainer = html`<custom-style>
 </custom-style><dom-module id="vaadin-password-field-template">
   <template>
     <style>
-      /* Hide the native eye icon for IE/Edge */
-      ::-ms-reveal {
-        display: none;
-      }
-
       [part="reveal-button"][hidden] {
         display: none !important;
       }

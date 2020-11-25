@@ -143,11 +143,6 @@ const $_documentContainer = html`<dom-module id="material-text-field" theme-for=
         transition-delay: 0;
       }
 
-      /* IE11 doesn’t show the placeholder when the input is focused, so it’s basically useless for this theme */
-      :host([has-label]) [part="value"]:-ms-input-placeholder {
-        opacity: 0;
-      }
-
       /* According to material theme guidelines, helper text should be hidden when error message is set and input is invalid */
       :host([has-helper][invalid][has-error-message]) [part="helper-text"] {
         display: none;

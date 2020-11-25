@@ -57,21 +57,11 @@ const $_documentContainer = html`<dom-module id="vaadin-number-field-template">
         direction: rtl;
       }
 
-      :host([dir="rtl"]) [part="value"]:-ms-input-placeholder,
-      :host([dir="rtl"]) [part="input-field"] ::slotted(input):-ms-input-placeholder {
-        direction: rtl;
-      }
-
       :host([dir="rtl"]:not([has-controls])) [part="value"]::placeholder {
         text-align: left;
       }
 
       :host([dir="rtl"]:not([has-controls])) [part="input-field"] ::slotted(input)::placeholder {
-        text-align: left;
-      }
-
-      :host([dir="rtl"]:not([has-controls])) [part="value"]:-ms-input-placeholder,
-      :host([dir="rtl"]:not([has-controls])) [part="input-field"] ::slotted(input):-ms-input-placeholder {
         text-align: left;
       }
     </style>
@@ -82,7 +72,6 @@ const $_documentContainer = html`<dom-module id="vaadin-number-field-template">
     <div disabled\$="[[!_allowed(1, value, min, max, step)]]" part="increase-button" on-click="_increaseValue" on-touchend="_increaseButtonTouchend" hidden\$="[[!hasControls]]">
     </div>
   </template>
-
 
 </dom-module>`;
 

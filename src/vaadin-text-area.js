@@ -75,8 +75,6 @@ class TextAreaElement extends
     <style include="vaadin-text-field-shared-styles">
       .vaadin-text-area-container {
         flex: auto;
-        max-height: inherit; /* MSIE 11 */
-        min-height: inherit; /* MSIE 11 */
       }
 
       /* The label, helper text and the error message should neither grow nor shrink. */

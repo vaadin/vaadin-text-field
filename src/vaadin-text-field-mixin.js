@@ -541,11 +541,9 @@ export const TextFieldMixin = subclass => class VaadinTextFieldMixin extends sub
     if (slotted && !this._slottedInput) {
       this._validateSlottedValue(slotted);
       this._addInputListeners(slotted);
-      this._addIEListeners(slotted);
       this._slottedInput = slotted;
     } else if (!slotted && this._slottedInput) {
       this._removeInputListeners(this._slottedInput);
-      this._removeIEListeners(this._slottedInput);
       this._slottedInput = undefined;
     }
 
@@ -673,9 +671,7 @@ export const TextFieldMixin = subclass => class VaadinTextFieldMixin extends sub
     const defaultInput = this.shadowRoot.querySelector('[part="value"]');
     this._slottedInput = this.querySelector(`${this._slottedTagName}[slot="${this._slottedTagName}"]`);
     this._addInputListeners(defaultInput);
-    this._addIEListeners(defaultInput);
     if (this._slottedInput) {
-      this._addIEListeners(this._slottedInput);
       this._addInputListeners(this._slottedInput);
     }
 
@@ -821,35 +817,6 @@ export const TextFieldMixin = subclass => class VaadinTextFieldMixin extends sub
   __enabledCharPatternChanged(_enabledCharPattern) {
     this.__enabledCharRegExp = _enabledCharPattern && new RegExp('^' + _enabledCharPattern + '$');
     this.__enabledTextRegExp = _enabledCharPattern && new RegExp('^' + _enabledCharPattern + '*$');
-  }
-
-  /** @private */
-  _addIEListeners(node) {
-    /* istanbul ignore if */
-    if (navigator.userAgent.match(/Trident/)) {
-      // IE11 dispatches `input` event in following cases:
-      // - focus or blur, when placeholder attribute is set
-      // - placeholder attribute value changed
-      // https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/101220/
-      this._shouldPreventInput = () => {
-        this.__preventInput = true;
-        requestAnimationFrame(() => {
-          this.__preventInput = false;
-        });
-      };
-      node.addEventListener('focusin', this._shouldPreventInput);
-      node.addEventListener('focusout', this._shouldPreventInput);
-      this._createPropertyObserver('placeholder', this._shouldPreventInput);
-    }
-  }
-
-  /** @private */
-  _removeIEListeners(node) {
-    /* istanbul ignore if */
-    if (navigator.userAgent.match(/Trident/)) {
-      node.removeEventListener('focusin', this._shouldPreventInput);
-      node.removeEventListener('focusout', this._shouldPreventInput);
-    }
   }
 
   /** @private */
