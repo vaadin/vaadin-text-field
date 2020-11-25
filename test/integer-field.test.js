@@ -1,47 +1,18 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="UTF-8">
-  <title>vaadin-integer-field tests</title>
-  <script src="../../../wct-browser-legacy/browser.js"></script>
-  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
-  <script type="module" src="../vaadin-integer-field.js"></script>
-  <script type="module" src="../../../@polymer/iron-form/iron-form.js"></script>
-  <script src="../../../@polymer/iron-test-helpers/mock-interactions.js" type="module"></script>
-</head>
-
-<body>
-  <test-fixture id="default">
-    <template>
-      <vaadin-integer-field></vaadin-integer-field>
-    </template>
-  </test-fixture>
-
-  <test-fixture id="mixed">
-    <template>
-      <vaadin-integer-field label="integer fld"></vaadin-integer-field>
-      <vaadin-text-field label="text fld"></vaadin-text-field>
-      <vaadin-number-field label="number fld"></vaadin-number-field>
-    </template>
-  </test-fixture>
-
-  <script type="module">
-import '@polymer/test-fixture/test-fixture.js';
+import { expect } from '@esm-bundle/chai';
+import sinon from 'sinon';
+import { fixtureSync } from '@open-wc/testing-helpers';
+import { keyDownOn } from '@polymer/iron-test-helpers/mock-interactions.js';
 import '../vaadin-integer-field.js';
-import '@polymer/iron-form/iron-form.js';
-describe('integer-field', () => {
 
+describe('integer-field', () => {
   let integerField, input;
 
   beforeEach(() => {
-    integerField = fixture('default');
+    integerField = fixtureSync('<vaadin-integer-field></vaadin-integer-field>');
     input = integerField.inputElement;
   });
 
   describe('keyboard input', () => {
-
     let keydownSpy;
 
     beforeEach(() => {
@@ -57,18 +28,15 @@ describe('integer-field', () => {
       [106, [], '*'],
       [32, [], ' '],
       [187, [], '?']
-    ]
-      .forEach(([keyCode, modifiers, key]) => {
+    ].forEach(([keyCode, modifiers, key]) => {
+      const keyCombo = modifiers.concat(key).join('+');
 
-        const keyCombo = modifiers.concat(key).join('+');
-
-        it(`should prevent "${keyCombo}"`, () => {
-          MockInteractions.keyDownOn(input, keyCode, modifiers, key);
-          const event = keydownSpy.lastCall.args[0];
-          expect(event.defaultPrevented).to.be.true;
-        });
-
+      it(`should prevent "${keyCombo}"`, () => {
+        keyDownOn(input, keyCode, modifiers, key);
+        const event = keydownSpy.lastCall.args[0];
+        expect(event.defaultPrevented).to.be.true;
       });
+    });
 
     [
       [49, [], '1'],
@@ -83,20 +51,18 @@ describe('integer-field', () => {
       [8, [], 'Backspace'],
       [37, [], 'ArrowLeft'],
       [37, ['ctrl'], 'ArrowLeft']
-    ]
-      .forEach(([keyCode, modifiers, key]) => {
+    ].forEach(([keyCode, modifiers, key]) => {
+      const keyCombo = modifiers.concat(key).join('+');
 
-        const keyCombo = modifiers.concat(key).join('+');
-
-        it(`should not prevent "${keyCombo}"`, () => {
-          MockInteractions.keyDownOn(input, keyCode, modifiers, key);
-          const event = keydownSpy.lastCall.args[0];
-          expect(event.defaultPrevented).to.be.false;
-        });
+      it(`should not prevent "${keyCombo}"`, () => {
+        keyDownOn(input, keyCode, modifiers, key);
+        const event = keydownSpy.lastCall.args[0];
+        expect(event.defaultPrevented).to.be.false;
       });
+    });
   });
 
-  const fireDropEvent = draggedText => {
+  const fireDropEvent = (draggedText) => {
     const event = new Event('drop', {
       bubbles: true,
       cancelable: true,
@@ -109,14 +75,12 @@ describe('integer-field', () => {
     return event;
   };
 
-  const firePasteEvent = pastedText => {
+  const firePasteEvent = (pastedText) => {
     const event = new Event('paste', {
       bubbles: true,
       cancelable: true,
       composed: true
     });
-    // For IE11, window.clipboardData should be used,
-    // but monkey-patching that one for testing causes issues
     event.clipboardData = {
       getData: () => pastedText
     };
@@ -124,7 +88,7 @@ describe('integer-field', () => {
     return event;
   };
 
-  const fireBeforeInputEvent = textToInput => {
+  const fireBeforeInputEvent = (textToInput) => {
     const event = new Event('beforeinput', {
       bubbles: true,
       cancelable: true,
@@ -136,9 +100,7 @@ describe('integer-field', () => {
   };
 
   const testEvent = (eventName, fireEvent) => {
-
     describe(`${eventName} event`, () => {
-
       it(`should prevent ${eventName} with text`, () => {
         const event = fireEvent('foo');
         expect(event.defaultPrevented).to.be.true;
@@ -166,12 +128,12 @@ describe('integer-field', () => {
       });
     });
   };
+
   testEvent('drop', fireDropEvent);
   testEvent('paste', firePasteEvent);
   testEvent('beforeinput', fireBeforeInputEvent);
 
   describe('value property', () => {
-
     const initialValue = '1';
 
     beforeEach(() => {
@@ -202,18 +164,26 @@ describe('integer-field', () => {
       expect(integerField.value).to.eql('');
     });
 
-    ['foo', '1.2', 1.2, '+2', '2-', '2-2', '-', '+', '1e1', undefined, null, {}].forEach(invalidValue => {
-
-      it(`should clear the value when setting ${typeof invalidValue} value: ${invalidValue}`, () => {
-        integerField.value = invalidValue;
-        expect(integerField.value).to.eql('');
+    describe('invalid value', () => {
+      beforeEach(() => {
+        sinon.stub(console, 'warn');
       });
 
+      afterEach(() => {
+        console.warn.restore();
+      });
+
+      ['foo', '1.2', 1.2, '+2', '2-', '2-2', '-', '+', '1e1', undefined, null, {}].forEach((invalidValue) => {
+        it(`should clear the value when setting ${typeof invalidValue} value: ${invalidValue}`, () => {
+          integerField.value = invalidValue;
+          expect(integerField.value).to.eql('');
+          expect(console.warn.called).to.be.true;
+        });
+      });
     });
   });
 
   describe('step property', () => {
-
     const initialStep = 3;
 
     beforeEach(() => {
@@ -229,26 +199,34 @@ describe('integer-field', () => {
       expect(integerField.step).to.eql(5);
     });
 
-    ['foo', '-1', -1, '1.2', 1.2, '+1', '1e1', undefined, null, {}].forEach(invalidStep => {
-
-      it(`should reset default step when setting ${typeof invalidStep} value: ${invalidStep}`, () => {
-        integerField.step = invalidStep;
-        expect(integerField.step).to.eql(1);
+    describe('invalid step', () => {
+      beforeEach(() => {
+        sinon.stub(console, 'warn');
       });
 
+      afterEach(() => {
+        console.warn.restore();
+      });
+
+      ['foo', '-1', -1, '1.2', 1.2, '+1', '1e1', undefined, null, {}].forEach((invalidStep) => {
+        it(`should reset default step when setting ${typeof invalidStep} value: ${invalidStep}`, () => {
+          integerField.step = invalidStep;
+          expect(integerField.step).to.eql(1);
+          expect(console.warn.called).to.be.true;
+        });
+      });
     });
   });
-
 });
+
+const mixed = `
+<vaadin-integer-field label="integer fld"></vaadin-integer-field>
+<vaadin-text-field label="text fld"></vaadin-text-field>
+<vaadin-number-field label="number fld"></vaadin-number-field>
+`;
 
 describe('mixed', () => {
-
-  it('should work together with text-field and number-field', () => {
-    expect(() => fixture('mixed')).to.not.throw(Error);
+  it('should not break when used with text-field and number-field', () => {
+    expect(() => fixtureSync(mixed)).to.not.throw(Error);
   });
-
 });
-</script>
-</body>
-
-</html>

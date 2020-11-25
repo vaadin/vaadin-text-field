@@ -1,57 +1,25 @@
-<!doctype html>
-
-<head>
-  <meta charset="UTF-8">
-  <title>vaadin-password-field tests</title>
-
-  <script src="../../../wct-browser-legacy/browser.js"></script>
-  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
-  <script type="module" src="../vaadin-password-field.js"></script>
-  <script type="module" src="../../../@polymer/iron-form/iron-form.js"></script>
-
-</head>
-
-<body>
-  <test-fixture id="default">
-    <template>
-      <vaadin-password-field></vaadin-password-field>
-    </template>
-  </test-fixture>
-
-  <test-fixture id="default-with-slotted-input">
-    <template>
-      <vaadin-password-field>
-        <input type="password" slot="input">
-      </vaadin-password-field>
-    </template>
-  </test-fixture>
-
-  <script type="module">
-import '@polymer/test-fixture/test-fixture.js';
+import { expect } from '@esm-bundle/chai';
+import sinon from 'sinon';
+import { fixtureSync } from '@open-wc/testing-helpers';
+import { makeFixture } from './helpers.js';
 import '../vaadin-password-field.js';
-import '@polymer/iron-form/iron-form.js';
-['', 'with slotted input'].forEach(condition => {
-  let fixtureName = '';
-  if (condition !== '') {
-    fixtureName = '-with-slotted-input';
-  }
 
-  describe(`password-field ${condition}`, function() {
+['default', 'slotted'].forEach((condition) => {
+  describe(`password-field ${condition}`, () => {
     var passwordField, input, revealButton;
 
-    beforeEach(function() {
-      passwordField = fixture(`default${fixtureName}`);
+    beforeEach(() => {
+      passwordField = fixtureSync(makeFixture('<vaadin-password-field></vaadin-password-field>', condition));
       input = passwordField.inputElement;
-      revealButton = passwordField.root.querySelector('[part=reveal-button]');
+      revealButton = passwordField.shadowRoot.querySelector('[part=reveal-button]');
     });
 
-    describe(`password visibility ${condition}`, function() {
-      it('should have [type=password]', function() {
+    describe(`password visibility ${condition}`, () => {
+      it('should have [type=password]', () => {
         expect(input.type).to.equal('password');
       });
 
-      it('should reveal the password on click on eye-icons', function() {
+      it('should reveal the password on click on eye-icons', () => {
         revealButton.click();
         expect(input.type).to.equal('text');
 
@@ -59,7 +27,7 @@ import '@polymer/iron-form/iron-form.js';
         expect(input.type).to.equal('password');
       });
 
-      it('should hide the password on blur', function() {
+      it('should hide the password on blur', () => {
         passwordField.focus();
         revealButton.click();
         expect(input.type).to.equal('text');
@@ -68,7 +36,7 @@ import '@polymer/iron-form/iron-form.js';
         expect(input.type).to.equal('password');
       });
 
-      describe(`change events ${condition}`, function() {
+      describe(`change events ${condition}`, () => {
         let changeSpy, inputChangeSpy, hasFocus;
 
         function blurField() {
@@ -122,29 +90,29 @@ import '@polymer/iron-form/iron-form.js';
       });
     });
 
-    describe(`eye-icons ${condition}`, function() {
-      it('should hide eye-icon when revealButtonHidden is set to true', function() {
+    describe(`eye-icons ${condition}`, () => {
+      it('should hide eye-icon when revealButtonHidden is set to true', () => {
         expect(revealButton.hidden).to.be.false;
 
         passwordField.revealButtonHidden = true;
         expect(revealButton.hidden).to.be.true;
       });
 
-      it('should prevent mousedown event on reveal-button when focused', function() {
-        const e = new CustomEvent('mousedown', {bubbles: true, cancelable: true});
+      it('should prevent mousedown event on reveal-button when focused', () => {
+        const e = new CustomEvent('mousedown', { bubbles: true, cancelable: true });
         passwordField.focus();
         revealButton.dispatchEvent(e);
         expect(e.defaultPrevented).to.be.true;
       });
 
-      it('should not prevent mousedown event on reveal-button when not focused', function() {
-        const e = new CustomEvent('mousedown', {bubbles: true, cancelable: true});
+      it('should not prevent mousedown event on reveal-button when not focused', () => {
+        const e = new CustomEvent('mousedown', { bubbles: true, cancelable: true });
         revealButton.dispatchEvent(e);
         expect(e.defaultPrevented).to.be.false;
       });
 
       it('should prevent touchend event on reveal-button', () => {
-        const e = new CustomEvent('touchend', {cancelable: true});
+        const e = new CustomEvent('touchend', { cancelable: true });
 
         revealButton.dispatchEvent(e);
         expect(e.defaultPrevented).to.be.true;
@@ -155,8 +123,5 @@ import '@polymer/iron-form/iron-form.js';
         expect(input.type).to.equal('password');
       });
     });
-
   });
 });
-</script>
-</body>

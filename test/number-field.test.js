@@ -1,57 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>vaadin-number-field tests</title>
-  <script src="../../../wct-browser-legacy/browser.js"></script>
-  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
-  <script type="module" src="../vaadin-number-field.js"></script>
-  <script type="module" src="../../../@polymer/iron-form/iron-form.js"></script>
-  <script src="../../../@polymer/iron-test-helpers/mock-interactions.js" type="module"></script>
-</head>
-
-<body>
-  <test-fixture id="default">
-    <template>
-      <vaadin-number-field></vaadin-number-field>
-    </template>
-  </test-fixture>
-  <test-fixture id="step-as-attribute">
-    <template>
-      <vaadin-number-field step="1.5"></vaadin-number-field>
-    </template>
-  </test-fixture>
-  <test-fixture id="default-step-as-attribute">
-    <template>
-      <vaadin-number-field step="1"></vaadin-number-field>
-    </template>
-  </test-fixture>
-
-  <script type="module">
-import '@polymer/test-fixture/test-fixture.js';
+import { expect } from '@esm-bundle/chai';
+import sinon from 'sinon';
+import { fixtureSync, aTimeout } from '@open-wc/testing-helpers';
+import { keyDownOn } from '@polymer/iron-test-helpers/mock-interactions.js';
 import '../vaadin-number-field.js';
-import '@polymer/iron-form/iron-form.js';
+
 describe('number-field', () => {
   var numberField, input, decreaseButton, increaseButton;
 
   function up() {
-    MockInteractions.keyDownOn(input, 38, [], 'ArrowUp');
+    keyDownOn(input, 38, [], 'ArrowUp');
   }
 
   function down() {
-    MockInteractions.keyDownOn(input, 40, [], 'ArrowDown');
+    keyDownOn(input, 40, [], 'ArrowDown');
   }
 
   beforeEach(() => {
-    numberField = fixture('default');
+    numberField = fixtureSync('<vaadin-number-field></vaadin-number-field>');
     input = numberField.inputElement;
-    decreaseButton = numberField.root.querySelector('[part=decrease-button]');
-    increaseButton = numberField.root.querySelector('[part=increase-button]');
+    decreaseButton = numberField.shadowRoot.querySelector('[part=decrease-button]');
+    increaseButton = numberField.shadowRoot.querySelector('[part=increase-button]');
   });
 
   describe('properties', () => {
-    ['min', 'max', 'step'].forEach(prop => {
+    ['min', 'max', 'step'].forEach((prop) => {
       it(`should reflect "${prop}" property to attribute`, () => {
         var value = 5;
         numberField[prop] = value;
@@ -59,15 +31,14 @@ describe('number-field', () => {
       });
     });
 
-    it('should not throw with autoselect', done => {
+    it('should not throw with autoselect', async () => {
       numberField.autoselect = true;
       numberField.focus();
-      setTimeout(done);
+      await aTimeout();
     });
   });
 
   describe('native', () => {
-
     it('should have [type=number]', () => {
       expect(input.type).to.equal('number');
     });
@@ -77,13 +48,11 @@ describe('number-field', () => {
       expect(increaseButton.hidden).to.be.true;
     });
 
-    ['min', 'max'].forEach(function(attr) {
+    ['min', 'max'].forEach(function (attr) {
       it('should set numeric attribute ' + attr, () => {
-        var value = 5;
+        const value = 5;
         numberField[attr] = value;
-        var attrval = input.getAttribute(attr);
-
-        expect(attrval).to.be.equal(String(value));
+        expect(input.getAttribute(attr)).to.be.equal(String(value));
       });
     });
 
@@ -294,7 +263,7 @@ describe('number-field', () => {
       numberField.min = -1;
       numberField.value = 0;
 
-      for (var i = 0; i < 5; i ++) {
+      for (var i = 0; i < 5; i++) {
         decreaseButton.click();
         expect(decreaseButton.hasAttribute('disabled')).to.be.true;
         expect(numberField.value).to.be.equal('-1');
@@ -305,7 +274,7 @@ describe('number-field', () => {
       numberField.max = 1;
       numberField.value = 0;
 
-      for (var i = 0; i < 5; i ++) {
+      for (var i = 0; i < 5; i++) {
         increaseButton.click();
         expect(increaseButton.hasAttribute('disabled')).to.be.true;
         expect(numberField.value).to.be.equal('1');
@@ -318,7 +287,7 @@ describe('number-field', () => {
       numberField.step = 6;
       numberField.value = 2;
 
-      for (var i = 0; i < 5; i ++) {
+      for (var i = 0; i < 5; i++) {
         increaseButton.click();
         expect(increaseButton.hasAttribute('disabled')).to.be.true;
         expect(numberField.value).to.be.equal('8');
@@ -327,17 +296,16 @@ describe('number-field', () => {
 
     it('should prevent touchend event on value control buttons', () => {
       numberField.value = 0;
-      let e = new CustomEvent('touchend', {cancelable: true});
+      let e = new CustomEvent('touchend', { cancelable: true });
       increaseButton.dispatchEvent(e);
       expect(e.defaultPrevented).to.be.true;
       expect(numberField.value).to.equal('1');
 
-      e = new CustomEvent('touchend', {cancelable: true});
+      e = new CustomEvent('touchend', { cancelable: true });
       decreaseButton.dispatchEvent(e);
       expect(e.defaultPrevented).to.be.true;
       expect(numberField.value).to.equal('0');
     });
-
 
     it('should decrease value to max value when value is over max and decreaseButton is clicked', () => {
       numberField.value = 50;
@@ -364,7 +332,7 @@ describe('number-field', () => {
       numberField.step = 4;
 
       const correctSteps = [-4, -8, -12, -16, -20];
-      for (var i = 0; i < correctSteps.length; i ++) {
+      for (var i = 0; i < correctSteps.length; i++) {
         decreaseButton.click();
         expect(numberField.value).to.be.equal(String(correctSteps[i]));
       }
@@ -378,7 +346,6 @@ describe('number-field', () => {
 
       expect(numberField.value).to.be.equal(String(numberField.min));
     });
-
 
     it('should increase value to the closest step value when increaseButton is clicked', () => {
       numberField.min = -17;
@@ -397,7 +364,7 @@ describe('number-field', () => {
       numberField.step = 4;
 
       const correctSteps = [1, 5, 9, 13, 17];
-      for (var i = 0; i < correctSteps.length; i ++) {
+      for (var i = 0; i < correctSteps.length; i++) {
         increaseButton.click();
         expect(numberField.value).to.be.equal(String(correctSteps[i]));
       }
@@ -410,7 +377,7 @@ describe('number-field', () => {
       numberField.step = 0.01;
 
       const correctSteps = [-0.02, -0.01, 0, 0.01, 0.02];
-      for (var i = 0; i < correctSteps.length; i ++) {
+      for (var i = 0; i < correctSteps.length; i++) {
         increaseButton.click();
         expect(numberField.value).to.be.equal(String(correctSteps[i]));
       }
@@ -427,20 +394,20 @@ describe('number-field', () => {
     describe('problematic values', () => {
       it('should correctly increase value', () => {
         const configs = [
-          {props: {step: 0.001, value: 1.001}, expectedValue: '1.002'},
-          {props: {step: 0.001, value: 1.003}, expectedValue: '1.004'},
-          {props: {step: 0.001, value: 1.005}, expectedValue: '1.006'},
-          {props: {step: 0.001, value: 2.002}, expectedValue: '2.003'},
-          {props: {step: 0.001, value: 4.004}, expectedValue: '4.005'},
-          {props: {step: 0.001, value: 8.008}, expectedValue: '8.009'},
-          {props: {step: 0.01, value: 16.08}, expectedValue: '16.09'},
-          {props: {step: 0.01, value: 73.10}, expectedValue: '73.11'},
-          {props: {step: 0.001, value: 1.0131, min: 0.0001}, expectedValue: '1.0141'},
+          { props: { step: 0.001, value: 1.001 }, expectedValue: '1.002' },
+          { props: { step: 0.001, value: 1.003 }, expectedValue: '1.004' },
+          { props: { step: 0.001, value: 1.005 }, expectedValue: '1.006' },
+          { props: { step: 0.001, value: 2.002 }, expectedValue: '2.003' },
+          { props: { step: 0.001, value: 4.004 }, expectedValue: '4.005' },
+          { props: { step: 0.001, value: 8.008 }, expectedValue: '8.009' },
+          { props: { step: 0.01, value: 16.08 }, expectedValue: '16.09' },
+          { props: { step: 0.01, value: 73.1 }, expectedValue: '73.11' },
+          { props: { step: 0.001, value: 1.0131, min: 0.0001 }, expectedValue: '1.0141' }
         ];
-        const reset = {step: 1, min: undefined, max: undefined, value: ''};
+        const reset = { step: 1, min: undefined, max: undefined, value: '' };
 
-        for (let i = 0; i < configs.length; i ++) {
-          const {props, expectedValue} = configs[i];
+        for (let i = 0; i < configs.length; i++) {
+          const { props, expectedValue } = configs[i];
           Object.assign(numberField, reset, props);
           increaseButton.click();
           expect(numberField.value).to.be.equal(expectedValue);
@@ -449,16 +416,16 @@ describe('number-field', () => {
 
       it('should correctly decrease value', () => {
         const configs = [
-          {props: {step: 0.01, value: 72.90}, expectedValue: '72.89'},
-          {props: {step: 0.001, min: 0.0001, value: 1.0031}, expectedValue: '1.0021'},
-          {props: {step: 0.001, min: 0.0001, value: 1.0051}, expectedValue: '1.0041'},
-          {props: {step: 0.001, min: 0.0001, value: 1.0071}, expectedValue: '1.0061'},
-          {props: {step: 0.001, min: 0.0001, value: 1.0091}, expectedValue: '1.0081'},
+          { props: { step: 0.01, value: 72.9 }, expectedValue: '72.89' },
+          { props: { step: 0.001, min: 0.0001, value: 1.0031 }, expectedValue: '1.0021' },
+          { props: { step: 0.001, min: 0.0001, value: 1.0051 }, expectedValue: '1.0041' },
+          { props: { step: 0.001, min: 0.0001, value: 1.0071 }, expectedValue: '1.0061' },
+          { props: { step: 0.001, min: 0.0001, value: 1.0091 }, expectedValue: '1.0081' }
         ];
-        const reset = {step: 1, min: undefined, max: undefined, value: ''};
+        const reset = { step: 1, min: undefined, max: undefined, value: '' };
 
-        for (let i = 0; i < configs.length; i ++) {
-          const {props, expectedValue} = configs[i];
+        for (let i = 0; i < configs.length; i++) {
+          const { props, expectedValue } = configs[i];
           Object.assign(numberField, reset, props);
           decreaseButton.click();
           expect(numberField.value).to.be.equal(expectedValue);
@@ -802,46 +769,27 @@ describe('number-field', () => {
     it('should validate by step when defined by user', () => {
       numberField.step = 1.5;
 
-      [-6, -1.5, 0, 1.5, 4.5].forEach(validValue => {
+      [-6, -1.5, 0, 1.5, 4.5].forEach((validValue) => {
         numberField.value = validValue;
         expect(numberField.validate()).to.be.true;
       });
 
-      [-3.5, -1, 2, 2.5].forEach(invalidValue => {
+      [-3.5, -1, 2, 2.5].forEach((invalidValue) => {
         numberField.value = invalidValue;
         expect(numberField.validate()).to.be.false;
       });
-    });
-
-    // FIXME: disabled because of test failures in Travis
-    const isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-
-    (isFirefox ? it.skip : it)('should validate by step when defined as attribute', () => {
-      const numberField = fixture('step-as-attribute');
-      numberField.value = 1;
-      expect(numberField.validate()).to.be.false;
-      numberField.value = 1.5;
-      expect(numberField.validate()).to.be.true;
-    });
-
-    (isFirefox ? it.skip : it)('should validate by step when default value defined as attribute', () => {
-      const numberField = fixture('default-step-as-attribute');
-      numberField.value = 1.5;
-      expect(numberField.validate()).to.be.false;
-      numberField.value = 1;
-      expect(numberField.validate()).to.be.true;
     });
 
     it('should use min as step basis in validation when both are defined', () => {
       numberField.min = 1;
       numberField.step = 1.5;
 
-      [1, 2.5, 4, 5.5].forEach(validValue => {
+      [1, 2.5, 4, 5.5].forEach((validValue) => {
         numberField.value = validValue;
         expect(numberField.validate()).to.be.true;
       });
 
-      [1.5, 3, 5].forEach(invalidValue => {
+      [1.5, 3, 5].forEach((invalidValue) => {
         numberField.value = invalidValue;
         expect(numberField.validate()).to.be.false;
       });
@@ -907,8 +855,34 @@ describe('number-field', () => {
       });
     });
   });
-
 });
-</script>
-</body>
-</html>
+
+describe('step attribute', () => {
+  let numberField;
+
+  beforeEach(() => {
+    numberField = fixtureSync('<vaadin-number-field step="1.5"></vaadin-number-field>');
+  });
+
+  it('should validate by step when defined as attribute', () => {
+    numberField.value = 1;
+    expect(numberField.validate()).to.be.false;
+    numberField.value = 1.5;
+    expect(numberField.validate()).to.be.true;
+  });
+});
+
+describe('default step attribute', () => {
+  let numberField;
+
+  beforeEach(() => {
+    numberField = fixtureSync('<vaadin-number-field step="1"></vaadin-number-field>');
+  });
+
+  it('should validate by step when default value defined as attribute', () => {
+    numberField.value = 1.5;
+    expect(numberField.validate()).to.be.false;
+    numberField.value = 1;
+    expect(numberField.validate()).to.be.true;
+  });
+});
