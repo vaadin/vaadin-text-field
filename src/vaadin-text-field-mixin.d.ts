@@ -1,4 +1,4 @@
-import { TextFieldAutoCorrect, TextFieldAutoCapitalize } from '../@types/interfaces';
+import { TextFieldAutoCorrect, TextFieldAutoCapitalize } from './interfaces';
 
 declare function TextFieldMixin<T extends new (...args: any[]) => {}>(base: T): T & TextFieldMixinConstructor;
 
