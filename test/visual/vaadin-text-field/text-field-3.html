@@ -3,22 +3,21 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title></title>
-  <script src="../../../../webcomponentsjs/webcomponents-loader.js"></script>
-  <script>
-    const theme = window.location.search.replace(/.*theme=(\w+).*/, '$1') || 'lumo';
-    document.write(`<link rel="import" href="../../../theme/${theme}/vaadin-text-field.html">`);
+  <script src="../../../../../@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+  <script type="module">
+import '../common.js';
+const theme = window.location.search.replace(/.*theme=(\w+).*/, '$1') || 'lumo';
+document.write(`<link rel="import" href="../../../theme/${theme}/vaadin-text-field.html">`);
 
-    window.addEventListener('WebComponentsReady', function() {
-      setTimeout(function() {
-        if (theme !== 'lumo') {
-          document.getElementById('lumo').setAttribute('hidden', '');
-        }
-        window.ShadyDOM && window.ShadyDOM.flush(); // Force DOM composition
-        window.webComponentsAreReady = true; // Checked in gemini before capture callback
-      });
-    });
-  </script>
-  <link href="../common.html" rel="import">
+setTimeout(function() {
+  if (theme !== 'lumo') {
+    document.getElementById('lumo').setAttribute('hidden', '');
+  }
+  window.ShadyDOM && window.ShadyDOM.flush(); // Force DOM composition
+  window.webComponentsAreReady = true; // Checked in gemini before capture callback
+});
+</script>
+  <script type="module" src="../common.js"></script>
 </head>
 
 <body>
