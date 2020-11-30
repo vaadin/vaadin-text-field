@@ -39,6 +39,17 @@
     "test:sauce": "TEST_ENV=sauce npm test",
     "test:visual": "hermione test/visual/test.js"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
   "dependencies": {
     "@polymer/polymer": "^3.0.0",
     "@vaadin/vaadin-themable-mixin": "^1.6.2",
