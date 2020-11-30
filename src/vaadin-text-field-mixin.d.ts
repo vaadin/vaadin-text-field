@@ -123,12 +123,6 @@ interface TextFieldMixin {
   invalid: boolean;
 
   /**
-   * Specifies that the text field has value.
-   * @attr {boolean} has-value
-   */
-  hasValue: boolean | null | undefined;
-
-  /**
    * When set to true, user is prevented from typing a value that
    * conflicts with the given `pattern`.
    * @attr {boolean} prevent-invalid-input

@@ -91,11 +91,16 @@ registerStyles(
     }
 
     [part='clear-button'] {
+      display: none;
       cursor: default;
     }
 
     [part='clear-button']::before {
       content: '✕';
+    }
+
+    :host([clear-button-visible][has-value]:not([disabled]):not([readonly])) [part='clear-button'] {
+      display: block;
     }
   `,
   { moduleId: 'vaadin-text-field-shared-styles' }
@@ -184,7 +189,8 @@ export const TextFieldMixin = (subclass) =>
          */
         clearButtonVisible: {
           type: Boolean,
-          value: false
+          value: false,
+          reflectToAttribute: true
         },
 
         /**
@@ -308,15 +314,6 @@ export const TextFieldMixin = (subclass) =>
         },
 
         /**
-         * Specifies that the text field has value.
-         * @attr {boolean} has-value
-         */
-        hasValue: {
-          type: Boolean,
-          reflectToAttribute: true
-        },
-
-        /**
          * When set to true, user is prevented from typing a value that
          * conflicts with the given `pattern`.
          * @attr {boolean} prevent-invalid-input
@@ -357,7 +354,6 @@ export const TextFieldMixin = (subclass) =>
 
     static get observers() {
       return [
-        '_stateChanged(disabled, readonly, clearButtonVisible, hasValue)',
         '_hostPropsChanged(' + HOST_PROPS.default.join(', ') + ')',
         '_hostAccessiblePropsChanged(' + HOST_PROPS.accessible.join(', ') + ')',
         '_getActiveErrorId(invalid, errorMessage, _errorId, helperText, _helperTextId, _hasSlottedHelper)',
@@ -430,17 +426,6 @@ export const TextFieldMixin = (subclass) =>
       this.__userInput = false;
     }
 
-    // NOTE(yuriy): Workaround needed for IE11 and Edge for proper displaying
-    // of the clear button instead of setting display property for it depending on state.
-    /** @private */
-    _stateChanged(disabled, readonly, clearButtonVisible, hasValue) {
-      if (!disabled && !readonly && clearButtonVisible && hasValue) {
-        this.$.clearButton.removeAttribute('hidden');
-      } else {
-        this.$.clearButton.setAttribute('hidden', true);
-      }
-    }
-
     /**
      * @param {!Event} e
      * @protected
@@ -474,9 +459,9 @@ export const TextFieldMixin = (subclass) =>
       }
 
       if (newVal !== '' && newVal != null) {
-        this.hasValue = true;
+        this.setAttribute('has-value', '');
       } else {
-        this.hasValue = false;
+        this.removeAttribute('has-value');
       }
 
       if (this.__userInput) {
