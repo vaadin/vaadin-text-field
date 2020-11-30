@@ -78,8 +78,7 @@ registerStyles(
     [part='value'],
     [part='input-field'] ::slotted(input),
     [part='input-field'] ::slotted(textarea),
-    /* Slotted by vaadin-select-text-field */
-    [part='input-field'] ::slotted([part="value"]) {
+    [part='input-field'] ::slotted([part='value']) {
       flex: auto;
       white-space: nowrap;
       overflow: hidden;
