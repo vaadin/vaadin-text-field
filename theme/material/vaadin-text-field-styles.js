@@ -187,7 +187,6 @@ registerStyles(
     :host([has-label]:not([has-value]):not([focused]):not([invalid]):not([theme~='always-float-label']))
       [part='label'] {
       width: 100%;
-      /* IE11 doesn’t work with calc inside the translate function, so we need to have a fixed pixel value instead of 50% + 16px */
       transform: scale(1) translateY(24px);
       transition-timing-function: ease, ease, step-start;
       pointer-events: none;
