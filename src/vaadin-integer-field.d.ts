@@ -7,6 +7,9 @@ import { NumberFieldElement } from './vaadin-number-field.js';
  * <vaadin-integer-field label="Number">
  * </vaadin-integer-field>
  * ```
+ *
+ * @fires {CustomEvent<boolean>} invalid-changed
+ * @fires {CustomEvent<string>} value-changed
  */
 declare class IntegerFieldElement extends NumberFieldElement {
   _valueChanged(newVal: unknown | null, oldVal: unknown | null): void;

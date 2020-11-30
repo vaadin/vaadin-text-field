@@ -13,6 +13,9 @@ import { TextFieldElement } from './vaadin-text-field.js';
  * See vaadin-text-field.html for the styling documentation
  *
  * See [ThemableMixin – how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
+ *
+ * @fires {CustomEvent<boolean>} invalid-changed
+ * @fires {CustomEvent<string>} value-changed
  */
 declare class EmailFieldElement extends TextFieldElement {
   _createConstraintsObserver(): void;

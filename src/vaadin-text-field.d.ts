@@ -63,6 +63,9 @@ import { TextFieldEventMap } from './interfaces';
  * `readonly` | Set to a readonly text field | :host
  *
  * See [ThemableMixin – how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
+ *
+ * @fires {CustomEvent<boolean>} invalid-changed
+ * @fires {CustomEvent<string>} value-changed
  */
 declare class TextFieldElement extends TextFieldMixin(ControlStateMixin(ThemableMixin(ElementMixin(HTMLElement)))) {
   /**

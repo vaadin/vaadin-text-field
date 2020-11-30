@@ -40,6 +40,9 @@ registerStyles(
  *
  * See [ThemableMixin – how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
  *
+ * @fires {CustomEvent<boolean>} invalid-changed
+ * @fires {CustomEvent<string>} value-changed
+ *
  * @extends TextFieldElement
  */
 class EmailFieldElement extends TextFieldElement {

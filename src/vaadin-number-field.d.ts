@@ -7,6 +7,9 @@ import { TextFieldElement } from './vaadin-text-field.js';
  * <vaadin-number-field label="Number">
  * </vaadin-number-field>
  * ```
+ *
+ * @fires {CustomEvent<boolean>} invalid-changed
+ * @fires {CustomEvent<string>} value-changed
  */
 declare class NumberFieldElement extends TextFieldElement {
   /**

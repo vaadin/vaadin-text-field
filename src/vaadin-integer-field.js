@@ -12,6 +12,10 @@ import { NumberFieldElement } from './vaadin-number-field.js';
  * <vaadin-integer-field label="Number">
  * </vaadin-integer-field>
  * ```
+ *
+ * @fires {CustomEvent<boolean>} invalid-changed
+ * @fires {CustomEvent<string>} value-changed
+ *
  * @extends NumberFieldElement
  */
 class IntegerFieldElement extends NumberFieldElement {

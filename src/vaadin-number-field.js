@@ -91,6 +91,10 @@ let memoizedTemplate;
  * <vaadin-number-field label="Number">
  * </vaadin-number-field>
  * ```
+ *
+ * @fires {CustomEvent<boolean>} invalid-changed
+ * @fires {CustomEvent<string>} value-changed
+ *
  * @extends TextFieldElement
  */
 class NumberFieldElement extends TextFieldElement {
