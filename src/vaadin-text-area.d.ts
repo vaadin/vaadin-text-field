@@ -63,6 +63,8 @@ import { TextFieldEventMap } from './interfaces';
 declare class TextAreaElement extends TextFieldMixin(ControlStateMixin(ElementMixin(ThemableMixin(HTMLElement)))) {
   readonly _slottedTagName: string;
 
+  _valueChanged(newVal: unknown | null, oldVal: unknown | null): void;
+
   addEventListener<K extends keyof TextFieldEventMap>(
     type: K,
     listener: (this: TextAreaElement, ev: TextFieldEventMap[K]) => void,

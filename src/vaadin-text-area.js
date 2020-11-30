@@ -144,10 +144,6 @@ class TextAreaElement extends ElementMixin(TextFieldMixin(ControlStateMixin(Them
     return '2.8.2';
   }
 
-  static get observers() {
-    return ['_textAreaValueChanged(value)'];
-  }
-
   /** @protected */
   ready() {
     super.ready();
@@ -170,8 +166,14 @@ class TextAreaElement extends ElementMixin(TextFieldMixin(ControlStateMixin(Them
     return 'textarea';
   }
 
-  /** @private */
-  _textAreaValueChanged() {
+  /**
+   * @param {unknown} newVal
+   * @param {unknown} oldVal
+   * @protected
+   */
+  _valueChanged(newVal, oldVal) {
+    super._valueChanged(newVal, oldVal);
+
     this._updateHeight();
   }
 
