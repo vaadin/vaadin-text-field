@@ -116,14 +116,6 @@ class TextFieldElement extends ElementMixin(TextFieldMixin(ControlStateMixin(The
   static get properties() {
     return {
       /**
-       * Identifies a list of pre-defined options to suggest to the user.
-       * The value must be the id of a <datalist> element in the same document.
-       */
-      list: {
-        type: String
-      },
-
-      /**
        * A regular expression that the value is checked against.
        * The pattern must match the entire value, not just some subset.
        */

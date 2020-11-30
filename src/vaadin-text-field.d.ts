@@ -66,12 +66,6 @@ import { TextFieldEventMap } from './interfaces';
  */
 declare class TextFieldElement extends TextFieldMixin(ControlStateMixin(ThemableMixin(ElementMixin(HTMLElement)))) {
   /**
-   * Identifies a list of pre-defined options to suggest to the user.
-   * The value must be the id of a <datalist> element in the same document.
-   */
-  list: string | null | undefined;
-
-  /**
    * A regular expression that the value is checked against.
    * The pattern must match the entire value, not just some subset.
    */

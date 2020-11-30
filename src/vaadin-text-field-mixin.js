@@ -108,7 +108,6 @@ registerStyles(
 
 const HOST_PROPS = {
   default: [
-    'list',
     'autofocus',
     'pattern',
     'autocapitalize',
