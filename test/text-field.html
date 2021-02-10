@@ -740,6 +740,18 @@
             flushTextField(textField);
           });
 
+          it('should be a composed event', done => {
+            setTimeout(() => {
+              expect(spy.lastCall.args[0].composed).to.be.true;
+              done();
+            }, 1000);
+
+            textField.errorMessage = 'Error';
+            flushTextField(textField);
+            textField.invalid = true;
+            flushTextField(textField);
+          });
+
           it('should dispatch `iron-resize` event on error message height change', done => {
             // Lumo theme defines a max-height transition for the "error-message"
             // part on invalid state change.
