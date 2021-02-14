@@ -740,12 +740,10 @@
             flushTextField(textField);
           });
 
-          it('should be a composed event', done => {
-            setTimeout(() => {
-              expect(spy.lastCall.args[0].composed).to.be.true;
-              done();
-            }, 1000);
-
+          it('should be a composed event', () => {
+            textField.addEventListener('iron-resize', event => {
+              expect(event.composed).to.be.true;
+            });
             textField.errorMessage = 'Error';
             flushTextField(textField);
             textField.invalid = true;
