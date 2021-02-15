@@ -741,13 +741,10 @@
           });
 
           it('should be a composed event', () => {
-            textField.addEventListener('iron-resize', event => {
-              expect(event.composed).to.be.true;
-            });
-            textField.errorMessage = 'Error';
             flushTextField(textField);
-            textField.invalid = true;
+            textField.label = 'Label';
             flushTextField(textField);
+            expect(spy.getCall(0).args[0].composed).to.be.true;
           });
 
           it('should dispatch `iron-resize` event on error message height change', done => {
