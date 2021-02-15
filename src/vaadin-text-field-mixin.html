@@ -888,7 +888,7 @@ This program is available under Apache License Version 2.0, available at https:/
       if (this[previousSizePropertyName] !== undefined
           && this[previousSizePropertyName] !== value) {
         this.dispatchEvent(
-          new CustomEvent('iron-resize', {bubbles: true})
+          new CustomEvent('iron-resize', {bubbles: true, composed: true})
         );
       }
 
