@@ -8,10 +8,15 @@
         box-sizing: border-box;
       }
 
-      /* NOTE(platosha): double attribute workarounds specifity for Firefox */
-      [part="value"][part="value"] {
-        padding-top: 0;
+      .textarea-wrapper {
         margin-top: 4px;
+      }
+
+      [part='value'],
+      .textarea-wrapper ::slotted(textarea),
+      .textarea-wrapper::after {
+        padding: 0 0 8px;
+        line-height: inherit;
       }
 
       [part="input-field"] [part="value"],
