@@ -40,6 +40,69 @@ This program is available under Apache License Version 2.0, available at https:/
         align-self: flex-start;
       }
 
+      /* for browsers that don't support grid, i.e., IE. we override this in grid-supporting browsers */
+      .textarea-wrapper {
+        overflow: hidden;
+      }
+
+      [part="value"],
+      .textarea-wrapper ::slotted(textarea) {
+        /* reset ua stylesheet */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        outline: none;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        min-width: 0;
+        font: inherit;
+        font-size: 1em;
+        line-height: normal;
+        color: inherit;
+        background-color: transparent;
+        box-shadow: none;
+
+        flex: auto;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+
+      @supports (display: grid) {
+        .textarea-wrapper {
+          overflow: initial;
+
+          width: 100%;
+          display: grid;
+          flex-grow: 1;
+          align-self: stretch;
+        }
+
+        .textarea-wrapper::after {
+          content: attr(data-replicated-value) ' ';
+          white-space: pre-wrap;
+          visibility: hidden;
+        }
+
+        [part='value'],
+        .textarea-wrapper ::slotted(textarea) {
+          resize: none;
+          overflow: hidden;
+        }
+
+        [part='value'],
+        .textarea-wrapper ::slotted(textarea),
+        .textarea-wrapper::after {
+          grid-area: 1 / 1 / 2 / 2;
+          box-sizing: border-box;
+          padding: 0 0.25em;
+          overflow-wrap: break-word;
+          word-wrap: break-word;
+          word-break: break-word;
+        }
+      }
+
       @keyframes vaadin-text-area-appear {
         to {
           opacity: 1;
@@ -59,9 +122,11 @@ This program is available under Apache License Version 2.0, available at https:/
 
         <slot name="prefix"></slot>
 
-        <slot name="textarea">
-          <textarea part="value"></textarea>
-        </slot>
+        <div class="textarea-wrapper">
+          <slot name="textarea">
+            <textarea part="value"></textarea>
+          </slot>
+        </div>
 
         <div part="clear-button" id="clearButton" role="button" aria-label$="[[i18n.clear]]"></div>
         <slot name="suffix"></slot>
@@ -165,6 +230,7 @@ This program is available under Apache License Version 2.0, available at https:/
           this._updateHeight();
           this.addEventListener('animationend', this._onAnimationEnd);
           this.__safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+          this.__ie = window.document.documentMode;
         }
 
         /** @private */
@@ -189,6 +255,16 @@ This program is available under Apache License Version 2.0, available at https:/
 
         /** @private */
         _updateHeight() {
+          if (!this.__ie) {
+            /* https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/ */
+            this._textAreaWrapper = this._textAreaWrapper || this.shadowRoot.querySelector('.textarea-wrapper');
+            this._textAreaWrapper.dataset.replicatedValue = this.inputElement.value;
+            // getComputedStyle is expensive, maybe we can use ResizeObserver in the future
+            this._dispatchIronResizeEventIfNeeded('InputHeight', getComputedStyle(this._textAreaWrapper).height);
+
+            return;
+          }
+
           const inputField = this.root.querySelector('[part=input-field]');
           const scrollTop = inputField.scrollTop;
           const input = this.inputElement;
@@ -196,6 +272,7 @@ This program is available under Apache License Version 2.0, available at https:/
           const inputWidth = getComputedStyle(input).width;
 
           const valueLength = this.value ? this.value.length : 0;
+          const y = window.pageYOffset || document.documentElement.scrollTop;
           // Only clear the height when the content shortens to minimize scrollbar flickering.
           if (this._oldValueLength >= valueLength) {
             // Fix the input element width so its scroll height isn't affected by host's disappearing scrollbars
@@ -217,6 +294,7 @@ This program is available under Apache License Version 2.0, available at https:/
           input.style.removeProperty('max-width');
           inputField.style.removeProperty('display');
           inputField.scrollTop = scrollTop;
+          document.documentElement.scrollTop = y;
 
           this._dispatchIronResizeEventIfNeeded('InputHeight', inputHeight);
         }
