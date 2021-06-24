@@ -230,7 +230,6 @@ This program is available under Apache License Version 2.0, available at https:/
           this._updateHeight();
           this.addEventListener('animationend', this._onAnimationEnd);
           this.__safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-          this.__ie = window.document.documentMode;
         }
 
         /** @private */
@@ -255,7 +254,8 @@ This program is available under Apache License Version 2.0, available at https:/
 
         /** @private */
         _updateHeight() {
-          if (!this.__ie) {
+          const isIE = window.document.documentMode;
+          if (!isIE) {
             /* https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/ */
             this._textAreaWrapper = this._textAreaWrapper || this.shadowRoot.querySelector('.textarea-wrapper');
             this._textAreaWrapper.dataset.replicatedValue = this.inputElement.value;
