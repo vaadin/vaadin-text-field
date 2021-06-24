@@ -278,6 +278,7 @@ This program is available under Apache License Version 2.0, available at https:/
             // Fix the input element width so its scroll height isn't affected by host's disappearing scrollbars
             input.style.maxWidth = inputWidth;
             input.style.height = 'auto';
+            input.style.padding = 'initial';
             // Avoid a jumpy Safari rendering issue
             if (this.__safari) {
               inputField.style.display = 'block';
@@ -292,6 +293,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
           // Restore
           input.style.removeProperty('max-width');
+          input.style.removeProperty('padding');
           inputField.style.removeProperty('display');
           inputField.scrollTop = scrollTop;
           document.documentElement.scrollTop = y;
