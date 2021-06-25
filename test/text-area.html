@@ -164,7 +164,7 @@
           const savedHeight = textArea.clientHeight;
           textArea.hidden = true;
           // Three new lines will expand initial height
-          textArea.value = '\n\n\n';
+          textArea.value = '\nfoo\nbar\nbaz';
           listenOnce(textArea, 'animationend', () => {
             expect(textArea.clientHeight).to.be.above(savedHeight);
             done();
@@ -278,9 +278,10 @@
         it('should maintain scroll top', () => {
           textArea.style.maxHeight = '100px';
           textArea.value = Array(400).join('400');
-          inputField.scrollTop = 200;
+          const wrapper = textArea.shadowRoot.querySelector('.textarea-wrapper');
+          wrapper.scrollTop = 200;
           textArea.value += 'foo';
-          expect(inputField.scrollTop).to.equal(200);
+          expect(wrapper.scrollTop).to.equal(200);
         });
 
         it('should decrease height automatically', () => {
@@ -315,10 +316,10 @@
         it('should have matching scrollHeight', () => {
           inputField.style.padding = '0';
           textArea.style.maxHeight = '100px';
-
+          const wrapper = textArea.shadowRoot.querySelector('.textarea-wrapper');
           textArea.value = Array(400).join('400');
           textArea.value = textArea.value.slice(0, -1);
-          expect(input.clientHeight).to.equal(inputField.scrollHeight);
+          expect(input.clientHeight).to.equal(wrapper.scrollHeight);
         });
 
         it('should cover input field', () => {

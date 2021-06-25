@@ -27,22 +27,21 @@ This program is available under Apache License Version 2.0, available at https:/
       }
 
       [part="input-field"] {
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow: hidden;
       }
 
       [part="value"] {
         resize: none;
       }
 
-      [part="value"],
-      [part="input-field"] ::slotted(*) {
-        align-self: flex-start;
-      }
-
-      /* for browsers that don't support grid, i.e., IE. we override this in grid-supporting browsers */
       .textarea-wrapper {
-        overflow: hidden;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+        display: flex;
+        flex: auto;
+        box-sizing: border-box;
+        height: 100%;
       }
 
       [part="value"],
@@ -71,12 +70,12 @@ This program is available under Apache License Version 2.0, available at https:/
 
       @supports (display: grid) {
         .textarea-wrapper {
-          overflow: initial;
-
           width: 100%;
           display: grid;
           flex-grow: 1;
           align-self: stretch;
+          box-sizing: content-box;
+          height: initial;
         }
 
         .textarea-wrapper::after {
