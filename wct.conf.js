@@ -33,6 +33,7 @@ module.exports = {
 
   registerHooks: function(context) {
     const saucelabsPlatformsMobile = [
+      'iOS Simulator/iphone@10.3',
       'iOS Simulator/iphone@12.2',
       'iOS Simulator/iphone@14.3'
     ];
@@ -52,8 +53,9 @@ module.exports = {
     ];
 
     const cronPlatforms = [
+      'iOS Simulator/iphone@10.3',
       'iOS Simulator/ipad@12.2',
-      'iOS Simulator/iphone@14.3 ',
+      'iOS Simulator/iphone@14.3',
       'Windows 10/chrome@latest',
       'Windows 10/firefox@latest'
     ];
