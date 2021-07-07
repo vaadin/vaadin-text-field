@@ -278,10 +278,18 @@
         it('should maintain scroll top', () => {
           textArea.style.maxHeight = '100px';
           textArea.value = Array(400).join('400');
-          const wrapper = textArea.shadowRoot.querySelector('.textarea-wrapper');
-          wrapper.scrollTop = 200;
-          textArea.value += 'foo';
-          expect(wrapper.scrollTop).to.equal(200);
+          const isIE = window.document.documentMode;
+
+          if (isIE) {
+            const wrapper = textArea.shadowRoot.querySelector('.textarea-wrapper');
+            wrapper.scrollTop = 200;
+            textArea.value += 'foo';
+            expect(wrapper.scrollTop).to.equal(200);
+          } else {
+            inputField.scrollTop = 200;
+            textArea.value += 'foo';
+            expect(inputField.scrollTop).to.equal(200);
+          }
         });
 
         it('should decrease height automatically', () => {

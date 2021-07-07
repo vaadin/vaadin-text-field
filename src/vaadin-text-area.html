@@ -69,7 +69,13 @@ This program is available under Apache License Version 2.0, available at https:/
       }
 
       @supports (display: grid) {
+        [part="input-field"] {
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
         .textarea-wrapper {
+          overflow: initial;
           width: 100%;
           display: grid;
           flex-grow: 1;
@@ -277,7 +283,7 @@ This program is available under Apache License Version 2.0, available at https:/
             // Fix the input element width so its scroll height isn't affected by host's disappearing scrollbars
             input.style.maxWidth = inputWidth;
             input.style.height = 'auto';
-            input.style.padding = 'initial';
+            input.style.padding = '0';
             // Avoid a jumpy Safari rendering issue
             if (this.__safari) {
               inputField.style.display = 'block';
