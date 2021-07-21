@@ -405,6 +405,16 @@
             expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.false;
           });
 
+          it('should not get focus after helper click', function() {
+            const textFieldSlottedHelper = fixture('default-with-slotted-helper');
+            const spy = sinon.spy(textFieldSlottedHelper, 'focus');
+            const helper = textFieldSlottedHelper.querySelector('[slot="helper"]');
+
+            helper.click();
+
+            expect(spy.called).to.be.false;
+          });
+
           it('should not add "has-helper" with a slotted "slot" element', function() {
             const xElement = fixture('custom-element-with-slotted-helper');
             const textField = xElement.$.textField;
