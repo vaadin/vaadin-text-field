@@ -70,7 +70,8 @@ This program is available under Apache License Version 2.0, available at https:/
         overflow: hidden;
         width: 100%;
         height: 100%;
-        color: var(--lumo-body-text-color);
+        padding-bottom: calc((var(--lumo-text-field-size) - 1em * var(--lumo-line-height-s)) / 2);
+        /* color: var(--lumo-body-text-color); */
       }
 
       @supports (display: grid) {
@@ -106,10 +107,11 @@ This program is available under Apache License Version 2.0, available at https:/
         .textarea-wrapper::after {
           grid-area: 1 / 1 / 2 / 2;
           box-sizing: border-box;
-          padding: 0 0.25em;
+          /* padding: 0 0.25em; */
           overflow-wrap: break-word;
           word-wrap: break-word;
           word-break: break-word;
+          padding-bottom: calc((var(--lumo-text-field-size) - 1em * var(--lumo-line-height-s)) / 2);
         }
       }
 
@@ -288,7 +290,7 @@ This program is available under Apache License Version 2.0, available at https:/
             // Fix the input element width so its scroll height isn't affected by host's disappearing scrollbars
             input.style.maxWidth = inputWidth;
             input.style.height = 'auto';
-            input.style.padding = '0';
+            // input.style.padding = '0';
             // Avoid a jumpy Safari rendering issue
             if (this.__safari) {
               inputField.style.display = 'block';
@@ -303,7 +305,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
           // Restore
           input.style.removeProperty('max-width');
-          input.style.removeProperty('padding');
+          // input.style.removeProperty('padding');
           inputField.style.removeProperty('display');
           inputField.scrollTop = scrollTop;
           document.documentElement.scrollTop = y;
