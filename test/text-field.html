@@ -303,12 +303,6 @@
         });
 
         describe(`binding ${condition}`, function() {
-          function dispatchHelperSlotChange(node) {
-            // Workaround not to use timeouts
-            const evt = new CustomEvent('slotchange');
-            node.shadowRoot.querySelector('[name="helper"]').dispatchEvent(evt);
-          }
-
           it('default value should be empty string', function() {
             expect(textField.value).to.be.equal('');
           });
@@ -381,66 +375,6 @@
             expect(textField.hasAttribute('has-helper')).to.be.false;
           });
 
-          it('text-field with slotted helper updates has-helper attribute', function() {
-            const textFieldSlottedHelper = fixture('default-with-slotted-helper');
-            dispatchHelperSlotChange(textFieldSlottedHelper);
-            expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.true;
-          });
-
-          it('setting helper with slot updates has-helper attribute', function() {
-            const helper = document.createElement('div');
-            helper.setAttribute('slot', 'helper');
-            helper.textContent = 'foo';
-            textField.appendChild(helper);
-            dispatchHelperSlotChange(textField);
-
-            expect(textField.hasAttribute('has-helper')).to.be.true;
-          });
-
-          it('removing slotted helper removes has-helper attribute', function() {
-            const textFieldSlottedHelper = fixture('default-with-slotted-helper');
-            const helper = textFieldSlottedHelper.querySelector('[slot="helper"]');
-            textFieldSlottedHelper.removeChild(helper);
-            dispatchHelperSlotChange(textFieldSlottedHelper);
-            expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.false;
-          });
-
-          it('should not get focus after helper click', function() {
-            const textFieldSlottedHelper = fixture('default-with-slotted-helper');
-            const spy = sinon.spy(textFieldSlottedHelper, 'focus');
-            const helper = textFieldSlottedHelper.querySelector('[slot="helper"]');
-
-            helper.click();
-
-            expect(spy.called).to.be.false;
-          });
-
-          it('should not add "has-helper" with a slotted "slot" element', function() {
-            const xElement = fixture('custom-element-with-slotted-helper');
-            const textField = xElement.$.textField;
-            expect(textField.hasAttribute('has-helper')).to.be.false;
-          });
-
-          it('should add "has-helper" when slotted "slot" and custom element sets string property', function() {
-            const xElement = fixture('custom-element-with-slotted-helper');
-            const textField = xElement.$.textField;
-            xElement.helperText = 'helper text';
-            expect(textField.hasAttribute('has-helper')).to.be.true;
-          });
-
-          it('should add "has-helper=slotted" when slotted "slot" and custom element sets content to slot', function() {
-            const xElement = fixture('custom-element-with-slotted-helper');
-            const textField = xElement.$.textField;
-            const span = document.createElement('span');
-            span.textContent = 'helper text';
-            span.setAttribute('slot', 'helper');
-            xElement.appendChild(span);
-            dispatchHelperSlotChange(textField);
-
-            expect(textField.hasAttribute('has-helper')).to.be.true;
-            expect(textField.getAttribute('has-helper')).to.be.equal('slotted');
-          });
-
           it('setting errorMessage updates has-error-message attribute', function() {
             textField.errorMessage = 'foo';
             expect(textField.hasAttribute('has-error-message')).to.be.true;
@@ -461,17 +395,8 @@
           describe(`label ${condition}`, function() {
             it('should not update focused property on click if disabled', function() {
               textField.disabled = true;
-              const label = textField.root.querySelector('[part="label"]');
+              const label = textField.shadowRoot.querySelector('[part="label"]');
               label.click();
-              expect(textField.getAttribute('focused')).to.be.null;
-            });
-          });
-
-          describe(`helper ${condition}`, function() {
-            it('should not update focused property on click if disabled', function() {
-              textField.disabled = true;
-              const helper = textField.root.querySelector('[part="helper-text"]');
-              helper.click();
               expect(textField.getAttribute('focused')).to.be.null;
             });
           });
@@ -785,6 +710,76 @@
           });
         });
       });
+    });
+
+    describe(`helper`, () => {
+      function dispatchHelperSlotChange(node) {
+        // Workaround not to use timeouts
+        const evt = new CustomEvent('slotchange');
+        node.shadowRoot.querySelector('[name="helper"]').dispatchEvent(evt);
+      }
+
+      it('setting helper with slot updates has-helper attribute', function() {
+        const textField = fixture(`default`);
+        const helper = document.createElement('div');
+        helper.setAttribute('slot', 'helper');
+        helper.textContent = 'foo';
+        textField.appendChild(helper);
+        dispatchHelperSlotChange(textField);
+
+        expect(textField.hasAttribute('has-helper')).to.be.true;
+      });
+
+      it('text-field with slotted helper updates has-helper attribute', function() {
+        const textFieldSlottedHelper = fixture('default-with-slotted-helper');
+        dispatchHelperSlotChange(textFieldSlottedHelper);
+        expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.true;
+      });
+
+      it('removing slotted helper removes has-helper attribute', function() {
+        const textFieldSlottedHelper = fixture('default-with-slotted-helper');
+        const helper = textFieldSlottedHelper.querySelector('[slot="helper"]');
+        textFieldSlottedHelper.removeChild(helper);
+        dispatchHelperSlotChange(textFieldSlottedHelper);
+        expect(textFieldSlottedHelper.hasAttribute('has-helper')).to.be.false;
+      });
+
+      it('should not get focus after helper click', function() {
+        const textFieldSlottedHelper = fixture('default-with-slotted-helper');
+        const spy = sinon.spy(textFieldSlottedHelper, 'focus');
+        const helper = textFieldSlottedHelper.querySelector('[slot="helper"]');
+
+        helper.click();
+
+        expect(spy.called).to.be.false;
+      });
+
+      it('should not add "has-helper" with a slotted "slot" element', function() {
+        const xElement = fixture('custom-element-with-slotted-helper');
+        const textField = xElement.$.textField;
+        expect(textField.hasAttribute('has-helper')).to.be.false;
+      });
+
+      it('should add "has-helper" when slotted "slot" and custom element sets string property', function() {
+        const xElement = fixture('custom-element-with-slotted-helper');
+        const textField = xElement.$.textField;
+        xElement.helperText = 'helper text';
+        expect(textField.hasAttribute('has-helper')).to.be.true;
+      });
+
+      it('should add "has-helper=slotted" when slotted "slot" and custom element sets content to slot', function() {
+        const xElement = fixture('custom-element-with-slotted-helper');
+        const textField = xElement.$.textField;
+        const span = document.createElement('span');
+        span.textContent = 'helper text';
+        span.setAttribute('slot', 'helper');
+        xElement.appendChild(span);
+        dispatchHelperSlotChange(textField);
+
+        expect(textField.hasAttribute('has-helper')).to.be.true;
+        expect(textField.getAttribute('has-helper')).to.be.equal('slotted');
+      });
+
     });
   </script>
 </body>
