@@ -27,6 +27,14 @@
     </template>
   </test-fixture>
 
+  <test-fixture id="default-with-slotted-helper">
+    <template>
+      <vaadin-text-area>
+        <div slot="helper">foo</div>
+      </vaadin-text-area>
+    </template>
+  </test-fixture>
+
   <script>
     ['', 'with slotted input'].forEach(condition => {
       let fixtureName = '';
@@ -373,5 +381,18 @@
         });
       });
     });
+
+    describe(`helper`, () => {
+      it('should not get focus after helper click', function() {
+        const textAreaSlottedHelper = fixture('default-with-slotted-helper');
+        const spy = sinon.spy(textAreaSlottedHelper, 'focus');
+        const helper = textAreaSlottedHelper.querySelector('[slot="helper"]');
+
+        helper.click();
+
+        expect(spy.called).to.be.false;
+      });
+    });
+
   </script>
 </body>
