@@ -280,7 +280,8 @@ This program is available under Apache License Version 2.0, available at https:/
               input.style.height = 'auto';
             }
 
-            const broadcastHeight = (this.value && this.value.length === 0) ? input.clientHeight : getComputedStyle(this._textAreaWrapper).height;
+            const broadcastHeight = (this.value && this.value.length === 0) ? input.clientHeight
+              : getComputedStyle(this._textAreaWrapper).height;
 
             this._dispatchIronResizeEventIfNeeded('InputHeight', broadcastHeight);
             return;
