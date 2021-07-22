@@ -276,11 +276,11 @@ This program is available under Apache License Version 2.0, available at https:/
             this._textAreaWrapper.dataset.replicatedValue = this.inputElement.value;
             // getComputedStyle is expensive, maybe we can use ResizeObserver in the future
 
-            if (this.value.length === 0) {
+            if (this.value && this.value.length === 0) {
               input.style.height = 'auto';
             }
 
-            const broadcastHeight = this.value.length === 0 ? input.clientHeight : getComputedStyle(this._textAreaWrapper).height;
+            const broadcastHeight = (this.value && this.value.length === 0) ? input.clientHeight : getComputedStyle(this._textAreaWrapper).height;
 
             this._dispatchIronResizeEventIfNeeded('InputHeight', broadcastHeight);
             return;
