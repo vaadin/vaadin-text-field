@@ -267,23 +267,28 @@ This program is available under Apache License Version 2.0, available at https:/
         /** @private */
         _updateHeight() {
           const isIE = window.document.documentMode;
+          const valueLength = this.value ? this.value.length : 0;
+          const input = this.inputElement;
+
           if (!isIE) {
             /* https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/ */
             this._textAreaWrapper = this._textAreaWrapper || this.shadowRoot.querySelector('.textarea-wrapper');
             this._textAreaWrapper.dataset.replicatedValue = this.inputElement.value;
             // getComputedStyle is expensive, maybe we can use ResizeObserver in the future
-            this._dispatchIronResizeEventIfNeeded('InputHeight', getComputedStyle(this._textAreaWrapper).height);
 
+            if (this.value.length === 0) {
+              input.style.height = 'auto';
+            }
+
+            const broadcastHeight = this.value.length === 0 ? input.clientHeight : getComputedStyle(this._textAreaWrapper).height;
+
+            this._dispatchIronResizeEventIfNeeded('InputHeight', broadcastHeight);
             return;
           }
 
           const inputField = this.root.querySelector('[part=input-field]');
           const scrollTop = inputField.scrollTop;
-          const input = this.inputElement;
-
           const inputWidth = getComputedStyle(input).width;
-
-          const valueLength = this.value ? this.value.length : 0;
           const y = window.pageYOffset || document.documentElement.scrollTop;
           // Only clear the height when the content shortens to minimize scrollbar flickering.
           if (this._oldValueLength >= valueLength) {
