@@ -252,10 +252,11 @@
           textArea.style.minHeight = '100px';
           textArea.style.maxHeight = '175px';
           const container = textArea.root.querySelector('.vaadin-text-area-container');
+          const wrapper = textArea.root.querySelector('.textarea-wrapper');
 
           expect(window.getComputedStyle(textArea).height).to.be.equal('100px');
           expect(window.getComputedStyle(container).height).to.be.equal('100px');
-          expect(parseFloat(window.getComputedStyle(input).height)).to.be.below(100);
+          expect(parseFloat(window.getComputedStyle(wrapper).height)).to.be.below(100);
 
           // Check that value modification doesn't break min-height rule
           textArea.value = `
@@ -275,6 +276,7 @@
           expect(window.getComputedStyle(textArea).height).to.be.equal('175px');
           expect(window.getComputedStyle(container).height).to.be.equal('175px');
           expect(parseFloat(window.getComputedStyle(inputField).height)).to.be.above(150);
+          expect(true).to.be.true;
         });
 
         it('should increase inputField height', () => {
@@ -339,14 +341,23 @@
         });
 
         it('should cover input field', () => {
+          let wrapper = null;
+          const isIE = window.document.documentMode;
+
+          if (!isIE) {
+            wrapper = textArea.shadowRoot.querySelector('.textarea-wrapper');
+          } else {
+            wrapper = input;
+          }
+
           inputField.style.padding = '0';
           inputField.style.border = 'none';
-          textArea.style.minHeight = '300px';
-          textArea.style.padding = '0';
-          textArea.value = 'foo';
+          wrapper.style.minHeight = '300px';
+          wrapper.style.padding = '0';
+          wrapper.value = 'foo';
 
           expect(input.clientHeight).to.equal(Math.round(
-            textArea.clientHeight
+            wrapper.clientHeight
             - parseFloat(getComputedStyle(inputField).marginTop)
             - parseFloat(getComputedStyle(inputField).marginBottom)
             - parseFloat(getComputedStyle(inputField).paddingTop)
