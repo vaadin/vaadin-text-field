@@ -164,7 +164,6 @@ This program is available under Apache License Version 2.0, available at https:/
           super.ready();
           this._updateHeight();
           this.addEventListener('animationend', this._onAnimationEnd);
-          this.__safari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         }
 
         /** @private */
@@ -193,18 +192,25 @@ This program is available under Apache License Version 2.0, available at https:/
           const scrollTop = inputField.scrollTop;
           const input = this.inputElement;
 
-          const inputWidth = getComputedStyle(input).width;
-
-          const valueLength = this.value ? this.value.length : 0;
           // Only clear the height when the content shortens to minimize scrollbar flickering.
+          const valueLength = this.value ? this.value.length : 0;
+
           if (this._oldValueLength >= valueLength) {
+            const inputFieldHeight = getComputedStyle(inputField).height;
+            const inputWidth = getComputedStyle(input).width;
+
+            // Temporarily fix the height of the wrapping input field container to prevent changing the browsers scroll
+            // position while resetting the textareas height. If the textarea had a large height, then removing its height
+            // will reset its height to the default of two rows. That might reduce the height of the page, and the
+            // browser might adjust the scroll position before we can restore the measured height of the textarea.
+            inputField.style.display = 'block';
+            inputField.style.height = inputFieldHeight;
+
             // Fix the input element width so its scroll height isn't affected by host's disappearing scrollbars
             input.style.maxWidth = inputWidth;
+
+            // Clear the height of the textarea to allow measuring a reduced scroll height
             input.style.height = 'auto';
-            // Avoid a jumpy Safari rendering issue
-            if (this.__safari) {
-              inputField.style.display = 'block';
-            }
           }
           this._oldValueLength = valueLength;
 
@@ -216,6 +222,7 @@ This program is available under Apache License Version 2.0, available at https:/
           // Restore
           input.style.removeProperty('max-width');
           inputField.style.removeProperty('display');
+          inputField.style.removeProperty('height');
           inputField.scrollTop = scrollTop;
 
           this._dispatchIronResizeEventIfNeeded('InputHeight', inputHeight);
