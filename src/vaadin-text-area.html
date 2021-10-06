@@ -233,6 +233,19 @@ This program is available under Apache License Version 2.0, available at https:/
           this._dispatchIronResizeEventIfNeeded('InputHeight', inputHeight);
         }
 
+        checkValidity() {
+          if (!super.checkValidity()) {
+            return false;
+          }
+
+          if (!this.pattern) {
+            return true;
+          }
+
+          const match = this.inputElement.value.match(this.pattern);
+          return match ? match[0] == match.input : false;
+        }
+
         /**
          * Fired when the text-area height changes.
          *

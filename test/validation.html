@@ -130,6 +130,7 @@
 
       ['vaadin-text-field', 'vaadin-text-area'].forEach(el => {
         const isTextField = el === 'vaadin-text-field';
+        const isTextArea = el === 'vaadin-text-area';
 
         describe(`${el}: validate ${condition}`, function() {
           let iform, tf, input;
@@ -230,7 +231,7 @@
                 input.dispatchEvent(new CustomEvent('input'));
               }
 
-              if (isTextField) {
+              if (isTextField || isTextArea) {
                 it('should prevent invalid pattern', function() {
                   tf.pattern = '[0-9]*';
                   userSetValue('f');
@@ -315,6 +316,87 @@
 
           });
 
+          describe('textarea pattern mismatch', () => {
+            // https://github.com/web-platform-tests/wpt/blob/7b0ebaccc62b566a1965396e5be7bb2bc06f841f/html/
+            //     semantics/forms/constraints/form-validation-validity-patternMismatch.html
+
+            function userSetValue(value) {
+              input.value = value;
+              input.dispatchEvent(new CustomEvent('input'));
+            }
+
+            if (isTextArea) {
+              it('the pattern attribute is not set', function() {
+                tf.pattern = null;
+                userSetValue('abc');
+                expect(tf.validate()).to.be.true;
+              });
+
+              it('the value attibute is empty string', function() {
+                tf.pattern = '[A-Z]+';
+                userSetValue('');
+                expect(tf.validate()).to.be.false;
+              });
+
+              it('the value attribute matches the pattern attribute', function() {
+                tf.pattern = '[A-Z]{1}';
+                userSetValue('A');
+                expect(tf.validate()).to.be.true;
+              });
+
+              it('the value(ABC) in unicode attribute matches the pattern attribute', function() {
+                tf.pattern = '[A-Z]+';
+                userSetValue('\u0041\u0042\u0043');
+                expect(tf.validate()).to.be.true;
+              });
+
+              it('the value attribute mismatches the pattern attribute', function() {
+                tf.pattern = '[a-z]{3,}';
+                userSetValue('ABCD');
+                expect(tf.validate()).to.be.false;
+              });
+
+              it('the value attribute mismatches the pattern attribute even when a subset matches', function() {
+                tf.pattern = '[A-Z]+';
+                userSetValue('ABC123');
+                expect(tf.validate()).to.be.false;
+              });
+
+              it('invalid regular expression gets ignored', function() {
+                tf.pattern = '(abc';
+                userSetValue('de');
+                expect(tf.validate()).to.be.true;
+              });
+
+              it('the pattern attribute tries to escape a group', function() {
+                tf.pattern = 'a)(b';
+                userSetValue('de');
+                expect(tf.validate()).to.be.true;
+              });
+
+              it('the pattern attribute uses Unicode features', function() {
+                tf.pattern = 'a\u{10FFFF}';
+                userSetValue('a\u{10FFFF}');
+                expect(tf.validate()).to.be.true;
+
+              });
+
+              it('the value attribute matches JavaScript-specific regular expression', function() {
+                tf.pattern = '\\u1234\\cx[5-[]{2}';
+                userSetValue('\u1234\x18[6');
+                expect(tf.validate()).to.be.true;
+
+              });
+
+              it('the value attribute mismatches JavaScript-specific regular expression', function() {
+                tf.pattern = '\\u1234\\cx[5-[]{2}';
+                userSetValue('\u1234\x18[4');
+                expect(tf.validate()).to.be.false;
+
+              });
+            }
+          });
+
         });
       });
     });
@@ -333,8 +415,8 @@
           it('should not remove "invalid" state when ready', () => {
             expect(field.invalid).to.be.true;
           });
-        });
 
+        });
       });
     });
   </script>

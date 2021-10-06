@@ -48,6 +48,18 @@
       </template>
     </vaadin-demo-snippet>
 
+    <h3>Pattern</h3>
+    <vaadin-demo-snippet id="text-area-demos-text-area-with-pattern">
+      <template preserve-content>
+        <vaadin-text-area
+            class="pattern"
+            label="Description"
+            pattern="[0-9.,]+"
+            placeholder="Write here ...">
+        </vaadin-text-area>
+      </template>
+    </vaadin-demo-snippet>
+
   </template>
   <script>
     class TextAreaDemos extends DemoReadyEventEmitter(TextFieldDemo(Polymer.Element)) {

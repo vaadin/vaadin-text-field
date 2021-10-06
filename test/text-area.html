@@ -110,6 +110,13 @@
               assertAttrCanBeSet(prop, false);
             });
           });
+
+          ['pattern'].forEach(function(prop) {
+            it('should set string attribute ' + prop, function() {
+              assertAttrCanBeSet(prop, 'none');
+            });
+          });
+
         });
 
         describe(`binding ${condition}`, () => {
