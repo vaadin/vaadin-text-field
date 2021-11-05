@@ -49,6 +49,11 @@ This program is available under Apache License Version 2.0, available at https:/
       :host {
         animation: 1ms vaadin-text-area-appear;
       }
+
+      /* Workaround https://bugzilla.mozilla.org/show_bug.cgi?id=1739079 */
+      :host([disabled]) [part='value'] {
+        user-select: none;
+      }
     </style>
 
     <div class="vaadin-text-area-container">
