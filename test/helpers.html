@@ -7,7 +7,7 @@
     element.addEventListener(eventName, listener);
   };
 
-  window.nextFrame = () => {
-    return new Promise((resolve) => requestAnimationFrame(() => resolve()));
+  window.oneEvent = (element, eventName) => {
+    return new Promise((resolve) => listenOnce(element, eventName, resolve));
   };
 </script>

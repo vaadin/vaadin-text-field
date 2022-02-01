@@ -15,6 +15,6 @@
     "MockInteractions": false,
     "animationFrameFlush": false,
     "listenOnce": false,
-    "nextFrame": false
+    "oneEvent": false
   }
 }
