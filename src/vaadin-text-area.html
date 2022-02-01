@@ -60,7 +60,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
       <label part="label" on-click="focus" id="[[_labelId]]">[[label]]</label>
 
-      <div part="input-field" id="[[_inputId]]">
+      <div part="input-field" id="[[_inputId]]" on-scroll="__scrollPositionUpdated">
 
         <slot name="prefix"></slot>
 
@@ -181,6 +181,25 @@ This program is available under Apache License Version 2.0, available at https:/
           super.ready();
           this._updateHeight();
           this.addEventListener('animationend', this._onAnimationEnd);
+
+          this._inputField = this.root.querySelector('[part=input-field]');
+          // Wheel scrolling results in async scroll events. Preventing the wheel
+          // event, scrolling manually and then synchronously updating the scroll position CSS variable
+          // allows us to avoid some jumpy behavior that would occur on wheel otherwise.
+          this._inputField.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            this._inputField.scrollTop += e.deltaY;
+            this.__scrollPositionUpdated();
+          });
+
+          this.__scrollPositionUpdated();
+        }
+
+        /** @private */
+        __scrollPositionUpdated() {
+          this.updateStyles({
+            '--_text-area-vertical-scroll-position': this._inputField.scrollTop + 'px',
+          });
         }
 
         /** @private */

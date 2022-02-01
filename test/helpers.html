@@ -6,4 +6,8 @@
     };
     element.addEventListener(eventName, listener);
   };
+
+  window.nextFrame = () => {
+    return new Promise((resolve) => requestAnimationFrame(() => resolve()));
+  };
 </script>
