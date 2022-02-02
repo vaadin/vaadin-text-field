@@ -6,4 +6,8 @@
     };
     element.addEventListener(eventName, listener);
   };
+
+  window.oneEvent = (element, eventName) => {
+    return new Promise((resolve) => listenOnce(element, eventName, resolve));
+  };
 </script>

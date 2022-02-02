@@ -139,5 +139,12 @@ gemini.suite('vaadin-text-field', function(rootSuite) {
         .setCaptureElements('#text-area-clear-button')
         .capture('text-area-clear-button');
     });
+
+    gemini.suite(`text-area-scrolled-${theme}`, function(suite) {
+      suite
+        .setUrl(`vaadin-text-area/text-area-scrolled.html?theme=${theme}`)
+        .setCaptureElements('#text-area-scrolled')
+        .capture('text-area-scrolled');
+    });
   });
 });

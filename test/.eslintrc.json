@@ -1,4 +1,7 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 8
+  },
   "globals": {
     "HTMLImports": false,
     "WCT": false,
@@ -11,6 +14,7 @@
     "sinon": false,
     "MockInteractions": false,
     "animationFrameFlush": false,
-    "listenOnce": false
+    "listenOnce": false,
+    "oneEvent": false
   }
 }
