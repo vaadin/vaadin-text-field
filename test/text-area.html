@@ -470,7 +470,7 @@
       });
 
       it('should not cancel wheel event if text area is not scrolled', () => {
-        const e = wheel({ deltaY: -10 });
+        const e = wheel({deltaY: -10});
         expect(e.defaultPrevented).to.be.false;
       });
 
