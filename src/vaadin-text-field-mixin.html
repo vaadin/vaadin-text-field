@@ -719,7 +719,10 @@ This program is available under Apache License Version 2.0, available at https:/
      * @return {boolean} True if the value is valid.
      */
     validate() {
-      return !(this.invalid = !this.checkValidity());
+      const isValid = this.checkValidity();
+      this.invalid = !isValid;
+      this.dispatchEvent(new CustomEvent('validated', {detail: {valid: isValid}}));
+      return isValid;
     }
 
     clear() {
