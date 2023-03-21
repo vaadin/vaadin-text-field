@@ -10,4 +10,10 @@
   window.oneEvent = (element, eventName) => {
     return new Promise((resolve) => listenOnce(element, eventName, resolve));
   };
+
+  window.nextRender = (element) => {
+    return new Promise(resolve => {
+      Polymer.RenderStatus.afterNextRender(element, resolve);
+    });
+  };
 </script>

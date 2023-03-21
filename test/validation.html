@@ -13,7 +13,7 @@
   <link rel="import" href="../vaadin-text-area.html">
   <link rel="import" href="../vaadin-text-field.html">
   <link rel="import" href="../../iron-form/iron-form.html">
-
+  <link rel="import" href="helpers.html">
 </head>
 
 <body>
@@ -334,7 +334,40 @@
             expect(field.invalid).to.be.true;
           });
         });
+      });
+    });
 
+    describe('initial validation', () => {
+      let field, validateSpy;
+
+      beforeEach(() => {
+        field = document.createElement('vaadin-email-field');
+        validateSpy = sinon.spy(field, 'validate');
+      });
+
+      afterEach(() => {
+        field.remove();
+      });
+
+      it('should not validate by default', async() => {
+        document.body.appendChild(field);
+        await nextRender();
+        expect(validateSpy.called).to.be.false;
+      });
+
+      it('should not validate when the field has an initial value', async() => {
+        field.value = 'foo@example.com';
+        document.body.appendChild(field);
+        await nextRender();
+        expect(validateSpy.called).to.be.false;
+      });
+
+      it('should not validate when the field has an initial value and invalid', async() => {
+        field.value = 'foo@example.com';
+        field.invalid = true;
+        document.body.appendChild(field);
+        await nextRender();
+        expect(validateSpy.called).to.be.false;
       });
     });
   </script>
