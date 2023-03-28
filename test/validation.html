@@ -416,7 +416,7 @@
           element.required = true;
           element.validate();
           expect(element.invalid).to.be.true;
-          element.value = 'value';
+          element.value = 'email@example.com';
           element.validate();
           expect(element.invalid).to.be.true;
         });
@@ -433,7 +433,7 @@
           element.required = true;
           element.validate();
           expect(element.invalid).to.be.true;
-          element.value = 'value';
+          element.value = 5;
           element.validate();
           expect(element.invalid).to.be.true;
         });
@@ -467,7 +467,7 @@
           element.required = true;
           element.validate();
           expect(element.invalid).to.be.true;
-          element.value = 'value';
+          element.value = 5;
           element.validate();
           expect(element.invalid).to.be.true;
         });
