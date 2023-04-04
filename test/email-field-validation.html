@@ -12,12 +12,11 @@
 
 <body>
 <script>
-  var el = 'vaadin-email-field';
   describe(`initial validation`, () => {
     let field, validateSpy;
 
     beforeEach(() => {
-      field = document.createElement(el);
+      field = document.createElement('vaadin-email-field');
       validateSpy = sinon.spy(field, 'validate');
     });
 
