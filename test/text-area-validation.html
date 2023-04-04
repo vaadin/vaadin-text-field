@@ -31,14 +31,28 @@
     });
 
     it('should not validate when the field has an initial value', async() => {
-      field.value = 'foo@example.com';
+      field.value = `
+          there
+          should
+          be
+          a
+          lot
+          of
+          rows`;
       document.body.appendChild(field);
       await nextRender();
       expect(validateSpy.called).to.be.false;
     });
 
     it('should not validate when the field has an initial value and invalid', async() => {
-      field.value = 'foo@example.com';
+      field.value = `
+          there
+          should
+          be
+          a
+          lot
+          of
+          rows`;
       field.invalid = true;
       document.body.appendChild(field);
       await nextRender();
