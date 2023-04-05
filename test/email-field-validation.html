@@ -1,0 +1,49 @@
+<!doctype html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>vaadin-email-field validation tests</title>
+
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../vaadin-email-field.html">
+  <link rel="import" href="helpers.html">
+</head>
+
+<body>
+<script>
+  describe(`initial validation`, () => {
+    let field, validateSpy;
+
+    beforeEach(() => {
+      field = document.createElement('vaadin-email-field');
+      validateSpy = sinon.spy(field, 'validate');
+    });
+
+    afterEach(() => {
+      field.remove();
+    });
+
+    it('should not validate by default', async() => {
+      document.body.appendChild(field);
+      await nextRender();
+      expect(validateSpy.called).to.be.false;
+    });
+
+    it('should not validate when the field has an initial value', async() => {
+      field.value = 'foo@example.com';
+      document.body.appendChild(field);
+      await nextRender();
+      expect(validateSpy.called).to.be.false;
+    });
+
+    it('should not validate when the field has an initial value and invalid', async() => {
+      field.value = 'foo@example.com';
+      field.invalid = true;
+      document.body.appendChild(field);
+      await nextRender();
+      expect(validateSpy.called).to.be.false;
+    });
+  });
+</script>
+</body>

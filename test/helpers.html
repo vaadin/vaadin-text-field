@@ -1,3 +1,9 @@
+<!doctype html>
+
+<head>
+  <link rel="import" href="../../polymer/polymer.html">
+</head>
+<body>
 <script>
   window.listenOnce = (element, eventName, callback) => {
     const listener = e => {
@@ -10,4 +16,11 @@
   window.oneEvent = (element, eventName) => {
     return new Promise((resolve) => listenOnce(element, eventName, resolve));
   };
+
+  window.nextRender = (element) => {
+    return new Promise(resolve => {
+      Polymer.RenderStatus.afterNextRender(element, resolve);
+    });
+  };
 </script>
+</body>

@@ -7,6 +7,7 @@
     "WCT": false,
     "describe": false,
     "beforeEach": false,
+    "afterEach": false,
     "fixture": false,
     "it": false,
     "expect": false,
@@ -15,6 +16,7 @@
     "MockInteractions": false,
     "animationFrameFlush": false,
     "listenOnce": false,
-    "oneEvent": false
+    "oneEvent": false,
+    "nextRender": false
   }
 }
