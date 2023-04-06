@@ -58,10 +58,6 @@
       textArea = fixture('default');
     });
 
-    afterEach(() => {
-      textArea.remove();
-    });
-
     it('should fire a validated event on validation success', () => {
       const validatedSpy = sinon.spy();
       textArea.addEventListener('validated', validatedSpy);
