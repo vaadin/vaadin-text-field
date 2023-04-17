@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <test-fixture id="default">
+  <test-fixture id="basic">
     <template>
       <vaadin-text-area></vaadin-text-area>
     </template>
@@ -55,7 +55,7 @@
     let textArea;
 
     beforeEach(() => {
-      textArea = fixture('default');
+      textArea = fixture('basic');
     });
 
     it('should fire a validated event on validation success', () => {

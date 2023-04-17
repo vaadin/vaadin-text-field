@@ -12,7 +12,7 @@
 </head>
 
 <body>
- <test-fixture id="default">
+ <test-fixture id="basic">
     <template>
       <vaadin-number-field></vaadin-number-field>
     </template>
@@ -55,7 +55,7 @@
     let numberField;
 
     beforeEach(() => {
-      numberField = fixture('default');
+      numberField = fixture('basic');
     });
 
     it('should fire a validated event on validation success', () => {
