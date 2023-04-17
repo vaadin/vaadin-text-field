@@ -17,6 +17,11 @@
       <vaadin-integer-field></vaadin-integer-field>
     </template>
   </test-fixture>
+  <test-fixture id="should-set-invalid">
+    <template>
+      <vaadin-integer-field></vaadin-integer-field>
+    </template>
+  </test-fixture>
 <script>
   describe(`initial validation`, () => {
     let field, validateSpy;
@@ -77,6 +82,24 @@
       expect(validatedSpy.calledOnce).to.be.true;
       const event = validatedSpy.firstCall.args[0];
       expect(event.detail.valid).to.be.false;
+    });
+  });
+  describe('invalid cannot be set to false', () => {
+    let integerField;
+
+    beforeEach(async() => {
+      integerField = fixture('should-set-invalid');
+      integerField._shouldSetInvalid = (invalid) => invalid;
+      await nextRender();
+    });
+
+    it('should set invalid only when it is true', async() => {
+      integerField.required = true;
+      integerField.validate();
+      expect(integerField.invalid).to.be.true;
+      integerField.value = 5;
+      integerField.validate();
+      expect(integerField.invalid).to.be.true;
     });
   });
 </script>
