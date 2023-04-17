@@ -12,12 +12,7 @@
 </head>
 
 <body>
- <test-fixture id="basic">
-    <template>
-      <vaadin-number-field></vaadin-number-field>
-    </template>
-  </test-fixture>
-  <test-fixture id="should-set-invalid">
+ <test-fixture id="number-field">
     <template>
       <vaadin-number-field></vaadin-number-field>
     </template>
@@ -60,7 +55,7 @@
     let numberField;
 
     beforeEach(() => {
-      numberField = fixture('basic');
+      numberField = fixture('number-field');
     });
 
     it('should fire a validated event on validation success', () => {
@@ -88,7 +83,7 @@
     let numberField;
 
     beforeEach(async() => {
-      numberField = fixture('should-set-invalid');
+      numberField = fixture('number-field');
       numberField._shouldSetInvalid = (invalid) => invalid;
       await nextRender();
     });
