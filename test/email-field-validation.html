@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <test-fixture id="basic">
+  <test-fixture id="email-field">
     <template>
       <vaadin-email-field></vaadin-email-field>
     </template>
@@ -55,7 +55,7 @@
     let emailField;
 
     beforeEach(() => {
-      emailField = fixture('basic');
+      emailField = fixture('email-field');
     });
 
     it('should fire a validated event on validation success', () => {
@@ -77,6 +77,24 @@
       expect(validatedSpy.calledOnce).to.be.true;
       const event = validatedSpy.firstCall.args[0];
       expect(event.detail.valid).to.be.false;
+    });
+  });
+  describe('invalid cannot be set to false', () => {
+    let emailField;
+
+    beforeEach(async() => {
+      emailField = fixture('email-field');
+      emailField._shouldSetInvalid = (invalid) => invalid;
+      await nextRender();
+    });
+
+    it('should set invalid only when it is true', async() => {
+      emailField.required = true;
+      emailField.validate();
+      expect(emailField.invalid).to.be.true;
+      emailField.value = 'email@example.com';
+      emailField.validate();
+      expect(emailField.invalid).to.be.true;
     });
   });
 </script>
