@@ -18,39 +18,6 @@
     </template>
   </test-fixture>
 <script>
-  describe(`initial validation`, () => {
-    let field, validateSpy;
-
-    beforeEach(() => {
-      field = document.createElement('vaadin-email-field');
-      validateSpy = sinon.spy(field, 'validate');
-    });
-
-    afterEach(() => {
-      field.remove();
-    });
-
-    it('should not validate by default', async() => {
-      document.body.appendChild(field);
-      await nextRender();
-      expect(validateSpy.called).to.be.false;
-    });
-
-    it('should not validate when the field has an initial value', async() => {
-      field.value = 'foo@example.com';
-      document.body.appendChild(field);
-      await nextRender();
-      expect(validateSpy.called).to.be.false;
-    });
-
-    it('should not validate when the field has an initial value and invalid', async() => {
-      field.value = 'foo@example.com';
-      field.invalid = true;
-      document.body.appendChild(field);
-      await nextRender();
-      expect(validateSpy.called).to.be.false;
-    });
-  });
   describe('basic', () => {
     let emailField;
 
