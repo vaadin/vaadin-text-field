@@ -17,6 +17,7 @@
     "animationFrameFlush": false,
     "listenOnce": false,
     "oneEvent": false,
-    "nextRender": false
+    "nextRender": false,
+    "nextFrame": false
   }
 }
