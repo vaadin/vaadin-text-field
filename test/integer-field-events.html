@@ -17,45 +17,41 @@
       <vaadin-integer-field></vaadin-integer-field>
     </template>
   </test-fixture>
-<script>
-describe('events', () => {
-  let integerField, input;
-
-  describe('has-input-value-changed event', () => {
-    beforeEach(async() => {
-      integerField = fixture('integer-field');
-      input = integerField.inputElement;
+  <script>
+    describe('events', () => {
+      let integerField, input;
+    
+      describe('has-input-value-changed event', () => {
+        beforeEach(async() => {
+          integerField = fixture('integer-field');
+          input = integerField.inputElement;
+        });
+    
+        it('should fire the event on input value presence change', async() => {
+          const hasInputValueChangedSpy = sinon.spy();
+          integerField.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
+          input.value = '5';
+          input.dispatchEvent(new CustomEvent('input'));
+          expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+    
+          hasInputValueChangedSpy.reset();
+          input.value = '';
+          input.dispatchEvent(new CustomEvent('input'));
+          expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+        });
+    
+        it('should not fire the event on input if input value presence has not changed', async() => {
+          const hasInputValueChangedSpy = sinon.spy();
+          integerField.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
+          input.value = '5';
+          input.dispatchEvent(new CustomEvent('input'));
+          hasInputValueChangedSpy.reset();
+    
+          input.value = '56';
+          input.dispatchEvent(new CustomEvent('input'));
+          expect(hasInputValueChangedSpy.called).to.be.false;
+        });
+      });
     });
-
-    it('should fire the event on input value presence change', async() => {
-      const hasInputValueChangedSpy = sinon.spy();
-      integerField.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
-      input.value = '5';
-      input.dispatchEvent(new CustomEvent('input'));
-      await nextFrame();
-      expect(hasInputValueChangedSpy.calledOnce).to.be.true;
-
-      hasInputValueChangedSpy.reset();
-      input.value = '';
-      input.dispatchEvent(new CustomEvent('input'));
-      await nextFrame();
-      expect(hasInputValueChangedSpy.calledOnce).to.be.true;
-    });
-
-    it('should not fire the event on input if input value presence has not changed', async() => {
-      const hasInputValueChangedSpy = sinon.spy();
-      integerField.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
-      input.value = '5';
-      input.dispatchEvent(new CustomEvent('input'));
-      await nextFrame();
-      hasInputValueChangedSpy.reset();
-
-      input.value = '56';
-      input.dispatchEvent(new CustomEvent('input'));
-      await nextFrame();
-      expect(hasInputValueChangedSpy.called).to.be.false;
-    });
-  });
-});
-</script>
+  </script>
 </body>
