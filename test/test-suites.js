@@ -13,5 +13,11 @@ window.VaadinTextFieldSuites = [
   'number-field-validation.html',
   'integer-field-validation.html',
   'password-field-validation.html',
-  'email-field-validation.html'
+  'email-field-validation.html',
+  'text-field-events.html',
+  'text-area-events.html',
+  'password-field-events.html',
+  'integer-field-events.html',
+  'number-field-events.html',
+  'email-field-events.html'
 ];

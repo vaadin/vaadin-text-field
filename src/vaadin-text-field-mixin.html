@@ -297,6 +297,16 @@ This program is available under Apache License Version 2.0, available at https:/
         },
 
         /**
+         * When true, the input element has a non-empty value entered by the user.
+         * @protected
+         */
+        _hasInputValue: {
+          type: Boolean,
+          value: false,
+          observer: '_hasInputValueChanged',
+        },
+
+        /**
          * This property is set to true when the control value is invalid.
          * @type {boolean}
          */
@@ -406,6 +416,28 @@ This program is available under Apache License Version 2.0, available at https:/
       this._createMethodObserver('_constraintsChanged(required, minlength, maxlength, pattern)');
     }
 
+    /**
+     * Sets the `_hasInputValue` property based on the `input` event.
+     *
+     * @param {InputEvent} event
+     * @protected
+     */
+    _setHasInputValue(event) {
+      this._hasInputValue = event.target.value.length > 0;
+    }
+
+    /**
+     * An input event listener used to update `_hasInputValue` property.
+     * Do not override this method.
+     *
+     * @param {Event} event
+     * @private
+     */
+    __onInput(event) {
+      this._setHasInputValue(event);
+      this._onInput(event);
+    }
+
     /** @private */
     _onInput(e) {
       if (this.__preventInput) {
@@ -449,6 +481,17 @@ This program is available under Apache License Version 2.0, available at https:/
         this.$.clearButton.removeAttribute('hidden');
       } else {
         this.$.clearButton.setAttribute('hidden', true);
+      }
+    }
+
+    /**
+     * Observer to notify about the change of private property.
+     *
+     * @private
+     */
+    _hasInputValueChanged(hasValue, oldHasValue) {
+      if (hasValue || oldHasValue) {
+        this.dispatchEvent(new CustomEvent('has-input-value-changed'));
       }
     }
 
@@ -666,7 +709,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
       this._createConstraintsObserver();
 
-      this._boundOnInput = this._onInput.bind(this);
+      this._boundOnInput = this.__onInput.bind(this);
       this._boundOnChange = this._onChange.bind(this);
       this._boundOnBlur = this._onBlur.bind(this);
       this._boundOnFocus = this._onFocus.bind(this);
