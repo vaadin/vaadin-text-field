@@ -34,7 +34,7 @@ jobs:
       - name: Run visual tests on SauceLabs
         run: "gemini test --reporter html --reporter flat test/visual"
         env:
-          SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+          SAUCE_USERNAME: ${{ env.SAUCE_USERNAME }}
           SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY }}
 
       - name: Publish the Visual Tests failures report as an Artifact for this Workflow run
