@@ -431,8 +431,7 @@ This program is available under Apache License Version 2.0, available at https:/
           * @override
           */
         _setHasInputValue(event) {
-          const target = event.composedPath()[0];
-          this._hasInputValue = target.value.length > 0 || target.validity.badInput;
+          this._hasInputValue = event.target.value.length > 0 || event.target.validity.badInput;
         }
       }
 
