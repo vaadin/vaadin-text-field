@@ -287,7 +287,7 @@ This program is available under Apache License Version 2.0, available at https:/
           }
 
           try {
-            const match = this.inputElement.value.match(this.pattern);
+            const match = this._inputElementValue.match(this.pattern);
             return match ? match[0] === match.input : false;
           } catch (_) {
             // If the pattern can not be compiled, then report as valid
