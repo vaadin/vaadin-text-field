@@ -281,7 +281,7 @@ This program is available under Apache License Version 2.0, available at https:/
           // according to WHATWG spec for <input>, with tests inspired by web-platform-tests
           // https://html.spec.whatwg.org/multipage/input.html#the-pattern-attribute
 
-          if (!this.pattern || !this.inputElement.value) {
+          if (!this.pattern || !this._inputElementValue) {
             // Mark as valid if there is no pattern, or the value is empty
             return true;
           }
