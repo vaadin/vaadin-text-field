@@ -281,13 +281,13 @@ This program is available under Apache License Version 2.0, available at https:/
           // according to WHATWG spec for <input>, with tests inspired by web-platform-tests
           // https://html.spec.whatwg.org/multipage/input.html#the-pattern-attribute
 
-          if (!this.pattern || !this.inputElement.value) {
+          if (!this.pattern || !this._inputElementValue) {
             // Mark as valid if there is no pattern, or the value is empty
             return true;
           }
 
           try {
-            const match = this.inputElement.value.match(this.pattern);
+            const match = this._inputElementValue.match(this.pattern);
             return match ? match[0] === match.input : false;
           } catch (_) {
             // If the pattern can not be compiled, then report as valid

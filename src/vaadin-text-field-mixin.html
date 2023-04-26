@@ -417,6 +417,39 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     /**
+     * A property for accessing the input element's value.
+     *
+     * Override this getter if the property is different from the default `value` one.
+     *
+     * @protected
+     * @return {string}
+     */
+    get _inputElementValueProperty() {
+      return 'value';
+    }
+
+    /**
+     * The input element's value.
+     *
+     * @protected
+     * @return {string}
+     */
+    get _inputElementValue() {
+      return this.inputElement ? this.inputElement[this._inputElementValueProperty] : undefined;
+    }
+
+    /**
+     * The input element's value.
+     *
+     * @protected
+     */
+    set _inputElementValue(value) {
+      if (this.inputElement) {
+        this.inputElement[this._inputElementValueProperty] = value;
+      }
+    }
+
+    /**
      * Sets the `_hasInputValue` property based on the `input` event.
      *
      * @param {InputEvent} event
@@ -536,9 +569,9 @@ This program is available under Apache License Version 2.0, available at https:/
       if (this.__userInput) {
         return;
       } else if (newVal !== undefined) {
-        this.inputElement.value = newVal;
+        this._inputElementValue = newVal;
       } else {
-        this.value = this.inputElement.value = '';
+        this.value = this._inputElementValue = '';
       }
 
       if (this.invalid) {
@@ -581,7 +614,7 @@ This program is available under Apache License Version 2.0, available at https:/
       const slotted = this.querySelector(`${this._slottedTagName}[slot="${this._slottedTagName}"]`);
 
       if (this.value) {
-        this.inputElement.value = this.value;
+        this._inputElementValue = this.value;
         this.validate();
       }
 
