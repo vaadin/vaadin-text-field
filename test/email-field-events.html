@@ -8,7 +8,6 @@
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
   <link rel="import" href="../vaadin-email-field.html">
   <link rel="import" href="../../test-fixture/test-fixture.html">
-  <link rel="import" href="helpers.html">
 </head>
 
 <body>
@@ -29,7 +28,6 @@
           valueChangedSpy = sinon.spy();
           emailField.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
           emailField.addEventListener('value-changed', valueChangedSpy);
-          await nextRender();
         });
 
         describe('without user input', () => {
