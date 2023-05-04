@@ -17,11 +17,6 @@
       <vaadin-integer-field></vaadin-integer-field>
     </template>
   </test-fixture>
-  <test-fixture id="integer-field-with-clear-button">
-    <template>
-      <vaadin-integer-field clear-button-visible></vaadin-integer-field>
-    </template>
-  </test-fixture>
   <script>
     describe('events', () => {
       let integerField, input, hasInputValueChangedSpy, valueChangedSpy;
@@ -79,14 +74,15 @@
         });
       });
 
-      describe('has-input-value-changed event on clear', () => {
+      describe('has-input-value-changed event with clear button', () => {
         beforeEach(async() => {
           hasInputValueChangedSpy = sinon.spy();
           valueChangedSpy = sinon.spy();
-          integerField = fixture('integer-field-with-clear-button');
+          integerField = fixture('integer-field');
           integerField.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
           integerField.addEventListener('value-changed', valueChangedSpy);
           input = integerField.inputElement;
+          integerField.clearButtonVisible = true;
         });
     
         describe('with user input', () => {

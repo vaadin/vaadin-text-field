@@ -17,11 +17,6 @@
       <vaadin-email-field></vaadin-email-field>
     </template>
   </test-fixture>
-  <test-fixture id="email-field-with-clear-button">
-    <template>
-      <vaadin-email-field clear-button-visible></vaadin-email-field>
-    </template>
-  </test-fixture>
   <script>
     describe('events', () => {
       let emailField, input, hasInputValueChangedSpy, valueChangedSpy;
@@ -79,14 +74,15 @@
         });
       });
 
-      describe('has-input-value-changed event on clear', () => {
+      describe('has-input-value-changed event with clear button', () => {
         beforeEach(async() => {
           hasInputValueChangedSpy = sinon.spy();
           valueChangedSpy = sinon.spy();
-          emailField = fixture('email-field-with-clear-button');
+          emailField = fixture('email-field');
           emailField.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
           emailField.addEventListener('value-changed', valueChangedSpy);
           input = emailField.inputElement;
+          emailField.clearButtonVisible = true;
         });
     
         describe('with user input', () => {

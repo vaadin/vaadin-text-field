@@ -17,11 +17,6 @@
       <vaadin-text-area></vaadin-text-area>
     </template>
   </test-fixture>
-  <test-fixture id="text-area-with-clear-button">
-    <template>
-      <vaadin-text-area clear-button-visible></vaadin-text-area>
-    </template>
-  </test-fixture>
   <script>
     describe('events', () => {
       let textArea, input, hasInputValueChangedSpy, valueChangedSpy;
@@ -79,14 +74,15 @@
         });
       });
 
-      describe('has-input-value-changed event on clear', () => {
+      describe('has-input-value-changed event with clear button', () => {
         beforeEach(async() => {
           hasInputValueChangedSpy = sinon.spy();
           valueChangedSpy = sinon.spy();
-          textArea = fixture('text-area-with-clear-button');
+          textArea = fixture('text-area');
           textArea.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
           textArea.addEventListener('value-changed', valueChangedSpy);
           input = textArea.inputElement;
+          textArea.clearButtonVisible = true;
         });
     
         describe('with user input', () => {
