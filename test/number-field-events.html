@@ -72,38 +72,32 @@
             expect(hasInputValueChangedSpy.calledBefore(valueChangedSpy)).to.be.true;
           });
         });
-      });
 
-      describe('has-input-value-changed event with clear button', () => {
-        beforeEach(async() => {
-          hasInputValueChangedSpy = sinon.spy();
-          valueChangedSpy = sinon.spy();
-          numberField = fixture('number-field');
-          numberField.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
-          numberField.addEventListener('value-changed', valueChangedSpy);
-          input = numberField.inputElement;
-          numberField.clearButtonVisible = true;
-        });
-    
-        describe('with user input', () => {
+        describe('with clear button', () => {
           beforeEach(async() => {
-            input.value = '5';
-            input.dispatchEvent(new CustomEvent('input'));
-            hasInputValueChangedSpy.reset();
-            valueChangedSpy.reset();
+            numberField.clearButtonVisible = true;
           });
     
-          it('should fire the event on clear button click', async() => {
-            numberField.$.clearButton.click();
-            expect(hasInputValueChangedSpy.calledOnce).to.be.true;
-            expect(hasInputValueChangedSpy.calledBefore(valueChangedSpy)).to.be.true;
-          });
+          describe('with user input', () => {
+            beforeEach(async() => {
+              input.value = '5';
+              input.dispatchEvent(new CustomEvent('input'));
+              hasInputValueChangedSpy.reset();
+              valueChangedSpy.reset();
+            });
     
-          it('should fire the event on Esc', async() => {
-            input.focus();
-            MockInteractions.keyDownOn(input, 27, null, 'Escape');
-            expect(hasInputValueChangedSpy.calledOnce).to.be.true;
-            expect(hasInputValueChangedSpy.calledBefore(valueChangedSpy)).to.be.true;
+            it('should fire the event on clear button click', async() => {
+              numberField.$.clearButton.click();
+              expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+              expect(hasInputValueChangedSpy.calledBefore(valueChangedSpy)).to.be.true;
+            });
+    
+            it('should fire the event on Esc', async() => {
+              input.focus();
+              MockInteractions.keyDownOn(input, 27, null, 'Escape');
+              expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+              expect(hasInputValueChangedSpy.calledBefore(valueChangedSpy)).to.be.true;
+            });
           });
         });
       });
